@@ -5,7 +5,7 @@
 		{
 			"profile": "tabular-data-resource",
 			"name": "spikes",
-			"path": "spikes.csv",
+			"path": "data/spikes.csv",
 			"description": "List of spikes",
 			"format": "csv",
 			"mediatype": "text/csv",
@@ -36,7 +36,7 @@
 		{
 			"profile": "tabular-data-resource",
 			"name": "spike-trains",
-			"path": "spike-trains.csv",
+			"path": "data/spike-trains.csv",
 			"description": "List of spike trains",
 			"format": "csv",
 			"mediatype": "text/csv",
