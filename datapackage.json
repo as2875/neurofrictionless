@@ -53,9 +53,14 @@
 						"format": "string"
 					},
 					{
-						"name": "epos",
-						"title": "Position of recording electrode in MEA",
-						"format": "array"
+						"name": "epos-x",
+						"title": "X coordinate of recording electrode in MEA",
+						"format": "number"
+					},
+					{
+						"name": "epos-y",
+						"title": "X coordinate of recording electrode in MEA",
+						"format": "number"
 					},
 					{
 						"name": "sCount",
