@@ -35,7 +35,8 @@ class MEABurstConverter:
     def write(self, filename):
         """Write a file in either format."""
         # extract extension
-        base_path = os.path.dirname(filename)
+        base = os.path.realpath(
+            os.path.dirname(filename))
         ext = os.path.splitext(filename)[1]
 
         assert self.formats, "Nothing to write"
@@ -57,6 +58,7 @@ class MEABurstConverter:
                 datapackage_path = \
                     pkg_resources.resource_filename(__package__, "datapackage.json")
                 package = datapackage.Package(
+                    base_path=base,
                     descriptor=datapackage_path)
 
                 with open(package.get_resource("spike-trains").source, "w", newline="") as spike_trains_file, open(package.get_resource("spikes").source, "w", newline="") as spikes_file:
