@@ -9,7 +9,7 @@ import datapackage
 import h5py
 import os
 import pkg_resources
-
+import numpy
 
 class MEABurstConverter:
     """A class for converting from HDF5 to Frictionless and back."""
@@ -39,6 +39,7 @@ class MEABurstConverter:
             os.path.dirname(filename))
         ext = os.path.splitext(filename)[1]
 
+        # if we haven't read anything, there is nothing to write
         assert self.formats, "Nothing to write"
 
         if self.formats[ext]:
@@ -62,12 +63,20 @@ class MEABurstConverter:
                     base_path=base,
                     descriptor=datapackage_path)
 
+                # add metadata to data package descriptor
+                for k, v in self.formats[".h5"]["meta"].items():
+                    value = v[0].item()
+                    if isinstance(value, bytes):
+                        value = value.decode()
+                    package.descriptor[k] = value
+
+                package.commit()
+
                 # extract resource names
                 spike_trains_path = package.get_resource("spike-trains").source
                 spikes_path = package.get_resource("spikes").source
 
-                with open(spike_trains_path, "x", newline="") as spike_trains_file, open(spikes_path, "x", newline="") as spikes_file:
-
+                with open(spike_trains_path, "w", newline="") as spike_trains_file, open(spikes_path, "w", newline="") as spikes_file:
                     # initialise writers
                     spike_trains_writer = csv.writer(spike_trains_file)
                     spikes_writer = csv.writer(spikes_file)
@@ -92,13 +101,14 @@ class MEABurstConverter:
                                                     i])
                         count += s_count[i]
 
-                # zip up the data package
+                # zip, zip
                 package.save(filename)
 
                 # remove csv files
                 os.remove(spike_trains_path)
                 os.remove(spikes_path)
-
             elif ext == ".h5":
                 # convert from Frictionless to HDF5
                 raise NotImplementedError()
+            else:
+                raise TypeError("Unsupported format")
