@@ -5,8 +5,11 @@ to a Frictionless Data Package.
 """
 
 import csv
+import datapackage
 import h5py
+import json
 import os
+import pkg_resources
 
 
 class MEABurstConverter:
@@ -25,6 +28,7 @@ class MEABurstConverter:
             self.formats[".zip"] = None
         elif ext == ".zip":
             # not implemented yet
+            # of doubtful utility
             raise NotImplementedError()
         else:
             raise TypeError("File in unsupported format")
@@ -33,7 +37,6 @@ class MEABurstConverter:
         """Write a file in either format."""
         # extract extension
         ext = os.path.splitext(filename)[1]
-        directory = os.path.dirname(filename)
 
         assert self.formats, "Nothing to write"
 
@@ -50,15 +53,30 @@ class MEABurstConverter:
                 names = list(self.formats[".h5"]["names"])
                 epos = list(self.formats[".h5"]["epos"])
 
-                with open("spike_trains.csv", "w", newline="") \
-                    as spike_trains_file, open("spikes.csv", "w", newline="") \
-                        as spikes_file:
+                # set up data package
+                datapackage_path = \
+                    pkg_resources.resource_filename("h5fd", "datapackage.json")
+                with open(datapackage_path) as f:
+                    spec = json.load(f)
+                # TODO: modify specification
+                with open("datapackage.json", "w") as f:
+                    json.dump(spec, f)
+                package = datapackage.Package(
+                    descriptor="datapackage.json")
+
+                with open(package.get_resource("spike-trains").source, "w", newline="") as spike_trains_file, open(package.get_resource("spikes").source, "w", newline="") as spikes_file:
 
                     # initialise writers
                     spike_trains_writer = csv.writer(spike_trains_file)
                     spikes_writer = csv.writer(spikes_file)
 
-                    count = 0 # where in spikes we are
+                    # write headers
+                    spike_trains_fields = [ field.name for field in package.get_resource("spike-trains").schema.fields ]
+                    spike_trains_writer.writerow(spike_trains_fields)
+                    spikes_fields = [ field.name for field in package.get_resource("spikes").schema.fields ]
+                    spikes_writer.writerow(spikes_fields)
+
+                    count = 0  # where in spikes we are
                     for i in range(len(s_count)):
                         # write to spike_trains.csv
                         spike_trains_writer.writerow([i,
@@ -70,6 +88,13 @@ class MEABurstConverter:
                             spikes_writer.writerow([spikes[j],
                                                     i])
                         count += s_count[i]
+
+                # make a data package
+                package.save(filename)
+                self.formats[".zip"] = package
+
+                # remove folder
+                # shutil.rmtree(data_dir)
 
             elif ext == ".h5":
                 # convert from Frictionless to HDF5
