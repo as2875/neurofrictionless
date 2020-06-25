@@ -1,7 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import h5fd.converter as h5fd
+import h5fd.converter
+import os
 
-m = h5fd.MEABurstConverter()
-m.read(r"C:\Users\sasha\Documents\burstanalysis\hiPSC_recordings\hiPSN_tc01_d12_spikes6sd.h5")
-m.write("test.zip")
+DATA_DIR = r"C:\Users\sasha\Documents\burstanalysis\hiPSC_recordings"
+
+data_files = os.listdir(DATA_DIR)
+m = h5fd.converter.MEABurstConverter()
+
+for file in data_files:
+    path = os.path.join(DATA_DIR, file)
+    m.read(path)
+    base = os.path.splitext(file)[0]
+    m.write(base + ".zip")
