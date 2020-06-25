@@ -55,22 +55,27 @@ class MEABurstConverter:
                 epos = list(self.formats[".h5"]["epos"])
 
                 # set up data package
-                datapackage_path = \
-                    pkg_resources.resource_filename(__package__, "datapackage.json")
+                datapackage_path = pkg_resources.resource_filename(
+                    __package__,
+                    "datapackage.json")
                 package = datapackage.Package(
                     base_path=base,
                     descriptor=datapackage_path)
 
-                with open(package.get_resource("spike-trains").source, "w", newline="") as spike_trains_file, open(package.get_resource("spikes").source, "w", newline="") as spikes_file:
+                # extract resource names
+                spike_trains_path = package.get_resource("spike-trains").source
+                spikes_path = package.get_resource("spikes").source
+
+                with open(spike_trains_path, "x", newline="") as spike_trains_file, open(spikes_path, "x", newline="") as spikes_file:
 
                     # initialise writers
                     spike_trains_writer = csv.writer(spike_trains_file)
                     spikes_writer = csv.writer(spikes_file)
 
                     # write headers
-                    spike_trains_fields = [ field.name for field in package.get_resource("spike-trains").schema.fields ]
+                    spike_trains_fields = [field.name for field in package.get_resource("spike-trains").schema.fields]
                     spike_trains_writer.writerow(spike_trains_fields)
-                    spikes_fields = [ field.name for field in package.get_resource("spikes").schema.fields ]
+                    spikes_fields = [field.name for field in package.get_resource("spikes").schema.fields]
                     spikes_writer.writerow(spikes_fields)
 
                     count = 0  # where in spikes we are
@@ -82,16 +87,17 @@ class MEABurstConverter:
                                                      epos[1][i],
                                                      s_count[i]])
                         for j in range(count, count + s_count[i]):
+                            # write to spikes.csv
                             spikes_writer.writerow([spikes[j],
                                                     i])
                         count += s_count[i]
 
-                # make a data package
+                # zip up the data package
                 package.save(filename)
-                self.formats[".zip"] = package
 
-                # remove folder
-                # shutil.rmtree(data_dir)
+                # remove csv files
+                os.remove(spike_trains_path)
+                os.remove(spikes_path)
 
             elif ext == ".h5":
                 # convert from Frictionless to HDF5
