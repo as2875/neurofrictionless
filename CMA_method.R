@@ -1,3 +1,6 @@
+## An implementation from https://github.com/ellesec/burstanalysis
+## E. Coterill and S.J. Eglen
+
 library(sjemea)
 library(e1071)
 
