@@ -12,17 +12,19 @@ with open(SOURCE_FILENAME) as f:
     data = f.read()
 
 channels = data.split("\n\n\n")
-channels.pop(0) # remove heading
+channels.pop(0)  # remove heading
 
 csv_files = []
 for channel in channels:
-    lines = channel.strip().split("\n")
+    # exclude empty lines
+    lines = [ line for line in channel.strip().split("\n") if line ]
+    # exclude empty channels
     if len(lines) <= 2:
         continue
-    
+
     index = re.search(index_pattern, channel)
     index = index.group(0)
-    
+
     filename = basename + "_CHAN" + index + ".csv"
     csv_files.append(filename)
     lines.pop(0)
