@@ -6,16 +6,33 @@ import re
 
 SOURCE_FILENAME = "170927_D20_2540.txt"
 basename = os.path.splitext(SOURCE_FILENAME)[0]
-exclude_pattern = re.compile("^\D")  # line begins with a character that is not a digit
+index_pattern = re.compile("(?<=Spikes 1 )\d+")
 
 with open(SOURCE_FILENAME) as f:
-    lines = [line.replace(' ', '') for line in f.readlines() if line.strip()
-             and not re.match(exclude_pattern, line)]
-lines.insert(0, 'time\tvoltage\tunit\n')  # insert headers
+    data = f.read()
 
-with open(basename + ".csv", "w") as f:
-    f.writelines(lines)
+channels = data.split("\n\n\n")
+channels.pop(0) # remove heading
+
+csv_files = []
+for channel in channels:
+    lines = channel.strip().split("\n")
+    if len(lines) <= 2:
+        continue
+    
+    index = re.search(index_pattern, channel)
+    index = index.group(0)
+    
+    filename = basename + "_CHAN" + index + ".csv"
+    csv_files.append(filename)
+    lines.pop(0)
+    lines.pop(0)
+    lines.insert(0, "time\tvoltage\tunit")
+    with open(filename, "w") as f:
+        f.write("\n".join(lines))
 
 package = datapackage.Package()
 package.infer("*.csv")
 package.save(basename + ".zip")
+for file in csv_files:
+    os.remove(file)
