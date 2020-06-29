@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 DATA_DIR = r"C:\Users\sasha\Documents\fd_data"
 data_files = os.listdir(DATA_DIR)
 
+age_pts = []
 mean_isi_pts = []
 rate_pts = []
 N_pts = []
@@ -40,8 +41,9 @@ for file in data_files:
             continue
         isi = numpy.diff(train)
         mean_isi = numpy.mean(isi)
-        mean_isi_pts.append((age, mean_isi))
-        rate_pts.append((age, rate))
-        N_pts.append((age, N))
+        mean_isi_pts.append(mean_isi)
+        rate_pts.append(rate)
+        N_pts.append(N)
+        age_pts.append(age)
 
-plt.plot(mean_isi_pts, "k.", rate_pts, "b.")
+plt.plot(age_pts, mean_isi_pts, "k.", age_pts, rate_pts, "b.")
