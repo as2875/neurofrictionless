@@ -5,7 +5,7 @@ import numpy
 import os
 import matplotlib.pyplot as plt
 
-DATA_DIR = r"C:\Users\sasha\Documents\fd_data"
+DATA_DIR = ""
 data_files = os.listdir(DATA_DIR)
 
 age_pts = []

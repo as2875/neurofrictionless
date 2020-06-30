@@ -3,7 +3,7 @@
 import h5fd.converter
 import os
 
-DATA_DIR = r"C:\Users\sasha\Documents\burstanalysis\hiPSC_recordings"
+DATA_DIR = ""
 
 data_files = os.listdir(DATA_DIR)
 m = h5fd.converter.MEABurstConverter()

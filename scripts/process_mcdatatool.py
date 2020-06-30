@@ -4,7 +4,7 @@ import datapackage
 import os
 import re
 
-SOURCE_FILENAME = "170927_D20_2540.txt"
+SOURCE_FILENAME = "../data/170927_D20_2540.txt"
 basename = os.path.splitext(SOURCE_FILENAME)[0]
 index_pattern = re.compile("(?<=Spikes 1 )\d+")
 
