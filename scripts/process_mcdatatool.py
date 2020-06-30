@@ -1,40 +1,54 @@
 # -*- coding: utf-8 -*-
 
-import datapackage
+import neo
 import os
 import re
+import matplotlib
+import matplotlib.pyplot as plt
+import quantities as pq
 
+matplotlib.rcParams["figure.dpi"] = 300
+
+# Setup
 SOURCE_FILENAME = "../data/170927_D20_2540.txt"
 basename = os.path.splitext(SOURCE_FILENAME)[0]
-index_pattern = re.compile("(?<=Spikes 1 )\d+")
+index_pattern = re.compile(r"(?<=Spikes \d )\d\d")
+whitespace_pattern = re.compile(r"\s+")
 
+# Read file
 with open(SOURCE_FILENAME) as f:
     data = f.read()
 
+# Extract spike times from file
 channels = data.split("\n\n\n")
-channels.pop(0)  # remove heading
+channels = channels[1:]  # remove heading
 
-csv_files = []
+spikes = dict()
 for channel in channels:
-    # exclude empty lines
-    lines = [ line for line in channel.strip().split("\n") if line ]
+    waveforms = [spike.strip().split("\n")
+                 for spike in channel.strip().split("\n\n")]
     # exclude empty channels
-    if len(lines) <= 2:
+    if len(waveforms) <= 2:
         continue
 
     index = re.search(index_pattern, channel)
-    index = index.group(0)
+    index = int(index.group(0))
+    spikes[index] = list()
 
-    filename = basename + "_CHAN" + index + ".csv"
-    csv_files.append(filename)
-    lines.pop(0)
-    lines.pop(0)
-    lines.insert(0, "time\tvoltage\tunit")
-    with open(filename, "w") as f:
-        f.write("\n".join(lines))
+    for wave in waveforms:
+        spike_time = float(re.split(whitespace_pattern, wave[25])[0])
+        spikes[index].append(spike_time)
 
-package = datapackage.Package()
-package.infer("*.csv")
-package.save(basename + ".zip")
-for file in csv_files:
-    os.remove(file)
+    spikes[index] = neo.SpikeTrain(spikes[index]*pq.ms, spikes[index][-1])
+
+# Plot data
+figure, axes = plt.subplots(len(spikes), 1)
+figure.tight_layout()
+title_font = {"fontsize": 5}
+for axis, channel in zip(axes, spikes.keys()):
+    axis.set_axis_off()
+    axis.set_title("Channel " + str(channel),
+                   fontdict=title_font)
+    axis.eventplot(spikes[channel],
+                   linewidths=0.1,
+                   colors="k")
