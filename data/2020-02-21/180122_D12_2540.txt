@@ -1,0 +1,241 @@
+MC_DataTool ASCII conversion
+
+t           	Spikes 1 47 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 48 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 46 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 45 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 38 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 37 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 28 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 36 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 27 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 17 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 26 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 16 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 35 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 25 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 15 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 14 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 24 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 34 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 13 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 23 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 12 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 22 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 33 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 21 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 32 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 31 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 44 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 43 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 41 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 42 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 52 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 51 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 53 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 54 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 61 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 62 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 71 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 63 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 72 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 82 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 73 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 83 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 64 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 74 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 84 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 85 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 75 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 65 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 86 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 76 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 87 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 77 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 66 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 78 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 67 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 68 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 55 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 56 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 58 	Unit        
+[ms]        	[µV]        	            
+
+
+t           	Spikes 1 57 	Unit        
+[ms]        	[µV]        	            
+
