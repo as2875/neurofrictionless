@@ -11,7 +11,6 @@ import itertools
 import os
 import pkg_resources
 import re
-import numpy as np
 
 
 class BaseConverter:
@@ -136,6 +135,7 @@ class McHdf5Converter(BaseConverter):
 
     def read(self, filename):
         ext = os.path.splitext(filename)[1]
+        self.basename = os.path.splitext(os.path.split(filename)[1])[0]
         if ext != ".txt":
             raise TypeError("Unsupported format")
         with open(filename) as f:
@@ -145,6 +145,7 @@ class McHdf5Converter(BaseConverter):
         # setup
         index_pattern = re.compile(r"(?<=Spikes \d )\d\d")
         whitespace_pattern = re.compile(r"\s+")
+        age_pattern = re.compile(r"(?<=D)\d+")
 
         # extract spike times from file
         channels = self.formats[".txt"].split("\n\n\n")
@@ -182,7 +183,15 @@ class McHdf5Converter(BaseConverter):
             hdf.create_dataset("sCount", data=s_count)
             hdf.create_dataset("epos", data=epos)
             hdf.create_dataset("array", shape=(1,))
+
             hdf.create_group("meta")
+            date = str.encode(self.basename[:6])
+            age = str.encode(re.search(age_pattern, self.basename).group(0))
+            mea = str.encode(self.basename[-4:])
+            hdf["meta"].create_dataset("data", data=[date])
+            hdf["meta"].create_dataset("age", data=[age])
+            hdf["meta"].create_dataset("MEA", data=[mea])
+
             hdf.create_group("summary")
             hdf["summary"].create_dataset("N", data=[len(spikes)])
             hdf["summary"].create_dataset("duration", data=[t_stop])
