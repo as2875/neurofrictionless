@@ -11,6 +11,7 @@ import itertools
 import os
 import pkg_resources
 import re
+import numpy as np
 
 
 class BaseConverter:
@@ -180,8 +181,8 @@ class McHdf5Converter(BaseConverter):
             hdf.create_dataset("spikes", data=spikes)
             hdf.create_dataset("sCount", data=s_count)
             hdf.create_dataset("epos", data=epos)
-            hdf.create_dataset("array", shape=())
+            hdf.create_dataset("array", shape=(1,))
             hdf.create_group("meta")
             hdf.create_group("summary")
-            hdf["summary"].create_dataset("N", data=len(spikes))
-            hdf["summary"].create_dataset("duration", data=t_stop)
+            hdf["summary"].create_dataset("N", data=[len(spikes)])
+            hdf["summary"].create_dataset("duration", data=[t_stop])
