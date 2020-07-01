@@ -7,6 +7,7 @@ import quantities as qt
 import re
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 
 matplotlib.rcParams["figure.dpi"] = 300
 
@@ -50,33 +51,41 @@ for index in spikes.keys():
 
 # plot data
 # event plot
-figure_1, axes_1 = plt.subplots()
-labels = list(spikes.keys())
-events = [spikes[label] for label in labels]
-axes_1.eventplot(events, linelengths=0.75, color="black", lw=0.2)
-plt.yticks(list(range(len(labels))), labels=labels)
-plt.xlabel("time / ms")
-plt.ylabel("channel")
-plt.title(SOURCE_FILENAME)
-
-# plate summary
-figure_2, axes_2 = plt.subplots()
-# generate coordinates
-x, y = zip(*[(int(index[0]), int(index[1])) for index in spikes.keys()])
-axes_2.set_xlim([0, 9])
-axes_2.set_ylim([0, 9])
-axes_2.plot(x, y, "kx")
-for index in spikes.keys():  # add annotations
-    axes_2.annotate("ch" + index,
-                    xy=(int(index[0]), int(index[1])))
-plt.title(SOURCE_FILENAME)
-
-# firing rate
-hist = elephant.statistics.time_histogram(spikes.values(),
-                                          500*qt.ms,
-                                          output="rate")
-figure_3, axes_3 = plt.subplots()
-axes_3.bar(hist.times, hist.T[0], width=500, color="black")
-plt.xlabel("time / $ms$")
-plt.ylabel("rate / $ms^{-1}$")
-plt.title(SOURCE_FILENAME)
+with PdfPages(basename + "_plots.pdf") as pdf:
+    plt.figure()
+    labels = list(spikes.keys())
+    events = [spikes[label] for label in labels]
+    plt.eventplot(events, linelengths=0.75, color="black", lw=0.2)
+    plt.yticks(list(range(len(labels))), labels=labels)
+    plt.xlabel("time / ms")
+    plt.ylabel("channel")
+    plt.title(SOURCE_FILENAME)
+    pdf.savefig()
+    plt.close()
+    
+    # plate summary
+    plt.figure()
+    # generate coordinates
+    x, y = zip(*[(int(index[0]), int(index[1])) for index in spikes.keys()])
+    plt.xlim([0, 9])
+    plt.ylim([0, 9])
+    plt.plot(x, y, "kx")
+    for index in spikes.keys():  # add annotations
+        plt.annotate("ch" + index,
+                        xy=(int(index[0]), int(index[1])))
+    plt.title(SOURCE_FILENAME)
+    pdf.savefig()
+    plt.close()
+    
+    # firing rate
+    hist = elephant.statistics.time_histogram(spikes.values(),
+                                              500*qt.ms,
+                                              output="rate")
+    plt.figure()
+    plt.bar(hist.times, hist.T[0], width=500, color="black")
+    plt.xlabel("time / $ms$")
+    plt.ylabel("rate / $ms^{-1}$")
+    plt.title(SOURCE_FILENAME)
+    plt.tight_layout()
+    pdf.savefig()
+    plt.close()
