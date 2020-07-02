@@ -186,9 +186,9 @@ class McHdf5Converter(BaseConverter):
 
             hdf.create_group("meta")
             date = str.encode(self.basename[:6])
-            age = str.encode(re.search(age_pattern, self.basename).group(0))
+            age = int(re.search(age_pattern, self.basename).group(0))
             mea = str.encode(self.basename[-4:])
-            hdf["meta"].create_dataset("data", data=[date])
+            hdf["meta"].create_dataset("date", data=[date])
             hdf["meta"].create_dataset("age", data=[age])
             hdf["meta"].create_dataset("MEA", data=[mea])
 
