@@ -45,19 +45,24 @@ dev.off()
 
 
 
-posfile = system.file("extdata/textreader/mcs-8x8-100um.pos", package="meaRtools")
-s = read_spikelist_text("/tmp/empty.csv", posfile, array="mcs-8x8-100um")
+## posfile = system.file("extdata/textreader/mcs-8x8-100um.pos", package="meaRtools")
+## s = read_spikelist_text("/tmp/empty.csv", posfile, array="mcs-8x8-100um")
 
 
 
 
-  f = "/tmp/empty.csv"
-  f = "/tmp/empty.csv"
-  f = "/tmp/data.csv"
+##   f = "/tmp/empty.csv"
+##   f = "/tmp/empty.csv"
+##   f = "/tmp/data.csv"
   
-  data <- tryCatch({
-    read.table(f, header = F, sep=",")
-  }, error = function(err) {
-    ## error handler picks up where error was generated
-    print(paste("Read.table didn't work!:  ",err))
-  })
+##   data <- tryCatch({
+##     read.table(f, header = F, sep=",")
+##   }, error = function(err) {
+##     ## error handler picks up where error was generated
+##     print(paste("Read.table didn't work!:  ",err))
+##   })
+
+
+
+## show burst analysis 
+s = read_spikelist_text("data/2020−02−21/171013_D36_2540.txt")
