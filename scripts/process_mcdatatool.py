@@ -50,6 +50,13 @@ with PdfPages(PLOTS_FILE) as pdf:
                 spikes[index].append(spike_time)
 
         if not spikes:
+            plt.figure()
+            plt.axis([0, 2, 0, 2])
+            plt.axis("off")
+            plt.title(file)
+            plt.text(1, 1, "no spikes", ha="center")
+            pdf.savefig()
+            plt.close()
             continue
 
         # convert to neo SpikeTrain, makes for easier processing later on
