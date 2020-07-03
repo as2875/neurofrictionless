@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import elephant
+import itertools
 import neo
 import os
 import quantities as qt
@@ -60,12 +61,18 @@ with PdfPages(PLOTS_FILE) as pdf:
         # event plot
         plt.figure()
         labels = list(spikes.keys())
-        events = [spikes[label] for label in labels]
+
+        events, nspikes = [], 0
+        for label in labels:
+            events.append(spikes[label])
+            nspikes += len(spikes[label])
+
         plt.eventplot(events, linelengths=0.75, color="black", lw=0.2)
         plt.yticks(list(range(len(labels))), labels=labels)
-        plt.xlabel("time / ms")
+        plt.xlabel("time / ms\n" + "#spikes = " + str(nspikes))
         plt.ylabel("channel")
         plt.title(file)
+        plt.tight_layout()
         pdf.savefig()
         plt.close()
 
@@ -80,6 +87,7 @@ with PdfPages(PLOTS_FILE) as pdf:
             plt.annotate("ch" + index,
                          xy=(int(index[0]), int(index[1])))
         plt.title(file)
+        plt.tight_layout()
         pdf.savefig()
         plt.close()
 
