@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import elephant
-import itertools
 import neo
 import os
 import quantities as qt
@@ -35,8 +34,11 @@ with PdfPages(PLOTS_FILE) as pdf:
         for channel in channels:
             waveforms = [spike.strip().split("\n")
                          for spike in channel.strip().split("\n\n")]
+            # chew off headers
+            waveforms[0] = waveforms[0][2:]
+
             # exclude empty channels
-            if len(waveforms[0]) <= 2:
+            if len(waveforms[0]) == 0:
                 continue
 
             index = re.search(index_pattern, channel)
