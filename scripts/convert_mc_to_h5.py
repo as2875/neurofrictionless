@@ -13,7 +13,4 @@ for file in data_files:
     path = os.path.join(SOURCE_DIR, file)
     m.read(path)
     base = os.path.splitext(file)[0]
-    try:
-        m.write(os.path.join(TARGET_DIR, base + ".h5"))
-    except AssertionError:
-        continue
+    m.write(os.path.join(TARGET_DIR, base + ".h5"))
