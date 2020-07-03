@@ -65,4 +65,22 @@ dev.off()
 
 
 ## show burst analysis 
-s = read_spikelist_text("data/2020−02−21/171013_D36_2540.txt")
+
+## example dataset...
+data(S)
+S$allb <- lapply(S$spikes, mi_find_bursts, S$parameters$mi_par )
+S$allb
+meaRtools:::.plot_spike_list(S, main=S$file, label_cells = TRUE,
+                             whichcells=1:5,
+                             beg=0, end=10,
+                             show_bursts=TRUE)
+
+
+s = read_spikelist_mcs100um("data/2020-02-21/171013_D36_2540.txt")
+s$allb <- lapply(s$spikes, mi_find_bursts, S$parameters$mi_par )
+
+s$allb
+
+meaRtools:::.plot_spike_list(s, main=s$file, label_cells = TRUE,
+                             beg=20, end=40,
+                             show_bursts=TRUE)
