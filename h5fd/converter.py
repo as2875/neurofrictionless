@@ -157,7 +157,7 @@ class McHdf5Converter(BaseConverter):
             waveforms = [spike.strip().split("\n")
                          for spike in channel.strip().split("\n\n")]
             # exclude empty channels
-            if len(waveforms) <= 2:
+            if len(waveforms[0]) <= 2:
                 continue
 
             index = re.search(index_pattern, channel)

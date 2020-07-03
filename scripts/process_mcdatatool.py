@@ -24,9 +24,10 @@ with PdfPages(PLOTS_FILE) as pdf:
         with open(file) as f:
             data = f.read()
 
+        data = data[30:]
+
         # extract spike times from file
         channels = data.split("\n\n\n")
-        channels = channels[1:]  # remove heading
 
         spikes = dict()
         t_stop = 0
@@ -34,7 +35,7 @@ with PdfPages(PLOTS_FILE) as pdf:
             waveforms = [spike.strip().split("\n")
                          for spike in channel.strip().split("\n\n")]
             # exclude empty channels
-            if len(waveforms) <= 2:
+            if len(waveforms[0]) <= 2:
                 continue
 
             index = re.search(index_pattern, channel)
