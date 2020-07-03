@@ -140,8 +140,11 @@ class McHdf5Converter(BaseConverter):
             raise TypeError("Unsupported format")
         with open(filename) as f:
             self.formats[ext] = f.read()
+            self.formats[ext] = self.formats[ext][30:]  # chew off header
 
     def write(self, filename):
+        assert filename.endswith(".h5"), "Filename must end with '.h5'."
+
         # setup
         index_pattern = re.compile(r"(?<=Spikes \d )\d\d")
         whitespace_pattern = re.compile(r"\s+")
@@ -149,7 +152,6 @@ class McHdf5Converter(BaseConverter):
 
         # extract spike times from file
         channels = self.formats[".txt"].split("\n\n\n")
-        channels = channels[1:]  # remove heading
 
         spikes = dict()
         t_stop = 0
@@ -169,8 +171,6 @@ class McHdf5Converter(BaseConverter):
                 if spike_time > t_stop:
                     t_stop = spike_time
                 spikes[index].append(spike_time)
-
-        assert spikes, "Recording is empty."
 
         electrodes = list(spikes.keys())
         trains = [spikes[e] for e in electrodes]
