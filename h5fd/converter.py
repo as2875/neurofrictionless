@@ -27,15 +27,13 @@ class Hdf5FdConverter(BaseConverter):
         """Read a file in either format."""
         # extract extension
         ext = os.path.splitext(filename)[1]
-        if ext != ".h5" or ext != ".zip":
-            raise TypeError("Unsupported format")
+        if ext != ".h5" and ext != ".zip":
+            raise TypeError("Unsupported format:", ext)
 
         if ext == ".h5":
             self.formats[".h5"] = h5py.File(filename, "r")
         else:
-            # not implemented yet
-            # of doubtful utility
-            raise NotImplementedError()
+            self.formats[".zip"] = datapackage.Package(filename)
 
     def write(self, filename):
         """Write a file in either format."""
@@ -68,11 +66,12 @@ class Hdf5FdConverter(BaseConverter):
                 descriptor=datapackage_path)
 
             # add metadata to data package descriptor
+            package.descriptor["meta"] = dict()
             for k, v in self.formats[".h5"]["meta"].items():
                 value = v[0].item()
                 if isinstance(value, bytes):
                     value = value.decode()
-                package.descriptor[k] = value
+                package.descriptor["meta"][k] = value
 
             package.commit()
 
@@ -122,7 +121,26 @@ class Hdf5FdConverter(BaseConverter):
             self.formats[".h5"].close()
         elif ext == ".h5":
             # convert from Frictionless to HDF5
-            raise NotImplementedError()
+            assert ".zip" in self.formats.keys(), "No Frictionless to convert from"
+            package = self.formats[".zip"]  # for convenience
+            spikes = [float(row["time"]) for row in
+                      package.get_resource("spikes").read(keyed=True)]
+            name, epos, s_count = [], [], []
+            for train in package.get_resource("spike-trains").read(keyed=True):
+                if train["name"]:
+                    name.append(str.encode(train["name"]))
+                epos.append((float(train["epos-x"]), float(train["epos-y"])))
+                s_count.append(int(train["sCount"]))
+            with h5py.File(filename, "w") as hdf:
+                hdf.create_dataset("spikes", data=spikes)
+                hdf.create_dataset("sCount", data=s_count)
+                hdf.create_dataset("epos", data=epos)
+                hdf.create_group("meta")
+                for k, v in package.descriptor["meta"].items():
+                    value = v
+                    if isinstance(value, str):
+                        value = str.encode(value)
+                    hdf["meta"].create_dataset(k, data=[value])
         else:
             raise TypeError("Unsupported format")
 
