@@ -37,9 +37,10 @@ for file in data_files:
     # compute mean firing rate
     if spikes.any():
         firing_rate = elephant.statistics.mean_firing_rate(spikes)
+        firing_rate *= 1000
     else:
         firing_rate = None
-    fr_l.append(firing_rate*1000)
+    fr_l.append(firing_rate)
 
     # number of spikes
     N_l.append(len(spikes))
