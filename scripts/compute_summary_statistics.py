@@ -20,7 +20,8 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 age_l, fr_l, N_l, active_channels_l, ts_l, fr_perchan_l = \
     [], [], [], [], [], []
-fr_errors = [[],[]]
+fr_errors = [[], []]
+colours = []
 for file in data_files:
     # load package
     package = datapackage.Package(file)
@@ -83,26 +84,33 @@ for file in data_files:
     # computed recording time
     ts_l.append(t_stop/1000)
 
+    # which colour to use?
+    if package.descriptor["meta"]["MEA"] == "2539":
+        colours.append("r")
+    else:
+        colours.append("b")
+
 # plot data
 figure, axes = plt.subplots(2, 3)
 
-axes[0, 0].plot(age_l, fr_l, "k.")
+axes[0, 0].scatter(age_l, fr_l, c=colours)
 axes[0, 0].set_xlabel("age / DIV")
 axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
 
-axes[0, 1].plot(age_l, N_l, "k.")
+axes[0, 1].scatter(age_l, N_l, c=colours)
 axes[0, 1].set_xlabel("age / DIV")
 axes[0, 1].set_ylabel("number of spikes")
 
-axes[0, 2].plot(age_l, active_channels_l, "k.")
+axes[0, 2].scatter(age_l, active_channels_l, c=colours)
 axes[0, 2].set_xlabel("age / DIV")
 axes[0, 2].set_ylabel("active channels")
 
-axes[1, 0].plot(age_l, ts_l, "k.")
+axes[1, 0].scatter(age_l, ts_l, c=colours)
 axes[1, 0].set_xlabel("age / DIV")
 axes[1, 0].set_ylabel("recording time / $s$")
 
-axes[1, 1].errorbar(age_l, fr_perchan_l, fmt="k.", yerr=fr_errors)
+axes[1, 1].scatter(age_l, fr_perchan_l, c=colours)
+axes[1, 1].errorbar(age_l, fr_perchan_l, fmt="none", yerr=fr_errors)
 axes[1, 1].set_xlabel("age / DIV")
 axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
 
