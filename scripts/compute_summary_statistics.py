@@ -13,6 +13,7 @@ matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["font.size"] = 8.0
 
 DATA_DIR = "../data/2020-02-21_fd/"
+FIGURE_FILE = "../plots/development_plots.pdf"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 age_l, fr_l, N_l, active_channels_l, ts_l = [], [], [], [], []
@@ -70,4 +71,7 @@ axes[1, 0].set_ylabel("active channels")
 axes[1, 1].plot(age_l, ts_l, "k.")
 axes[1, 1].set_xlabel("age / DIV")
 axes[1, 1].set_ylabel("recording time / $s$")
+
+# save figure
 figure.tight_layout()
+figure.savefig(FIGURE_FILE)
