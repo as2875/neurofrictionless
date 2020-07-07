@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """A module containing functions for plotting spike trains."""
 
+import neo
+
 
 def rasterplot(channels, axes, title, unit):
     """
@@ -52,3 +54,37 @@ def rasterplot(channels, axes, title, unit):
 
     y_offsets_map = dict(zip(labels, y_offsets))
     return y_offsets_map
+
+
+def extract_spike_trains(package, unit):
+    """
+    Extract spike trains from a Frictionless data package.
+
+    Parameters
+    ----------
+    package : datapackage.Package
+        Data package from which to extract spikes.
+    unit : quantities.unitquantity.UnitTime
+        Unit of time in file.
+
+    Returns
+    -------
+    Dictionary of channels and stopping time.
+
+    """
+    spikes, channels, t_stop = [], {}, 0
+    for row in package.get_resource("spikes").read(keyed=True):
+        spike_time = float(row["time"])
+        spikes.append(spike_time)
+        index = row["spike-train-index"]
+        if index not in channels.keys():
+            channels[index] = []
+        channels[index].append(spike_time)
+        if spike_time > t_stop:
+            t_stop = spike_time
+
+    spikes = neo.SpikeTrain(spikes * unit, t_stop)
+    for k in channels.keys():
+        channels[k] = neo.SpikeTrain(channels[k] * unit, t_stop)
+
+    return spikes, channels, t_stop

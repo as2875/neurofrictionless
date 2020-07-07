@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import datapackage
-import neo
 import os
 import statistics
 import elephant.statistics
+import h5fd.plot
 import matplotlib
 import matplotlib.pyplot as plt
 import quantities as qt
@@ -27,21 +27,7 @@ for file in data_files:
     package = datapackage.Package(file)
 
     # spike times
-    spikes, channels, t_stop = [], {}, 0
-    for row in package.get_resource("spikes").read(keyed=True):
-        spike_time = float(row["time"])
-        spikes.append(spike_time)
-        index = row["spike-train-index"]
-        if index not in channels.keys():
-            channels[index] = []
-        channels[index].append(spike_time)
-        if spike_time > t_stop:
-            t_stop = spike_time
-
-    # convert to neo SpikeTrain
-    spikes = neo.SpikeTrain(spikes * qt.ms, t_stop)
-    for k in channels.keys():
-        channels[k] = neo.SpikeTrain(channels[k] * qt.ms, t_stop)
+    spikes, channels, t_stop = h5fd.plot.extract_spike_trains(package, qt.ms)
 
     age = package.descriptor["meta"]["age"]
     age_l.append(age)
@@ -118,4 +104,4 @@ axes[1, 2].set_axis_off()
 
 # save figure
 figure.tight_layout()
-figure.savefig(FIGURE_FILE)
+#figure.savefig(FIGURE_FILE)
