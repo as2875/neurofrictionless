@@ -46,6 +46,7 @@ def rasterplot(channels, axes, title):
     axes.set_yticklabels(labels)
     axes.set_xlabel("time / ms\n" + "#spikes = " + str(nspikes))
     axes.set_ylabel("channel")
+    axes.set_title(title)
 
     y_offsets_map = dict(zip(labels, y_offsets))
     return y_offsets_map
