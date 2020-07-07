@@ -14,7 +14,7 @@ meaRtools = importr("meaRtools")
 
 # plot parameters
 matplotlib.rcParams["figure.dpi"] = 300
-matplotlib.rcParams["font.size"] = 8.0
+matplotlib.rcParams["font.size"] = 6.0
 FIGURE_PATH = "../plots/burst_plots.pdf"
 
 # location of data
