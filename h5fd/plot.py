@@ -2,7 +2,7 @@
 """A module containing functions for plotting spike trains."""
 
 
-def rasterplot(channels, axes, title):
+def rasterplot(channels, axes, title, unit):
     """
     Produce a raster plot of a spike train on a set of axes.
 
@@ -15,6 +15,8 @@ def rasterplot(channels, axes, title):
         Set of axes to plot on.
     title : str
         Figure title.
+    unit : str
+        Units of time to include on x-axis.
 
     Returns
     -------
@@ -44,7 +46,7 @@ def rasterplot(channels, axes, title):
                    lw=0.2)
     axes.set_yticks(y_offsets)
     axes.set_yticklabels(labels)
-    axes.set_xlabel("time / ms\n" + "#spikes = " + str(nspikes))
+    axes.set_xlabel("time / " + unit + "\n" + "#spikes = " + str(nspikes))
     axes.set_ylabel("channel")
     axes.set_title(title)
 

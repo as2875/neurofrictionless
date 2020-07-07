@@ -12,15 +12,21 @@ from rpy2.robjects.vectors import ListVector, FloatVector
 # import meaRtools
 meaRtools = importr("meaRtools")
 
+# plot parameters
 matplotlib.rcParams["figure.dpi"] = 300
+matplotlib.rcParams["font.size"] = 8.0
 FIGURE_PATH = "../plots/burst_plots.pdf"
+
+# location of data
 DATA_DIR = "../data/2020-02-21_fd/"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
-mi_par = ListVector({"beg_isi": 0.1,
-                     "end_isi": 0.25,
-                     "min_ibi": 0.3,
+
+# parameters for burst detection
+mi_par = ListVector({"beg_isi": 0.17,
+                     "end_isi": 0.3,
+                     "min_ibi": 0.2,
                      "min_durn": 0.05,
-                     "min_spikes": 5})
+                     "min_spikes": 3})
 
 with PdfPages(FIGURE_PATH) as pdf:
     for file in data_files:
@@ -38,7 +44,7 @@ with PdfPages(FIGURE_PATH) as pdf:
 
         # raster plot
         figure, axes = plt.subplots()
-        y_offsets_map = h5fd.plot.rasterplot(channels, axes, file)
+        y_offsets_map = h5fd.plot.rasterplot(channels, axes, file, "s")
 
         if y_offsets_map is None:
             pdf.savefig()
