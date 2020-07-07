@@ -2,6 +2,7 @@
 
 import datapackage
 import os
+import h5fd.plot
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
@@ -34,38 +35,16 @@ with PdfPages(FIGURE_PATH) as pdf:
             channels[index].append(spike_time)
             if spike_time > t_stop:
                 t_stop = spike_time
-    
+
         # raster plot
         figure, axes = plt.subplots()
-        if not channels:
-            plt.figure()
-            plt.axis([0, 2, 0, 2])
-            plt.axis("off")
-            plt.title(file)
-            plt.text(1, 1, "no spikes", ha="center")
+        y_offsets_map = h5fd.plot.rasterplot(channels, axes, file)
+
+        if y_offsets_map is None:
             pdf.savefig()
             plt.close()
             continue
-        labels = list(channels.keys())
-    
-        events, nspikes = [], 0
-        for label in labels:
-            events.append(channels[label])
-            nspikes += len(channels[label])
-        
-        y_offsets = list(range(len(labels)))
-        axes.eventplot(events,
-                       linelengths=0.75,
-                       lineoffsets=y_offsets,
-                       color="black",
-                       lw=0.2)
-        axes.set_yticks(y_offsets)
-        axes.set_yticklabels(labels)
-        axes.set_xlabel("time / ms\n" + "#spikes = " + str(nspikes))
-        axes.set_ylabel("channel")
-    
-        y_offsets_map = dict(zip(labels, y_offsets))
-    
+
         for channel, spikes in channels.items():
             # buRst deteRction
             spikes_vec = FloatVector(spikes)
