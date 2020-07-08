@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 # plotting parameters
 matplotlib.rcParams["figure.dpi"] = 300
-matplotlib.rcParams["figure.figsize"] = [20, 20]
+matplotlib.rcParams["figure.figsize"] = [10, 10]
 matplotlib.rcParams["font.size"] = 8.0
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 
@@ -42,6 +42,8 @@ with PdfPages(FIGURE_PATH) as pdf:
                              bins="auto")
             axes[count].set_title(channel)
             count += 1
+        for i in range(count, len(axes)):
+            axes[i].set_axis_off()
         figure.suptitle(file)
         pdf.savefig()
         plt.close()
