@@ -3,6 +3,7 @@
 import datapackage
 import elephant.statistics
 import h5fd.plot
+import itertools
 import math
 import matplotlib
 import matplotlib.pyplot as plt
@@ -27,20 +28,20 @@ with PdfPages(FIGURE_PATH) as pdf:
         package = datapackage.Package(file)
         _, channels, t_stop = h5fd.plot.extract_spike_trains(package, qt.ms)
 
-        figure, axes = plt.subplots(8, 8)
-        for i in range(len(axes)):
-            for j in range(len(axes[i])):
-                label = str(i + 1) + str(j + 1)
-                if label in channels.keys():
-                    spikes = channels[label]
-                    isi = elephant.statistics.isi(spikes)
-                    isi = isi.rescale(qt.s)
-                    isi = [math.log(float(interval)) for interval in isi]
-                    axes[i, j].hist(isi,
-                                    bins="auto")
-                    axes[i, j].set_title(label)
-                else:
-                    axes[i, j].set_axis_off()
+        dim = math.ceil(math.sqrt(len(channels)))
+
+        figure, axes = plt.subplots(dim, dim, squeeze=False)
+        axes = list(itertools.chain(*axes))
+
+        count = 0
+        for channel, spikes in channels.items():
+            isi = elephant.statistics.isi(spikes)
+            isi = isi.rescale(qt.s)
+            isi = [math.log(float(interval)) for interval in isi]
+            axes[count].hist(isi,
+                             bins="auto")
+            axes[count].set_title(channel)
+            count += 1
         figure.suptitle(file)
         pdf.savefig()
         plt.close()
