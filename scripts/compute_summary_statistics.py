@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datapackage
+import datetime
 import os
 import statistics
 import elephant.statistics
@@ -8,11 +9,17 @@ import h5fd.plot
 import matplotlib
 import matplotlib.pyplot as plt
 import quantities as qt
+from matplotlib.backends.backend_pdf import PdfPages
 
 # adjust matplotlib parameters
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [10, 5]
+matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["font.size"] = 8.0
+
+recording_attempts = [(datetime.date(2017, 9, 15), datetime.date(2017, 10, 13)),
+                      (datetime.date(2018, 1, 22), datetime.date(2018, 2, 19)),
+                      (datetime.date(2018, 3, 28), datetime.date(2018, 5, 4))]
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_FILE = "../plots/development_plots.pdf"
@@ -21,7 +28,7 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 age_l, fr_l, N_l, active_channels_l, ts_l, fr_perchan_l = \
     [], [], [], [], [], []
 fr_errors = [[], []]
-colours = []
+colours = {"by-replicate": [], "by-recording": []}
 for file in data_files:
     # load package
     package = datapackage.Package(file)
@@ -72,36 +79,83 @@ for file in data_files:
 
     # which colour to use?
     if package.descriptor["meta"]["MEA"] == "2539":
-        colours.append("r")
+        colours["by-replicate"].append("r")
+    elif package.descriptor["meta"]["MEA"] == "2540":
+        colours["by-replicate"].append("b")
     else:
-        colours.append("b")
+        raise BaseException("Something is wrong.")
+
+    datestamp = package.descriptor["meta"]["date"]
+    recording_date = datetime.date(int("20" + datestamp[:2]),
+                                   int(datestamp[2:4]),
+                                   int(datestamp[4:]))
+    if recording_attempts[0][0] <= recording_date <= recording_attempts[0][1]:
+        colours["by-recording"].append("r")
+    elif recording_attempts[1][0] <= recording_date <= recording_attempts[1][1]:
+        colours["by-recording"].append("b")
+    elif recording_attempts[2][0] <= recording_date <= recording_attempts[2][1]:
+        colours["by-recording"].append("k")
+    else:
+        raise BaseException("Something is wrong.")
 
 # plot data
-figure, axes = plt.subplots(2, 3)
+with PdfPages(FIGURE_FILE) as pdf:
+    # by replicate
+    figure, axes = plt.subplots(2, 3)
+    figure.suptitle("Plots by replicate")
 
-axes[0, 0].scatter(age_l, fr_l, c=colours)
-axes[0, 0].set_xlabel("age / DIV")
-axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
+    axes[0, 0].scatter(age_l, fr_l, c=colours["by-replicate"])
+    axes[0, 0].set_xlabel("age / DIV")
+    axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
 
-axes[0, 1].scatter(age_l, N_l, c=colours)
-axes[0, 1].set_xlabel("age / DIV")
-axes[0, 1].set_ylabel("number of spikes")
+    axes[0, 1].scatter(age_l, N_l, c=colours["by-replicate"])
+    axes[0, 1].set_xlabel("age / DIV")
+    axes[0, 1].set_ylabel("number of spikes")
 
-axes[0, 2].scatter(age_l, active_channels_l, c=colours)
-axes[0, 2].set_xlabel("age / DIV")
-axes[0, 2].set_ylabel("active channels")
+    axes[0, 2].scatter(age_l, active_channels_l, c=colours["by-replicate"])
+    axes[0, 2].set_xlabel("age / DIV")
+    axes[0, 2].set_ylabel("active channels")
 
-axes[1, 0].scatter(age_l, ts_l, c=colours)
-axes[1, 0].set_xlabel("age / DIV")
-axes[1, 0].set_ylabel("recording time / $s$")
+    axes[1, 0].scatter(age_l, ts_l, c=colours["by-replicate"])
+    axes[1, 0].set_xlabel("age / DIV")
+    axes[1, 0].set_ylabel("recording time / $s$")
 
-axes[1, 1].scatter(age_l, fr_perchan_l, c=colours)
-axes[1, 1].errorbar(age_l, fr_perchan_l, fmt="none", yerr=fr_errors)
-axes[1, 1].set_xlabel("age / DIV")
-axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
+    axes[1, 1].scatter(age_l, fr_perchan_l, c=colours["by-replicate"])
+    axes[1, 1].errorbar(age_l, fr_perchan_l, fmt="none", yerr=fr_errors)
+    axes[1, 1].set_xlabel("age / DIV")
+    axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
 
-axes[1, 2].set_axis_off()
+    axes[1, 2].set_axis_off()
 
-# save figure
-figure.tight_layout()
-#figure.savefig(FIGURE_FILE)
+    # save figure
+    pdf.savefig(figure)
+
+    # by recording
+    figure, axes = plt.subplots(2, 3)
+    figure.suptitle("Plots by recording attempt")
+
+    axes[0, 0].scatter(age_l, fr_l, c=colours["by-recording"])
+    axes[0, 0].set_xlabel("age / DIV")
+    axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
+
+    axes[0, 1].scatter(age_l, N_l, c=colours["by-recording"])
+    axes[0, 1].set_xlabel("age / DIV")
+    axes[0, 1].set_ylabel("number of spikes")
+
+    axes[0, 2].scatter(age_l, active_channels_l, c=colours["by-recording"])
+    axes[0, 2].set_xlabel("age / DIV")
+    axes[0, 2].set_ylabel("active channels")
+
+    axes[1, 0].scatter(age_l, ts_l, c=colours["by-recording"])
+    axes[1, 0].set_xlabel("age / DIV")
+    axes[1, 0].set_ylabel("recording time / $s$")
+
+    axes[1, 1].scatter(age_l, fr_perchan_l, c=colours["by-recording"])
+    axes[1, 1].errorbar(age_l, fr_perchan_l, fmt="none", yerr=fr_errors)
+    axes[1, 1].set_xlabel("age / DIV")
+    axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
+
+    axes[1, 2].set_axis_off()
+
+    # save figure
+    pdf.savefig(figure)
