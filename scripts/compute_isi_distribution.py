@@ -44,4 +44,3 @@ with PdfPages(FIGURE_PATH) as pdf:
         figure.suptitle(file)
         pdf.savefig()
         plt.close()
-        break
