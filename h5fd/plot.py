@@ -73,10 +73,11 @@ def extract_spike_trains(package, unit):
 
     """
     spikes, channels, t_stop = [], {}, 0
-    for row in package.get_resource("spikes").read(keyed=True):
+    for row in package.get_resource("spikes").read(keyed=True, relations=True):
         spike_time = float(row["time"])
         spikes.append(spike_time)
-        index = row["spike-train-index"]
+        index = row["spike-train-index"]["epos-x"] + \
+                row["spike-train-index"]["epos-y"]
         if index not in channels.keys():
             channels[index] = []
         channels[index].append(spike_time)
