@@ -34,7 +34,9 @@ for file in data_files:
     package = datapackage.Package(file)
 
     # spike times
-    spikes, channels, t_stop = h5fd.plot.extract_spike_trains(package, qt.ms)
+    spikes, channels, t_stop = h5fd.plot.extract_spike_trains(package,
+                                                              qt.ms,
+                                                              qt.s)
 
     age = package.descriptor["meta"]["age"]
     age_l.append(age)
@@ -42,7 +44,6 @@ for file in data_files:
     # compute mean firing rate
     if spikes.any():
         firing_rate = elephant.statistics.mean_firing_rate(spikes)
-        firing_rate = firing_rate.rescale(1/qt.s)
     else:
         firing_rate = None
     fr_l.append(firing_rate)
@@ -50,7 +51,7 @@ for file in data_files:
     # firing rate per channel
     if channels:
         channel_fr = [float(
-            elephant.statistics.mean_firing_rate(train).rescale(1/qt.s))
+            elephant.statistics.mean_firing_rate(train))
                       for train in channels.values()]
         mean_fr = statistics.mean(channel_fr)
         fr_perchan_l.append(mean_fr)
@@ -75,7 +76,7 @@ for file in data_files:
     active_channels_l.append(len(spike_trains))
 
     # computed recording time
-    ts_l.append(t_stop/1000)
+    ts_l.append(t_stop)
 
     # which colour to use?
     if package.descriptor["meta"]["MEA"] == "2539":

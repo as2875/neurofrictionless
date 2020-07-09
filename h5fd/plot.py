@@ -87,6 +87,11 @@ def extract_spike_trains(package, input_unit, output_unit=None):
             t_stop = spike_time
 
     spikes = neo.SpikeTrain(spikes * input_unit, t_stop)
+    t_stop = t_stop * input_unit
+    if output_unit:
+        spikes = spikes.rescale(output_unit)
+        t_stop = t_stop.rescale(output_unit)
+
     for k in channels.keys():
         channels[k] = neo.SpikeTrain(channels[k] * input_unit, t_stop)
         if output_unit:
