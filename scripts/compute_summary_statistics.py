@@ -6,6 +6,7 @@ import os
 import statistics
 import elephant.statistics
 import h5fd.plot
+from h5fd.plot import RECORDING_ATTEMPTS
 import matplotlib
 import matplotlib.pyplot as plt
 import quantities as qt
@@ -16,10 +17,6 @@ matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [10, 5]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["font.size"] = 8.0
-
-recording_attempts = [(datetime.date(2017, 9, 15), datetime.date(2017, 10, 13)),
-                      (datetime.date(2018, 1, 22), datetime.date(2018, 2, 19)),
-                      (datetime.date(2018, 3, 28), datetime.date(2018, 5, 4))]
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_FILE = "../plots/development_plots.pdf"
@@ -90,11 +87,11 @@ for file in data_files:
     recording_date = datetime.date(int("20" + datestamp[:2]),
                                    int(datestamp[2:4]),
                                    int(datestamp[4:]))
-    if recording_attempts[0][0] <= recording_date <= recording_attempts[0][1]:
+    if RECORDING_ATTEMPTS[0][0] <= recording_date <= RECORDING_ATTEMPTS[0][1]:
         colours["by-recording"].append("r")
-    elif recording_attempts[1][0] <= recording_date <= recording_attempts[1][1]:
+    elif RECORDING_ATTEMPTS[1][0] <= recording_date <= RECORDING_ATTEMPTS[1][1]:
         colours["by-recording"].append("b")
-    elif recording_attempts[2][0] <= recording_date <= recording_attempts[2][1]:
+    elif RECORDING_ATTEMPTS[2][0] <= recording_date <= RECORDING_ATTEMPTS[2][1]:
         colours["by-recording"].append("k")
     else:
         raise BaseException("Something is wrong.")

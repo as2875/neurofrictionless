@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 """A module containing functions for plotting spike trains."""
 
+import datetime
 import neo
+
+RECORDING_ATTEMPTS = [(datetime.date(2017, 9, 15), datetime.date(2017, 10, 13)),
+                      (datetime.date(2018, 1, 22), datetime.date(2018, 2, 19)),
+                      (datetime.date(2018, 3, 28), datetime.date(2018, 5, 4))]
 
 
 def rasterplot(channels, axes, title, unit):
