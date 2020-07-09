@@ -26,7 +26,9 @@ with PdfPages(FIGURE_PATH) as pdf:
     for file in tqdm(data_files):
         # load package
         package = datapackage.Package(file)
-        _, channels, t_stop = h5fd.plot.extract_spike_trains(package, qt.ms)
+        _, channels, t_stop = h5fd.plot.extract_spike_trains(package,
+                                                             qt.ms,
+                                                             qt.s)
 
         dim = math.ceil(math.sqrt(len(channels)))
 
@@ -36,7 +38,6 @@ with PdfPages(FIGURE_PATH) as pdf:
         count = 0
         for channel, spikes in channels.items():
             isi = elephant.statistics.isi(spikes)
-            isi = isi.rescale(qt.s)
             isi = [math.log(float(interval)) for interval in isi]
             axes[count].hist(isi,
                              bins="auto")

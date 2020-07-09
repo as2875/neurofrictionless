@@ -56,7 +56,7 @@ def rasterplot(channels, axes, title, unit):
     return y_offsets_map
 
 
-def extract_spike_trains(package, unit):
+def extract_spike_trains(package, input_unit, output_unit=None):
     """
     Extract spike trains from a Frictionless data package.
 
@@ -64,12 +64,14 @@ def extract_spike_trains(package, unit):
     ----------
     package : datapackage.Package
         Data package from which to extract spikes.
-    unit : quantities.unitquantity.UnitTime
+    input_unit : quantities.unitquantity.UnitTime
         Unit of time in file.
+    output_unit : quantities.unitquantity.UnitTime
+        Unit of time to rescale time of spike train to. t_stop not rescaled.
 
     Returns
     -------
-    Dictionary of channels and stopping time.
+    List of channels, dictionary of channels, stopping time.
 
     """
     spikes, channels, t_stop = [], {}, 0
@@ -84,8 +86,10 @@ def extract_spike_trains(package, unit):
         if spike_time > t_stop:
             t_stop = spike_time
 
-    spikes = neo.SpikeTrain(spikes * unit, t_stop)
+    spikes = neo.SpikeTrain(spikes * input_unit, t_stop)
     for k in channels.keys():
-        channels[k] = neo.SpikeTrain(channels[k] * unit, t_stop)
+        channels[k] = neo.SpikeTrain(channels[k] * input_unit, t_stop)
+        if output_unit:
+            channels[k] = channels[k].rescale(output_unit)
 
     return spikes, channels, t_stop
