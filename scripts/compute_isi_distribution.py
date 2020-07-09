@@ -40,6 +40,7 @@ with PdfPages(FIGURE_PATH) as pdf:
             isi = [math.log(float(interval)) for interval in isi]
             axes[count].hist(isi,
                              bins="auto")
+            axes[count].set_xlim((-6, 6))
             axes[count].set_title(channel)
             count += 1
         for i in range(count, len(axes)):
