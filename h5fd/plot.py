@@ -2,7 +2,9 @@
 """A module containing functions for plotting spike trains."""
 
 import datetime
+import elephant.statistics
 import neo
+import quantities as qt
 
 RECORDING_ATTEMPTS = [(datetime.date(2017, 9, 15), datetime.date(2017, 10, 13)),
                       (datetime.date(2018, 1, 22), datetime.date(2018, 2, 19)),
@@ -61,7 +63,10 @@ def rasterplot(channels, axes, title, unit):
     return y_offsets_map
 
 
-def extract_spike_trains(package, input_unit, output_unit=None):
+def extract_spike_trains(package,
+                         input_unit,
+                         output_unit=None,
+                         threshold=None):
     """
     Extract spike trains from a Frictionless data package.
 
@@ -73,6 +78,8 @@ def extract_spike_trains(package, input_unit, output_unit=None):
         Unit of time in file.
     output_unit : quantities.unitquantity.UnitTime
         Unit of time to rescale time of spike train to. t_stop not rescaled.
+    threshold : quantities.Quantity
+        Channels with a firing rate lower than the threshold are excluded.
 
     Returns
     -------
@@ -97,9 +104,14 @@ def extract_spike_trains(package, input_unit, output_unit=None):
         spikes = spikes.rescale(output_unit)
         t_stop = t_stop.rescale(output_unit)
 
+    channels_filtered = {}
     for k in channels.keys():
         channels[k] = neo.SpikeTrain(channels[k] * input_unit, t_stop)
+        fr = elephant.statistics.mean_firing_rate(channels[k])
+        if threshold and fr < threshold:
+            continue
+        channels_filtered[k] = channels[k]
         if output_unit:
-            channels[k] = channels[k].rescale(output_unit)
+            channels_filtered[k] = channels_filtered[k].rescale(output_unit)
 
-    return spikes, channels, t_stop
+    return spikes, channels_filtered, t_stop

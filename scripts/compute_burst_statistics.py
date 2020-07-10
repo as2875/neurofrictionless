@@ -52,7 +52,8 @@ for file in data_files:
     package = datapackage.Package(file)
     _, channels, t_stop = h5fd.plot.extract_spike_trains(package,
                                                          qt.ms,
-                                                         qt.s)
+                                                         output_unit=qt.s,
+                                                         threshold=10*(1/qt.min))
 
     # add the age
     age_l.append(int(package.descriptor["meta"]["age"]))
