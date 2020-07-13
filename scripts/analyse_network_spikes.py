@@ -50,8 +50,8 @@ for file in data_files:
 # bin spikes
 with PdfPages(FIGURE_PATH) as pdf:
     for recording in recordings:
-        for replicate in recording.keys():
-            for age in recording[replicate].keys():
+        for replicate in sorted(recording.keys()):
+            for age in sorted(recording[replicate].keys()):
                 spike_trains = list(recording[replicate][age].values())
                 if not spike_trains:
                     continue
@@ -63,8 +63,7 @@ with PdfPages(FIGURE_PATH) as pdf:
                          "k",
                          lw=0.1)
                 plt.title(replicate + " D" + str(age))
+                plt.xlabel("time / s\n#channels=" + str(len(spike_trains)))
+                plt.tight_layout()
                 pdf.savefig()
                 plt.close()
-                break
-            break
-        break
