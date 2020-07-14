@@ -4,11 +4,46 @@
 import datetime
 import elephant.statistics
 import neo
-import quantities as qt
+import numpy
 
 RECORDING_ATTEMPTS = [(datetime.date(2017, 9, 15), datetime.date(2017, 10, 13)),
                       (datetime.date(2018, 1, 22), datetime.date(2018, 2, 19)),
                       (datetime.date(2018, 3, 28), datetime.date(2018, 5, 4))]
+
+
+class NetworkSpikes:
+    """Represents a series of network spikes."""
+
+    def __init__(self, array, rows, bin_centres, meta=None):
+        self.array = array  # each row is a spike train, each column is a bin
+        self.network_activity =\
+            numpy.array([sum(col) for col in array.T])  # sum each column
+        self.active_channels = self.array.shape[0]  # number of rows in array
+        self.rows = rows  # channel each row originates from
+        self.meta = meta  # metadata
+        self.bin_centres = bin_centres
+        self.binw = self.bin_centres[1] - self.bin_centres[0]
+
+    def detect_spikes(self, threshold):
+        self.spike_timestamps = []
+        self.spike_cutouts = []
+
+        if self.active_channels < 8:
+            return
+
+        iterator = iter(range(len(self.network_activity)))
+        for i in iterator:
+            if self.network_activity[i] > threshold * self.active_channels:
+                self.spike_timestamps.append(self.bin_centres[i])
+                # TODO: make this aware of bin width
+                cutout = self.network_activity[i - 30:i + 30]
+                self.spike_cutouts.append(cutout)
+                # skip forward 30 bins
+                try:
+                    for j in range(30):
+                        next(iterator)
+                except StopIteration:
+                    break
 
 
 def rasterplot(channels, axes, title, unit):
