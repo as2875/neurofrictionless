@@ -5,6 +5,7 @@ import datetime
 import elephant.statistics
 import neo
 import numpy
+import quantities as qt
 
 RECORDING_ATTEMPTS = [(datetime.date(2017, 9, 15), datetime.date(2017, 10, 13)),
                       (datetime.date(2018, 1, 22), datetime.date(2018, 2, 19)),
@@ -35,12 +36,13 @@ class NetworkSpikes:
         for i in iterator:
             if self.network_activity[i] > threshold * self.active_channels:
                 self.spike_timestamps.append(self.bin_centres[i])
-                # TODO: make this aware of bin width
-                cutout = self.network_activity[i - 30:i + 30]
+                num_bins = ((150 * qt.ms) / self.binw).rescale(qt.dimensionless)
+                num_bins = int(num_bins)
+                cutout = self.network_activity[i - num_bins:i + num_bins]
                 self.spike_cutouts.append(cutout)
                 # skip forward 30 bins
                 try:
-                    for j in range(30):
+                    for j in range(num_bins):
                         next(iterator)
                 except StopIteration:
                     break
