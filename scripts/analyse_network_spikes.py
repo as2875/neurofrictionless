@@ -17,7 +17,7 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 # parameters for analysis
 THRESH = 0.25  # network spike threshold
-BINW = 0.01  # bin width in seconds
+BINW = 0.02  # bin width in seconds
 
 recordings = ({"2539": {}, "2540": {}},
               {"2539": {}, "2540": {}},
