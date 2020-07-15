@@ -96,14 +96,14 @@ class Hdf5FdConverter(BaseConverter):
                     if "names" in self.formats[".h5"].keys():
                         row = [i,
                                names[i].decode(),
-                               epos[i][0],
-                               epos[i][1],
+                               epos[0][i],
+                               epos[1][i],
                                s_count[i]]
                     else:
                         row = [i,
                                "",
-                               epos[i][0],
-                               epos[i][1],
+                               epos[0][i],
+                               epos[1][i],
                                s_count[i]]
                     spike_trains_writer.writerow(row)
                     for j in range(count, count + s_count[i]):
@@ -196,6 +196,10 @@ class McHdf5Converter(BaseConverter):
         with h5py.File(filename, "w") as hdf:
             spikes = list(itertools.chain(*trains))
             s_count = [len(train) for train in trains]
+            epos = [[], []]
+            for e in electrodes:
+                epos[0].append(int(e[0]))
+                epos[1].append(int(e[1]))
             epos = [(int(e[0]), int(e[1])) for e in electrodes]
             hdf.create_dataset("spikes", data=spikes)
             hdf.create_dataset("sCount", data=s_count)
