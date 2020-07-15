@@ -8,6 +8,7 @@ import csv
 import datapackage
 import h5py
 import itertools
+import numpy
 import os
 import pkg_resources
 import re
@@ -51,11 +52,11 @@ class Hdf5FdConverter(BaseConverter):
             # load data from HDF5 file
             assert ".h5" in self.formats.keys(), "No HDF5 file to convert from"
 
-            s_count = list(self.formats[".h5"]["sCount"])
-            spikes = list(self.formats[".h5"]["spikes"])
+            s_count = numpy.array(self.formats[".h5"]["sCount"])
+            spikes = numpy.array(self.formats[".h5"]["spikes"])
             if "names" in self.formats[".h5"].keys():
-                names = list(self.formats[".h5"]["names"])
-            epos = list(self.formats[".h5"]["epos"])
+                names = numpy.array(self.formats[".h5"]["names"])
+            epos = numpy.array(self.formats[".h5"]["epos"])
 
             # set up data package
             datapackage_path = pkg_resources.resource_filename(
