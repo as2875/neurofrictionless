@@ -8,7 +8,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import quantities as qt
 from h5fd.plot import RECORDING_ATTEMPTS
-from scipy.stats import sem
 
 DATA_DIR = "../data/2020-02-21_fd/"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
@@ -43,7 +42,7 @@ for file in data_files:
     corr_l.append(mean_corr)
     # standard error in the mean
     nonz = corr_tril.ravel()[numpy.flatnonzero(corr)]
-    err = sem(nonz)
+    err = numpy.std(nonz)
     err_l.append(err)
     # extract age
     age = int(package.descriptor["meta"]["age"])
