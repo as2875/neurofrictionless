@@ -15,15 +15,16 @@ RECORDING_ATTEMPTS = [(datetime.date(2017, 9, 15), datetime.date(2017, 10, 13)),
 class NetworkSpikes:
     """Represents a series of network spikes."""
 
-    def __init__(self, array, rows, bin_centres, meta=None):
-        self.array = array  # each row is a spike train, each column is a bin
+    def __init__(self, train, rows, meta=None):
+        self.array = train.to_array()  # each row is a spike train, each column is a bin
         self.network_activity =\
-            numpy.array([sum(col) for col in array.T])  # sum each column
+            numpy.array([sum(col) for col in self.array.T])  # sum each column
         self.active_channels = self.array.shape[0]  # number of rows in array
         self.rows = rows  # channel each row originates from
         self.meta = meta  # metadata
-        self.bin_centres = bin_centres
-        self.binw = self.bin_centres[1] - self.bin_centres[0]
+        self.bin_centres = train.bin_centers
+        self.binw = train.binsize
+        self.t_stop = train.t_stop
 
     def detect_spikes(self, threshold):
         self.spike_timestamps = []

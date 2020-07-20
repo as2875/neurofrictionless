@@ -13,6 +13,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 DATA_DIR = "../data/2020-02-21_fd/"
 ACTIVITY_FIGURE_PATH = "../plots/network_analysis.pdf"
 CUTOUTS_FIGURE_PATH = "../plots/network_spikes_cutouts.pdf"
+SCATTER_FIGURE_PATH = "../plots/network_spikes_age.pdf"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 # parameters for analysis
@@ -69,9 +70,8 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf:
                 meta = {"age": age,
                         "replicate": replicate,
                         "recording": i}
-                ns = h5fd.plot.NetworkSpikes(binned_train.to_array(),
+                ns = h5fd.plot.NetworkSpikes(binned_train,
                                              labels,
-                                             binned_train.bin_centers,
                                              meta=meta)
                 network_spikes.append(ns)
 
@@ -88,10 +88,16 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf:
                 plt.close()
 
 # use a threshold to detect network spikes
+age_l = []
+rate_l = []
 with PdfPages(CUTOUTS_FIGURE_PATH) as pdf:
     for i in range(len(network_spikes)):
         network_spikes[i].detect_spikes(THRESH)
         if network_spikes[i].spike_cutouts:
+            age_l.append(network_spikes[i].meta["age"])
+            N = len(network_spikes[i].spike_timestamps)
+            rate = N / network_spikes[i].t_stop.rescale(qt.min)
+            rate_l.append(rate)
             for j in range(len(network_spikes[i].spike_cutouts)):
                 plt.plot(network_spikes[i].spike_cutouts[j])
                 plt.title(network_spikes[i].meta["replicate"] +
@@ -102,3 +108,11 @@ with PdfPages(CUTOUTS_FIGURE_PATH) as pdf:
                 plt.tight_layout()
                 pdf.savefig()
                 plt.close()
+
+plt.plot(age_l, rate_l, ".")
+plt.title("Rate of network spike occurence")
+plt.xlabel("age / DIV")
+plt.ylabel("network spikes per min")
+plt.tight_layout()
+plt.savefig(SCATTER_FIGURE_PATH)
+plt.close()
