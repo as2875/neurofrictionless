@@ -11,10 +11,11 @@ import timeit
 hd5_setup = \
     """
 import h5py
+import numpy
 
 def num_spikes_from_hd5(path):
     with h5py.File(path, "r") as hdf:
-        spikes = hdf["spikes"]
+        spikes = numpy.array(hdf["spikes"])
         return len(spikes)
 """
 
@@ -28,15 +29,15 @@ def num_spikes_from_fd(path):
     return len(spikes.read())
 """
 
-NUM = 100
+NUM = 10
 # HDF5
-durn = timeit.timeit("num_spikes_from_hd5('180219_D40_2539.h5')",
+durn = timeit.timeit("num_spikes_from_hd5('C57_TC191_G2CEPHYS1_DIV21_B.h5')",
                      setup=hd5_setup,
                      number=NUM)
 print("HDF5:", durn/NUM, "s")
 
 # Frictionless
-durn = timeit.timeit("num_spikes_from_fd('180219_D40_2539.zip')",
+durn = timeit.timeit("num_spikes_from_fd('C57_TC191_G2CEPHYS1_DIV21_B.zip')",
                      setup=fd_setup,
                      number=NUM)
 print("FD:  ", durn/NUM, "s")
