@@ -2,6 +2,7 @@ import datapackage
 import datetime
 import elephant
 import h5fd.plot
+import itertools
 import numpy
 import os
 import matplotlib
@@ -27,26 +28,30 @@ for file in data_files:
     package = datapackage.Package(file)
     _, channels, _ = h5fd.plot.extract_spike_trains(package, qt.ms, qt.s)
     trains = list(channels.values())
-    if not trains:
+    if len(trains) < 2:
         continue
+
     # bin
-    b_trains = elephant.conversion.BinnedSpikeTrain(trains, binsize=BINW)
-    corr = elephant.spike_train_correlation.corrcoef(b_trains)
-    # if the matrix is not a matrix
-    if not corr.shape:
-        continue
+    corr = numpy.zeros((len(trains), len(trains)))  # a square matrix
+    for i in range(len(trains)):
+        for j in range(len(trains)):
+            coeff = \
+                elephant.spike_train_correlation.spike_time_tiling_coefficient(trains[i], trains[j])
+            corr[i, j] = coeff
+
     # matrix is symmetric, take upper triangle
-    corr_tril = numpy.triu(corr, k=1)
+    corr_triu = numpy.triu(corr, k=1)
     n = (corr.shape[0] * (corr.shape[1] - 1)) / 2
-    mean_corr = numpy.sum(corr_tril) / n
+    mean_corr = numpy.sum(corr_triu) / n
     corr_l.append(mean_corr)
     # standard error in the mean
-    nonz = corr_tril.ravel()[numpy.flatnonzero(corr)]
+    nonz = corr_triu.ravel()[numpy.flatnonzero(corr)]
     err = numpy.std(nonz)
     err_l.append(err)
     # extract age
     age = int(package.descriptor["meta"]["age"])
     age_l.append(age)
+
     # which colour?
     if package.descriptor["meta"]["MEA"] == "2539":
         colours["by-replicate"].append("r")
