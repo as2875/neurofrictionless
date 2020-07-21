@@ -10,3 +10,18 @@ fd_time = timeit(fd);
 
 disp(strcat("HDF5: ", string(h5_time)));
 disp(strcat("FD:   " + string(fd_time)));
+
+function len = h5Benchmark(filename)
+    spikes = h5read(filename, '/spikes');
+    len = length(spikes);
+end
+
+function len = fdBenchmark(filename)
+    [~, basename, ~] = fileparts(filename);
+    unzip(filename, basename);
+    pkgname = strcat(basename, '\');
+    [data, ~] = datapackage(pkgname);
+    rmdir(basename, 's');
+    spikes = data{1, 1}.time;
+    len = length(spikes);
+end
