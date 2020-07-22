@@ -14,7 +14,7 @@ DATA_DIR = "../data/2020-02-21_fd/"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 # plotting parameters
-FIGURE_PATH = "../plots/correlation_plots.pdf"
+FIGURE_PATH = "../plots/correlation_plots.png"
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [5, 10]
 
@@ -69,15 +69,15 @@ for file in data_files:
     else:
         colours["by-recording"].append("k")
 
-figure, axes = plt.subplots(2, 1)
+figure, axes = plt.subplots(2, 1, sharex=True)
 
-axes[0].set_title("Plot by replicate")
+axes[0].set_title("A")
 axes[0].set_xlabel("age / DIV")
 axes[0].set_ylabel("correlation")
 axes[0].scatter(age_l, corr_l, c=colours["by-replicate"])
 axes[0].errorbar(age_l, corr_l, fmt="none", yerr=err_l, ecolor="k")
 
-axes[1].set_title("Plot by recording")
+axes[1].set_title("B")
 axes[1].set_xlabel("age / DIV")
 axes[1].set_ylabel("correlation")
 axes[1].scatter(age_l, corr_l, c=colours["by-recording"])
