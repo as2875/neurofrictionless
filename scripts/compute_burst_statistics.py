@@ -22,7 +22,7 @@ matplotlib.rcParams["font.size"] = 5.0
 
 # get filenames
 DATA_DIR = "../data/2020-02-21_fd/"
-FIGURE_PATH = "../plots/burst_boxplots.pdf"
+FIGURE_PATH = "../plots/burst_boxplots.png"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 # parameters for burst detection
@@ -113,86 +113,80 @@ for file in data_files:
 
     count += 1
 
-with PdfPages(FIGURE_PATH) as pdf:
-    # box plots
-    # colour code by replicate
-    figure, axes = plt.subplots(2, 2)
+# box plots
+# colour code by replicate
+figure, axes = plt.subplots(4, 2, sharex=True)
 
-    # frequency of bursts
-    bplot_bfq = axes[0, 0].boxplot(bfq_l,
-                                   positions=age_l,
-                                   sym="",
-                                   patch_artist=True)
-    axes[0, 0].set_xlabel("age / DIV")
-    axes[0, 0].set_ylabel("bursts per second / $s^{-1}$")
+# frequency of bursts
+bplot_bfq = axes[0, 0].boxplot(bfq_l,
+                               positions=age_l,
+                               sym="",
+                               patch_artist=True)
+axes[0, 0].set_xlabel("age / DIV")
+axes[0, 0].set_ylabel("bursts per second / $s^{-1}$")
 
-    # duration of bursts
-    bplot_bdn = axes[0, 1].boxplot(bdn_l,
-                                   positions=age_l,
-                                   sym="",
-                                   patch_artist=True)
-    axes[0, 1].set_xlabel("age / DIV")
-    axes[0, 1].set_ylabel("burst duration / s")
+# duration of bursts
+bplot_bdn = axes[0, 1].boxplot(bdn_l,
+                               positions=age_l,
+                               sym="",
+                               patch_artist=True)
+axes[0, 1].set_xlabel("age / DIV")
+axes[0, 1].set_ylabel("burst duration / s")
 
-    # firing rate in burst
-    bplot_bfr = axes[1, 0].boxplot(bfr_l,
-                                   positions=age_l,
-                                   sym="",
-                                   patch_artist=True)
-    axes[1, 0].set_xlabel("age / DIV")
-    axes[1, 0].set_ylabel("firing rate in burst / $s^{-1}$")
+# firing rate in burst
+bplot_bfr = axes[1, 0].boxplot(bfr_l,
+                               positions=age_l,
+                               sym="",
+                               patch_artist=True)
+axes[1, 0].set_xlabel("age / DIV")
+axes[1, 0].set_ylabel("firing rate in burst / $s^{-1}$")
 
-    # percentage of spikes in bursts
-    bplot_bpc = axes[1, 1].boxplot(bpc_l,
-                                   positions=age_l,
-                                   sym="",
-                                   patch_artist=True)
-    axes[1, 1].set_xlabel("age / DIV")
-    axes[1, 1].set_ylabel("% spikes in bursts")
+# percentage of spikes in bursts
+bplot_bpc = axes[1, 1].boxplot(bpc_l,
+                               positions=age_l,
+                               sym="",
+                               patch_artist=True)
+axes[1, 1].set_xlabel("age / DIV")
+axes[1, 1].set_ylabel("% spikes in bursts")
 
-    for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
-        for patch, colour in zip(bplot['boxes'], colours["by-replicate"]):
-            patch.set_facecolor(colour)
-    figure.suptitle("Plots by replicate")
-    pdf.savefig(figure)
+for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
+    for patch, colour in zip(bplot['boxes'], colours["by-replicate"]):
+        patch.set_facecolor(colour)
 
-    # colour code by recording date
-    figure, axes = plt.subplots(2, 2)
+# frequency of bursts
+bplot_bfq = axes[2, 0].boxplot(bfq_l,
+                               positions=age_l,
+                               sym="",
+                               patch_artist=True)
+axes[2, 0].set_xlabel("age / DIV")
+axes[2, 0].set_ylabel("bursts per second / $s^{-1}$")
 
-    # frequency of bursts
-    bplot_bfq = axes[0, 0].boxplot(bfq_l,
-                                   positions=age_l,
-                                   sym="",
-                                   patch_artist=True)
-    axes[0, 0].set_xlabel("age / DIV")
-    axes[0, 0].set_ylabel("bursts per second / $s^{-1}$")
+# duration of bursts
+bplot_bdn = axes[2, 1].boxplot(bdn_l,
+                               positions=age_l,
+                               sym="",
+                               patch_artist=True)
+axes[2, 1].set_xlabel("age / DIV")
+axes[2, 1].set_ylabel("burst duration / s")
 
-    # duration of bursts
-    bplot_bdn = axes[0, 1].boxplot(bdn_l,
-                                   positions=age_l,
-                                   sym="",
-                                   patch_artist=True)
-    axes[0, 1].set_xlabel("age / DIV")
-    axes[0, 1].set_ylabel("burst duration / s")
+# firing rate in burst
+bplot_bfr = axes[3, 0].boxplot(bfr_l,
+                               positions=age_l,
+                               sym="",
+                               patch_artist=True)
+axes[3, 0].set_xlabel("age / DIV")
+axes[3, 0].set_ylabel("firing rate in burst / $s^{-1}$")
 
-    # firing rate in burst
-    bplot_bfr = axes[1, 0].boxplot(bfr_l,
-                                   positions=age_l,
-                                   sym="",
-                                   patch_artist=True)
-    axes[1, 0].set_xlabel("age / DIV")
-    axes[1, 0].set_ylabel("firing rate in burst / $s^{-1}$")
+# percentage of spikes in bursts
+bplot_bpc = axes[3, 1].boxplot(bpc_l,
+                               positions=age_l,
+                               sym="",
+                               patch_artist=True)
+axes[3, 1].set_xlabel("age / DIV")
+axes[3, 1].set_ylabel("% spikes in bursts")
 
-    # percentage of spikes in bursts
-    bplot_bpc = axes[1, 1].boxplot(bpc_l,
-                                   positions=age_l,
-                                   sym="",
-                                   patch_artist=True)
-    axes[1, 1].set_xlabel("age / DIV")
-    axes[1, 1].set_ylabel("% spikes in bursts")
+for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
+    for patch, colour in zip(bplot['boxes'], colours["by-recording"]):
+        patch.set_facecolor(colour)
 
-    for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
-        for patch, colour in zip(bplot['boxes'], colours["by-recording"]):
-            patch.set_facecolor(colour)
-    figure.suptitle("Plots by recording date")
-    pdf.savefig(figure)
+plt.savefig(FIGURE_PATH)

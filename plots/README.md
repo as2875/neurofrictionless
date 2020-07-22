@@ -4,7 +4,7 @@ All plots are generated from data in a Frictionless format, other than `raster_p
 
 | Filename | Description | Script |
 | --- | --- | --- |
-| `burst_boxplots.pdf` | A series of box plots summarising burst behaviour. | `compute_burst_statistics.py` |
+| `burst_boxplots.png` | A series of box plots summarising burst behaviour. | `compute_burst_statistics.py` |
 | `burst_plots.pdf` | A raster plot with bursts marked on it. | `detect_bursts.py` |
 | `correlation_plots.pdf` | A plot of mean correlation against age. | `correlate_pairwise.py` |
 | `development_plots.pdf` | A plot of various summary statistics (firing rate, number of spikes) against age | `compute_summary_statistics.py` |
