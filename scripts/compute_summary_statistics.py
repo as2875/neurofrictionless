@@ -14,12 +14,12 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 # adjust matplotlib parameters
 matplotlib.rcParams["figure.dpi"] = 300
-matplotlib.rcParams["figure.figsize"] = [10, 5]
+matplotlib.rcParams["figure.figsize"] = [10, 10]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["font.size"] = 8.0
 
 DATA_DIR = "../data/2020-02-21_fd/"
-FIGURE_FILE = "../plots/development_plots.pdf"
+FIGURE_FILE = "../plots/development_plots.png"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 age_l, fr_l, N_l, active_channels_l, ts_l, fr_perchan_l = \
@@ -97,63 +97,54 @@ for file in data_files:
         raise BaseException("Something is wrong.")
 
 # plot data
-with PdfPages(FIGURE_FILE) as pdf:
-    # by replicate
-    figure, axes = plt.subplots(2, 3)
-    figure.suptitle("Plots by replicate")
+# by replicate
+figure, axes = plt.subplots(4, 3, sharex=True)
 
-    axes[0, 0].scatter(age_l, fr_l, c=colours["by-replicate"])
-    axes[0, 0].set_xlabel("age / DIV")
-    axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
+axes[0, 0].scatter(age_l, fr_l, c=colours["by-replicate"])
+axes[0, 0].set_xlabel("age / DIV")
+axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
 
-    axes[0, 1].scatter(age_l, N_l, c=colours["by-replicate"])
-    axes[0, 1].set_xlabel("age / DIV")
-    axes[0, 1].set_ylabel("number of spikes")
+axes[0, 1].scatter(age_l, N_l, c=colours["by-replicate"])
+axes[0, 1].set_xlabel("age / DIV")
+axes[0, 1].set_ylabel("number of spikes")
 
-    axes[0, 2].scatter(age_l, active_channels_l, c=colours["by-replicate"])
-    axes[0, 2].set_xlabel("age / DIV")
-    axes[0, 2].set_ylabel("active channels")
+axes[0, 2].scatter(age_l, active_channels_l, c=colours["by-replicate"])
+axes[0, 2].set_xlabel("age / DIV")
+axes[0, 2].set_ylabel("active channels")
 
-    axes[1, 0].scatter(age_l, ts_l, c=colours["by-replicate"])
-    axes[1, 0].set_xlabel("age / DIV")
-    axes[1, 0].set_ylabel("recording time / $s$")
+axes[1, 0].scatter(age_l, ts_l, c=colours["by-replicate"])
+axes[1, 0].set_xlabel("age / DIV")
+axes[1, 0].set_ylabel("recording time / $s$")
 
-    axes[1, 1].scatter(age_l, fr_perchan_l, c=colours["by-replicate"])
-    axes[1, 1].errorbar(age_l, fr_perchan_l, fmt="none", yerr=fr_errors)
-    axes[1, 1].set_xlabel("age / DIV")
-    axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
+axes[1, 1].scatter(age_l, fr_perchan_l, c=colours["by-replicate"])
+axes[1, 1].errorbar(age_l, fr_perchan_l, fmt="none", yerr=fr_errors)
+axes[1, 1].set_xlabel("age / DIV")
+axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
 
-    axes[1, 2].set_axis_off()
+axes[1, 2].set_axis_off()
 
-    # save figure
-    pdf.savefig(figure)
+axes[2, 0].scatter(age_l, fr_l, c=colours["by-recording"])
+axes[2, 0].set_xlabel("age / DIV")
+axes[2, 0].set_ylabel("firing rate / $s^{-1}$")
 
-    # by recording
-    figure, axes = plt.subplots(2, 3)
-    figure.suptitle("Plots by recording attempt")
+axes[2, 1].scatter(age_l, N_l, c=colours["by-recording"])
+axes[2, 1].set_xlabel("age / DIV")
+axes[2, 1].set_ylabel("number of spikes")
 
-    axes[0, 0].scatter(age_l, fr_l, c=colours["by-recording"])
-    axes[0, 0].set_xlabel("age / DIV")
-    axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
+axes[2, 2].scatter(age_l, active_channels_l, c=colours["by-recording"])
+axes[2, 2].set_xlabel("age / DIV")
+axes[2, 2].set_ylabel("active channels")
 
-    axes[0, 1].scatter(age_l, N_l, c=colours["by-recording"])
-    axes[0, 1].set_xlabel("age / DIV")
-    axes[0, 1].set_ylabel("number of spikes")
+axes[3, 0].scatter(age_l, ts_l, c=colours["by-recording"])
+axes[3, 0].set_xlabel("age / DIV")
+axes[3, 0].set_ylabel("recording time / $s$")
 
-    axes[0, 2].scatter(age_l, active_channels_l, c=colours["by-recording"])
-    axes[0, 2].set_xlabel("age / DIV")
-    axes[0, 2].set_ylabel("active channels")
+axes[3, 1].scatter(age_l, fr_perchan_l, c=colours["by-recording"])
+axes[3, 1].errorbar(age_l, fr_perchan_l, fmt="none", yerr=fr_errors)
+axes[3, 1].set_xlabel("age / DIV")
+axes[3, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
 
-    axes[1, 0].scatter(age_l, ts_l, c=colours["by-recording"])
-    axes[1, 0].set_xlabel("age / DIV")
-    axes[1, 0].set_ylabel("recording time / $s$")
+axes[3, 2].set_axis_off()
 
-    axes[1, 1].scatter(age_l, fr_perchan_l, c=colours["by-recording"])
-    axes[1, 1].errorbar(age_l, fr_perchan_l, fmt="none", yerr=fr_errors)
-    axes[1, 1].set_xlabel("age / DIV")
-    axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
-
-    axes[1, 2].set_axis_off()
-
-    # save figure
-    pdf.savefig(figure)
+# save figure
+plt.savefig(FIGURE_FILE)
