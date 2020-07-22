@@ -2,7 +2,7 @@ import datapackage
 import datetime
 import elephant
 import h5fd.plot
-import numpy
+import matplotlib
 import matplotlib.pyplot as plt
 import os
 import quantities as qt
@@ -13,8 +13,10 @@ from matplotlib.backends.backend_pdf import PdfPages
 DATA_DIR = "../data/2020-02-21_fd/"
 ACTIVITY_FIGURE_PATH = "../plots/network_analysis.pdf"
 CUTOUTS_FIGURE_PATH = "../plots/network_spikes_cutouts.pdf"
-SCATTER_FIGURE_PATH = "../plots/network_spikes_age.pdf"
+SCATTER_FIGURE_PATH = "../plots/network_spikes_age.png"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
+
+matplotlib.rcParams["figure.dpi"] = 300
 
 # parameters for analysis
 THRESH = 0.25  # network spike threshold
@@ -110,7 +112,6 @@ with PdfPages(CUTOUTS_FIGURE_PATH) as pdf:
                 plt.close()
 
 plt.plot(age_l, rate_l, ".")
-plt.title("Rate of network spike occurence")
 plt.xlabel("age / DIV")
 plt.ylabel("network spikes per min")
 plt.tight_layout()

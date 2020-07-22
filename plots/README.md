@@ -12,4 +12,4 @@ All plots are generated from data in a Frictionless format, other than `raster_p
 | `raster_plots.pdf` | Contains a raster plot, diagram of active channels, and plot of instantaneous firing rate, for every recording. | `process_mcdatatool.py` |
 | `network_analysis.pdf` | Contains plots of the number of spikes in each bin. | `analyse_network_spikes.py` |
 | `network_spikes_cutouts.pdf` | Contains cutouts of network spikes. | `analyse_network_spikes.py` |
-| `network_spikes_age.pdf` | A plot of rate of network spike occurrence against age. | `analyse_network_spikes.py` |
+| `network_spikes_age.png` | A plot of rate of network spike occurrence against age. | `analyse_network_spikes.py` |
