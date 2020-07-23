@@ -123,7 +123,7 @@ plt.close()
 
 plt.plot(age_amp_l, amp_l, ".")
 plt.xlabel("age / DIV")
-plt.ylabel("number of channels in spike")
+plt.ylabel("number of spikes")
 plt.tight_layout()
 plt.savefig(AMPLITUDE_FIGURE_PATH)
 plt.close()
