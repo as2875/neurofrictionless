@@ -14,6 +14,7 @@ DATA_DIR = "../data/2020-02-21_fd/"
 ACTIVITY_FIGURE_PATH = "../plots/network_analysis.pdf"
 CUTOUTS_FIGURE_PATH = "../plots/network_spikes_cutouts.pdf"
 SCATTER_FIGURE_PATH = "../plots/network_spikes_age.png"
+AMPLITUDE_FIGURE_PATH = "../plots/network_spikes_amplitude.png"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 matplotlib.rcParams["figure.dpi"] = 300
@@ -90,13 +91,12 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf:
                 plt.close()
 
 # use a threshold to detect network spikes
-age_l = []
-rate_l = []
+age_rate_l, age_amp_l, rate_l, amp_l = [], [], [], []
 with PdfPages(CUTOUTS_FIGURE_PATH) as pdf:
     for i in range(len(network_spikes)):
         network_spikes[i].detect_spikes(THRESH)
         if network_spikes[i].spike_cutouts:
-            age_l.append(network_spikes[i].meta["age"])
+            age_rate_l.append(network_spikes[i].meta["age"])
             N = len(network_spikes[i].spike_timestamps)
             rate = N / network_spikes[i].t_stop.rescale(qt.min)
             rate_l.append(rate)
@@ -110,10 +110,20 @@ with PdfPages(CUTOUTS_FIGURE_PATH) as pdf:
                 plt.tight_layout()
                 pdf.savefig()
                 plt.close()
+                age_amp_l.append(network_spikes[i].meta["age"])
+                amp = max(network_spikes[i].spike_cutouts[j])
+                amp_l.append(amp)
 
-plt.plot(age_l, rate_l, ".")
+plt.plot(age_rate_l, rate_l, ".")
 plt.xlabel("age / DIV")
 plt.ylabel("network spikes per min")
 plt.tight_layout()
 plt.savefig(SCATTER_FIGURE_PATH)
+plt.close()
+
+plt.plot(age_amp_l, amp_l, ".")
+plt.xlabel("age / DIV")
+plt.ylabel("number of channels in spike")
+plt.tight_layout()
+plt.savefig(AMPLITUDE_FIGURE_PATH)
 plt.close()
