@@ -18,7 +18,7 @@ meaRtools = importr("meaRtools")
 # adjust matplotlib parameters
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [10, 10]
-matplotlib.rcParams["font.size"] = 5.0
+matplotlib.rcParams["font.size"] = 10.0
 
 # get filenames
 DATA_DIR = "../data/2020-02-21_fd/"
@@ -120,14 +120,17 @@ figure, axes = plt.subplots(4, 2, sharex=True)
 # frequency of bursts
 bplot_bfq = axes[0, 0].boxplot(bfq_l,
                                positions=age_l,
+                               manage_ticks=False,
                                sym="",
                                patch_artist=True)
 axes[0, 0].set_xlabel("age / DIV")
+axes[0, 0].set_xticks(range(15, 50, 5))
 axes[0, 0].set_ylabel("bursts per second / $s^{-1}$")
 
 # duration of bursts
 bplot_bdn = axes[0, 1].boxplot(bdn_l,
                                positions=age_l,
+                               manage_ticks=False,
                                sym="",
                                patch_artist=True)
 axes[0, 1].set_xlabel("age / DIV")
@@ -136,6 +139,7 @@ axes[0, 1].set_ylabel("burst duration / s")
 # firing rate in burst
 bplot_bfr = axes[1, 0].boxplot(bfr_l,
                                positions=age_l,
+                               manage_ticks=False,
                                sym="",
                                patch_artist=True)
 axes[1, 0].set_xlabel("age / DIV")
@@ -144,6 +148,7 @@ axes[1, 0].set_ylabel("firing rate in burst / $s^{-1}$")
 # percentage of spikes in bursts
 bplot_bpc = axes[1, 1].boxplot(bpc_l,
                                positions=age_l,
+                               manage_ticks=False,
                                sym="",
                                patch_artist=True)
 axes[1, 1].set_xlabel("age / DIV")
@@ -156,6 +161,7 @@ for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
 # frequency of bursts
 bplot_bfq = axes[2, 0].boxplot(bfq_l,
                                positions=age_l,
+                               manage_ticks=False,
                                sym="",
                                patch_artist=True)
 axes[2, 0].set_xlabel("age / DIV")
@@ -164,6 +170,7 @@ axes[2, 0].set_ylabel("bursts per second / $s^{-1}$")
 # duration of bursts
 bplot_bdn = axes[2, 1].boxplot(bdn_l,
                                positions=age_l,
+                               manage_ticks=False,
                                sym="",
                                patch_artist=True)
 axes[2, 1].set_xlabel("age / DIV")
@@ -172,6 +179,7 @@ axes[2, 1].set_ylabel("burst duration / s")
 # firing rate in burst
 bplot_bfr = axes[3, 0].boxplot(bfr_l,
                                positions=age_l,
+                               manage_ticks=False,
                                sym="",
                                patch_artist=True)
 axes[3, 0].set_xlabel("age / DIV")
@@ -180,6 +188,7 @@ axes[3, 0].set_ylabel("firing rate in burst / $s^{-1}$")
 # percentage of spikes in bursts
 bplot_bpc = axes[3, 1].boxplot(bpc_l,
                                positions=age_l,
+                               manage_ticks=False,
                                sym="",
                                patch_artist=True)
 axes[3, 1].set_xlabel("age / DIV")
