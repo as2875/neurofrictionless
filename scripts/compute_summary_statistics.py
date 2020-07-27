@@ -16,7 +16,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [10, 10]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
-matplotlib.rcParams["font.size"] = 8.0
+matplotlib.rcParams["font.size"] = 10.0
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_FILE = "../plots/development_plots.png"
