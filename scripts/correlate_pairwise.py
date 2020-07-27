@@ -16,7 +16,7 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 # plotting parameters
 FIGURE_PATH = "../plots/correlation_plots.png"
 matplotlib.rcParams["figure.dpi"] = 300
-matplotlib.rcParams["figure.figsize"] = [5, 10]
+matplotlib.rcParams["figure.figsize"] = [10, 5]
 
 BINW = 0.5 * qt.s
 
@@ -69,7 +69,7 @@ for file in data_files:
     else:
         colours["by-recording"].append("k")
 
-figure, axes = plt.subplots(2, 1, sharex=True)
+figure, axes = plt.subplots(1, 2, sharey=True)
 
 axes[0].set_title("A")
 axes[0].set_xlabel("age / DIV")
