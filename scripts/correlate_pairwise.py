@@ -37,6 +37,7 @@ for file in data_files:
         for j in range(len(trains)):
             coeff = \
                 elephant.spike_train_correlation.spike_time_tiling_coefficient(trains[i], trains[j])
+            assert coeff <= 1, "STTC > 1"
             corr[i, j] = coeff
 
     # matrix is symmetric, take upper triangle
