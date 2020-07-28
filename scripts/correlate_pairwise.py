@@ -15,6 +15,7 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 # plotting parameters
 FIGURE_PATH = "../plots/correlation_plots.png"
+matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [10, 5]
 
@@ -36,7 +37,8 @@ for file in data_files:
     for i in range(len(trains)):
         for j in range(len(trains)):
             coeff = \
-                elephant.spike_train_correlation.spike_time_tiling_coefficient(trains[i], trains[j])
+                elephant.spike_train_correlation.spike_time_tiling_coefficient(trains[i],
+                                                                               trains[j])
             assert coeff <= 1, "STTC > 1"
             corr[i, j] = coeff
 
@@ -46,7 +48,7 @@ for file in data_files:
     mean_corr = numpy.sum(corr_triu) / n
     corr_l.append(mean_corr)
     # standard error in the mean
-    nonz = corr_triu.ravel()[numpy.flatnonzero(corr)]
+    nonz = corr_triu.ravel()[numpy.flatnonzero(corr_triu)]
     err = numpy.std(nonz)
     err_l.append(err)
     # extract age
@@ -74,13 +76,13 @@ figure, axes = plt.subplots(1, 2, sharey=True)
 
 axes[0].set_title("A")
 axes[0].set_xlabel("age / DIV")
-axes[0].set_ylabel("correlation")
+axes[0].set_ylabel("STTC")
 axes[0].scatter(age_l, corr_l, c=colours["by-replicate"])
 axes[0].errorbar(age_l, corr_l, fmt="none", yerr=err_l, ecolor="k")
 
 axes[1].set_title("B")
 axes[1].set_xlabel("age / DIV")
-axes[1].set_ylabel("correlation")
+axes[1].set_ylabel("STTC")
 axes[1].scatter(age_l, corr_l, c=colours["by-recording"])
 axes[1].errorbar(age_l, corr_l, fmt="none", yerr=err_l, ecolor="k")
 
