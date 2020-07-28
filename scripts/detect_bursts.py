@@ -26,8 +26,8 @@ data_files = sorted([os.path.join(DATA_DIR, file)
                      for file in os.listdir(DATA_DIR)])
 REPRESENTATIVE_PLOTS = ["../data/2020-02-21_fd/170922_D15_2540.zip",
                         "../data/2020-02-21_fd/170927_D20_2540.zip",
-                        "../data/2020-02-21_fd/180413_D27_2540.zip",
-                        "../data/2020-02-21_fd/180504_D48_2539.zip"]
+                        "../data/2020-02-21_fd/171002_D25_2540.zip",
+                        "../data/2020-02-21_fd/171013_D36_2540.zip"]
 
 # parameters for burst detection
 mi_par = ListVector({"beg_isi": 0.17,
