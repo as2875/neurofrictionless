@@ -46,7 +46,7 @@ with PdfPages(FIGURE_PATH) as pdf:
         count = 0
         for channel, spikes in sorted(channels.items()):
             isi = elephant.statistics.isi(spikes)
-            isi = [math.log(float(interval)) for interval in isi]
+            isi = [math.log10(float(interval)) for interval in isi]
             axes[count].hist(isi,
                              bins="auto")
             axes[count].set_title(channel)
