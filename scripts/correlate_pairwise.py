@@ -37,8 +37,10 @@ for file in data_files:
     for i in range(len(trains)):
         for j in range(len(trains)):
             coeff = \
-                elephant.spike_train_correlation.spike_time_tiling_coefficient(trains[i],
-                                                                               trains[j])
+                elephant.spike_train_correlation.\
+                spike_time_tiling_coefficient(trains[i],
+                                              trains[j],
+                                              dt=0.05*qt.s)
             assert coeff <= 1, "STTC > 1"
             corr[i, j] = coeff
 
