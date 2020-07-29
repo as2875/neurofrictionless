@@ -5,6 +5,7 @@ to a Frictionless Data Package.
 """
 
 import csv
+import contextlib
 import datapackage
 import h5py
 import itertools
@@ -32,7 +33,12 @@ class Hdf5FdConverter(BaseConverter):
             raise TypeError("Unsupported format:", ext)
 
         if ext == ".h5":
-            self.formats[".h5"] = h5py.File(filename, "r")
+            with h5py.File(filename, "r") as f:
+                self.s_count = numpy.array(f["sCount"])
+                self.spikes = numpy.array(f["spikes"])
+                if "names" in f.keys():
+                    self.names = numpy.array(f["names"])
+                self.epos = numpy.array(f["epos"])
         else:
             self.formats[".zip"] = datapackage.Package(filename)
 
@@ -51,12 +57,6 @@ class Hdf5FdConverter(BaseConverter):
             # convert from HDF5 to Frictionless
             # load data from HDF5 file
             assert ".h5" in self.formats.keys(), "No HDF5 file to convert from"
-
-            s_count = numpy.array(self.formats[".h5"]["sCount"])
-            spikes = numpy.array(self.formats[".h5"]["spikes"])
-            if "names" in self.formats[".h5"].keys():
-                names = numpy.array(self.formats[".h5"]["names"])
-            epos = numpy.array(self.formats[".h5"]["epos"])
 
             # set up data package
             datapackage_path = pkg_resources.resource_filename(
@@ -92,20 +92,20 @@ class Hdf5FdConverter(BaseConverter):
                 spikes_writer.writerow(spikes_fields)
 
                 count = 0  # where in spikes we are
-                for i in range(len(s_count)):
+                for i in range(len(self.s_count)):
                     # write to spike_trains.csv
                     if "names" in self.formats[".h5"].keys():
                         row = [i,
-                               names[i].decode(),
-                               epos[0][i],
-                               epos[1][i],
-                               s_count[i]]
+                               self.names[i].decode(),
+                               self.epos[0][i],
+                               self.epos[1][i],
+                               self.s_count[i]]
                     else:
                         row = [i,
                                "",
-                               epos[0][i],
-                               epos[1][i],
-                               s_count[i]]
+                               self.epos[0][i],
+                               self.epos[1][i],
+                               self.s_count[i]]
                     spike_trains_writer.writerow(row)
                     for j in range(count, count + s_count[i]):
                         # write to spikes.csv
