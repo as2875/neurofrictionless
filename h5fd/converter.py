@@ -201,7 +201,6 @@ class McHdf5Converter(BaseConverter):
             for e in electrodes:
                 epos[0].append(int(e[0]))
                 epos[1].append(int(e[1]))
-            epos = [(int(e[0]), int(e[1])) for e in electrodes]
             hdf.create_dataset("spikes", data=spikes)
             hdf.create_dataset("sCount", data=s_count)
             hdf.create_dataset("epos", data=epos)
