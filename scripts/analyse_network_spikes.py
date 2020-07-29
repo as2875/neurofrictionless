@@ -15,8 +15,10 @@ ACTIVITY_FIGURE_PATH = "../plots/network_analysis.pdf"
 CUTOUTS_FIGURE_PATH = "../plots/network_spikes_cutouts.pdf"
 SCATTER_FIGURE_PATH = "../plots/network_spikes_age.png"
 AMPLITUDE_FIGURE_PATH = "../plots/network_spikes_amplitude.png"
+EXAMPLE_FIGURE_PATH = "../plots/network_activity_example.png"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
+matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
 
 # parameters for analysis
@@ -83,10 +85,12 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf:
                          ns.network_activity,
                          "k",
                          lw=0.1)
-                plt.title(replicate + " D" + str(age))
+                plt.title("D" + str(age) + " R" + replicate)
                 plt.xlabel("time / s\n#channels=" + str(len(spike_trains)))
                 plt.ylabel("#spikes in bin")
                 plt.tight_layout()
+                if i == 0 and replicate == "2540" and age == 34:
+                    plt.savefig(EXAMPLE_FIGURE_PATH)
                 pdf.savefig()
                 plt.close()
 
