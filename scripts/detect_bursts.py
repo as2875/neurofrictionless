@@ -18,7 +18,7 @@ matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["font.size"] = 6.0
 FIGURE_PATH = "../plots/burst_plots.pdf"
-REPRESENTATIVE_PLOT_BASE_PATH = "../plots/burst_plot_"
+REPRESENTATIVE_PLOT_BASE_PATH = "../plots/supplementary_figures/burst_plot_"
 
 # location of data
 DATA_DIR = "../data/2020-02-21_fd/"

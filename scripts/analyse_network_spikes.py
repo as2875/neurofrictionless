@@ -15,7 +15,7 @@ ACTIVITY_FIGURE_PATH = "../plots/network_analysis.pdf"
 CUTOUTS_FIGURE_PATH = "../plots/network_spikes_cutouts.pdf"
 SCATTER_FIGURE_PATH = "../plots/network_spikes_age.png"
 AMPLITUDE_FIGURE_PATH = "../plots/network_spikes_amplitude.png"
-EXAMPLE_FIGURE_PATH = "../plots/network_activity_example.png"
+EXAMPLE_FIGURE_PATH = "../plots/supplementary_figures/network_activity_example.png"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
