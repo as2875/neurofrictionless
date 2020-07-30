@@ -78,7 +78,7 @@ def rasterplot(channels, axes, title, unit):
         axes.text(1, 1, "no spikes", ha="center")
         return
 
-    labels = list(channels.keys())
+    labels = sorted(list(channels.keys()))
 
     events, nspikes = [], 0
     for label in labels:
