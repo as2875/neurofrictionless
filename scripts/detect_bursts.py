@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import cycler
 import datapackage
-import os
 import h5fd.plot
-import quantities as qt
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
+import os
+import quantities as qt
 from rpy2.robjects.packages import importr
 from rpy2.robjects.vectors import ListVector, FloatVector
 
@@ -17,6 +18,11 @@ meaRtools = importr("meaRtools")
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["font.size"] = 6.0
+
+# cycle through two colours only for bursts
+burst_cycler = cycler.cycler(color=["r", "b"])
+plt.rc("axes", prop_cycle=burst_cycler)
+
 FIGURE_PATH = "../plots/burst_plots.pdf"
 REPRESENTATIVE_PLOT_BASE_PATH = "../plots/supplementary_figures/burst_plot_"
 
