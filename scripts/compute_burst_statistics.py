@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import csv
 import datapackage
 import datetime
 import h5fd.plot
@@ -7,8 +8,8 @@ from h5fd.plot import RECORDING_ATTEMPTS
 import os
 import quantities as qt
 import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
+# import matplotlib.pyplot as plt
+import numpy
 from rpy2.robjects.packages import importr
 from rpy2.robjects.vectors import ListVector, FloatVector
 
@@ -23,6 +24,7 @@ matplotlib.rcParams["font.size"] = 10.0
 # get filenames
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_PATH = "../plots/burst_boxplots.png"
+CSV_BASE_PATH = "../data/boxplots_csv"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 # parameters for burst detection
@@ -113,89 +115,132 @@ for file in data_files:
 
     count += 1
 
-# box plots
-# colour code by replicate
-figure, axes = plt.subplots(4, 2, sharex=True)
+# # box plots
+# # colour code by replicate
+# figure, axes = plt.subplots(4, 2, sharex=True)
 
-# frequency of bursts
-bplot_bfq = axes[0, 0].boxplot(bfq_l,
-                               positions=age_l,
-                               manage_ticks=False,
-                               sym="",
-                               patch_artist=True)
-axes[0, 0].set_xlabel("age / DIV")
-axes[0, 0].set_xticks(range(15, 50, 5))
-axes[0, 0].set_ylabel("bursts per second / $s^{-1}$")
+# # frequency of bursts
+# bplot_bfq = axes[0, 0].boxplot(bfq_l,
+#                                positions=age_l,
+#                                manage_ticks=False,
+#                                sym="",
+#                                patch_artist=True)
+# axes[0, 0].set_xlabel("age / DIV")
+# axes[0, 0].set_xticks(range(15, 50, 5))
+# axes[0, 0].set_ylabel("bursts per second / $s^{-1}$")
 
-# duration of bursts
-bplot_bdn = axes[0, 1].boxplot(bdn_l,
-                               positions=age_l,
-                               manage_ticks=False,
-                               sym="",
-                               patch_artist=True)
-axes[0, 1].set_xlabel("age / DIV")
-axes[0, 1].set_ylabel("burst duration / s")
+# # duration of bursts
+# bplot_bdn = axes[0, 1].boxplot(bdn_l,
+#                                positions=age_l,
+#                                manage_ticks=False,
+#                                sym="",
+#                                patch_artist=True)
+# axes[0, 1].set_xlabel("age / DIV")
+# axes[0, 1].set_ylabel("burst duration / s")
 
-# firing rate in burst
-bplot_bfr = axes[1, 0].boxplot(bfr_l,
-                               positions=age_l,
-                               manage_ticks=False,
-                               sym="",
-                               patch_artist=True)
-axes[1, 0].set_xlabel("age / DIV")
-axes[1, 0].set_ylabel("firing rate in burst / $s^{-1}$")
+# # firing rate in burst
+# bplot_bfr = axes[1, 0].boxplot(bfr_l,
+#                                positions=age_l,
+#                                manage_ticks=False,
+#                                sym="",
+#                                patch_artist=True)
+# axes[1, 0].set_xlabel("age / DIV")
+# axes[1, 0].set_ylabel("firing rate in burst / $s^{-1}$")
 
-# percentage of spikes in bursts
-bplot_bpc = axes[1, 1].boxplot(bpc_l,
-                               positions=age_l,
-                               manage_ticks=False,
-                               sym="",
-                               patch_artist=True)
-axes[1, 1].set_xlabel("age / DIV")
-axes[1, 1].set_ylabel("% spikes in bursts")
+# # percentage of spikes in bursts
+# bplot_bpc = axes[1, 1].boxplot(bpc_l,
+#                                positions=age_l,
+#                                manage_ticks=False,
+#                                sym="",
+#                                patch_artist=True)
+# axes[1, 1].set_xlabel("age / DIV")
+# axes[1, 1].set_ylabel("% spikes in bursts")
 
-for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
-    for patch, colour in zip(bplot['boxes'], colours["by-replicate"]):
-        patch.set_facecolor(colour)
+# for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
+#     for patch, colour in zip(bplot['boxes'], colours["by-replicate"]):
+#         patch.set_facecolor(colour)
 
-# frequency of bursts
-bplot_bfq = axes[2, 0].boxplot(bfq_l,
-                               positions=age_l,
-                               manage_ticks=False,
-                               sym="",
-                               patch_artist=True)
-axes[2, 0].set_xlabel("age / DIV")
-axes[2, 0].set_ylabel("bursts per second / $s^{-1}$")
+# # frequency of bursts
+# bplot_bfq = axes[2, 0].boxplot(bfq_l,
+#                                positions=age_l,
+#                                manage_ticks=False,
+#                                sym="",
+#                                patch_artist=True)
+# axes[2, 0].set_xlabel("age / DIV")
+# axes[2, 0].set_ylabel("bursts per second / $s^{-1}$")
 
-# duration of bursts
-bplot_bdn = axes[2, 1].boxplot(bdn_l,
-                               positions=age_l,
-                               manage_ticks=False,
-                               sym="",
-                               patch_artist=True)
-axes[2, 1].set_xlabel("age / DIV")
-axes[2, 1].set_ylabel("burst duration / s")
+# # duration of bursts
+# bplot_bdn = axes[2, 1].boxplot(bdn_l,
+#                                positions=age_l,
+#                                manage_ticks=False,
+#                                sym="",
+#                                patch_artist=True)
+# axes[2, 1].set_xlabel("age / DIV")
+# axes[2, 1].set_ylabel("burst duration / s")
 
-# firing rate in burst
-bplot_bfr = axes[3, 0].boxplot(bfr_l,
-                               positions=age_l,
-                               manage_ticks=False,
-                               sym="",
-                               patch_artist=True)
-axes[3, 0].set_xlabel("age / DIV")
-axes[3, 0].set_ylabel("firing rate in burst / $s^{-1}$")
+# # firing rate in burst
+# bplot_bfr = axes[3, 0].boxplot(bfr_l,
+#                                positions=age_l,
+#                                manage_ticks=False,
+#                                sym="",
+#                                patch_artist=True)
+# axes[3, 0].set_xlabel("age / DIV")
+# axes[3, 0].set_ylabel("firing rate in burst / $s^{-1}$")
 
-# percentage of spikes in bursts
-bplot_bpc = axes[3, 1].boxplot(bpc_l,
-                               positions=age_l,
-                               manage_ticks=False,
-                               sym="",
-                               patch_artist=True)
-axes[3, 1].set_xlabel("age / DIV")
-axes[3, 1].set_ylabel("% spikes in bursts")
+# # percentage of spikes in bursts
+# bplot_bpc = axes[3, 1].boxplot(bpc_l,
+#                                positions=age_l,
+#                                manage_ticks=False,
+#                                sym="",
+#                                patch_artist=True)
+# axes[3, 1].set_xlabel("age / DIV")
+# axes[3, 1].set_ylabel("% spikes in bursts")
 
-for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
-    for patch, colour in zip(bplot['boxes'], colours["by-recording"]):
-        patch.set_facecolor(colour)
+# for bplot in (bplot_bfq, bplot_bdn, bplot_bfr, bplot_bpc):
+#     for patch, colour in zip(bplot['boxes'], colours["by-recording"]):
+#         patch.set_facecolor(colour)
 
-plt.savefig(FIGURE_PATH)
+# plt.savefig(FIGURE_PATH)
+
+# save to CSV
+for attr, name in zip((bfq_l, bdn_l, bfr_l, bpc_l),
+                      ("bfq", "bdn", "bfr", "bpc")):
+    path = os.path.join(CSV_BASE_PATH, "boxplot_" + name + ".csv")
+    with open(path, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["age",
+                         "replicate",
+                         "recording",
+                         "minimum",
+                         "lq",
+                         "median",
+                         "uq",
+                         "maximum"])
+        for age, replicate, timeseries, recording in zip(
+                age_l,
+                colours["by-replicate"],
+                colours["by-recording"],
+                attr
+                ):
+            recording = numpy.array(recording)
+            # if no bursts were detected
+            if not recording.any():
+                continue
+            median = numpy.median(recording)
+            uq = numpy.percentile(recording, 75)
+            lq = numpy.percentile(recording, 25)
+            iqr = uq - lq
+            if iqr:
+                no_outliers = recording[abs(recording - median) < 1.5 * iqr]
+            else:
+                no_outliers = recording
+            minimum = numpy.amin(no_outliers)
+            maximum = numpy.amax(no_outliers)
+            writer.writerow([age,
+                             replicate,
+                             timeseries,
+                             minimum,
+                             lq,
+                             median,
+                             uq,
+                             maximum])
