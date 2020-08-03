@@ -6,6 +6,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os
 import quantities as qt
+import random
 from h5fd.plot import RECORDING_ATTEMPTS
 from matplotlib.backends.backend_pdf import PdfPages
 
@@ -115,6 +116,7 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as
                 pdf_act.savefig()
                 plt.close()
 
+# rate
 plt.plot(age_rate_l, rate_l, ".")
 plt.xlabel("age / DIV")
 plt.ylabel("network spikes per min")
@@ -122,7 +124,8 @@ plt.tight_layout()
 plt.savefig(SCATTER_FIGURE_PATH)
 plt.close()
 
-plt.plot(age_amp_l, amp_l, ".")
+# amplitude
+plt.plot(age_amp_l, amp_l, ".", alpha=0.1)
 plt.xlabel("age / DIV")
 plt.ylabel("number of spikes")
 plt.tight_layout()
