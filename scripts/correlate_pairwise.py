@@ -42,6 +42,8 @@ for file in data_files:
                                               dt=0.05*qt.s)
             assert coeff <= 1, "STTC > 1"
             corr[i, j] = coeff
+    diag = numpy.diagonal(corr)
+    assert (diag == numpy.ones(len(trains))).any()
 
     # matrix is symmetric, take upper triangle
     corr_triu = numpy.triu(corr, k=1)
