@@ -28,7 +28,10 @@ for file in tqdm(data_files):
     # extract data
     package = datapackage.Package(file)
     mea = package.descriptor["meta"]["MEA"]
-    _, channels, _ = h5fd.plot.extract_spike_trains(package, qt.ms, qt.s)
+    _, channels, _ = h5fd.plot.extract_spike_trains(package,
+                                                    qt.ms,
+                                                    qt.s,
+                                                    threshold=0.5*(1/qt.min))
     trains = list(channels.values())
     if len(trains) < 2:
         continue
