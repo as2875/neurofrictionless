@@ -60,8 +60,8 @@ for file in data_files:
 
 # analysis
 # bin spikes
-network_spikes = []
-with PdfPages(ACTIVITY_FIGURE_PATH) as pdf:
+age_rate_l, age_amp_l, rate_l, amp_l = [], [], [], []
+with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as pdf_cut:
     for i in range(len(recordings)):
         for replicate in sorted(recordings[i].keys()):
             for age in sorted(recordings[i][replicate].keys()):
@@ -78,45 +78,42 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf:
                 ns = h5fd.plot.NetworkSpikes(binned_train,
                                              labels,
                                              meta=meta)
-                network_spikes.append(ns)
+                ns.detect_spikes(THRESH)
+                if ns.spike_cutouts:
+                    age_rate_l.append(ns.meta["age"])
+                    N = len(ns.spike_timestamps)
+                    rate = N / ns.t_stop.rescale(qt.min)
+                    rate_l.append(rate)
+                    for j in range(len(ns.spike_cutouts)):
+                        plt.plot(ns.spike_cutouts[j])
+                        plt.title(ns.meta["replicate"] +
+                                  " D" + str(ns.meta["age"]))
+                        plt.xlabel("bin\ntimestamp=" +
+                                   str(round(ns.spike_timestamps[j], 1)))
+                        plt.ylabel("#spikes")
+                        plt.tight_layout()
+                        pdf_cut.savefig()
+                        plt.close()
+                        age_amp_l.append(ns.meta["age"])
+                        amp = max(ns.spike_cutouts[j])
+                        amp_l.append(amp)
 
                 # plot
-                plt.plot(binned_train.bin_centers,
-                         ns.network_activity,
-                         "k",
-                         lw=0.1)
+                figure, axes = plt.subplots()
+                axes.plot(binned_train.bin_centers,
+                          ns.network_activity,
+                          "k",
+                          lw=0.1)
+                for ts in ns.spike_timestamps:
+                    axes.plot((ts), (0), "rx")
                 plt.title("D" + str(age) + " R" + replicate)
                 plt.xlabel("time / s\n#channels=" + str(len(spike_trains)))
                 plt.ylabel("#spikes in bin")
                 plt.tight_layout()
                 if i == 0 and replicate == "2540" and age == 34:
                     plt.savefig(EXAMPLE_FIGURE_PATH)
-                pdf.savefig()
+                pdf_act.savefig()
                 plt.close()
-
-# use a threshold to detect network spikes
-age_rate_l, age_amp_l, rate_l, amp_l = [], [], [], []
-with PdfPages(CUTOUTS_FIGURE_PATH) as pdf:
-    for i in range(len(network_spikes)):
-        network_spikes[i].detect_spikes(THRESH)
-        if network_spikes[i].spike_cutouts:
-            age_rate_l.append(network_spikes[i].meta["age"])
-            N = len(network_spikes[i].spike_timestamps)
-            rate = N / network_spikes[i].t_stop.rescale(qt.min)
-            rate_l.append(rate)
-            for j in range(len(network_spikes[i].spike_cutouts)):
-                plt.plot(network_spikes[i].spike_cutouts[j])
-                plt.title(network_spikes[i].meta["replicate"] +
-                          " D" + str(network_spikes[i].meta["age"]))
-                plt.xlabel("bin\ntimestamp=" +
-                           str(round(network_spikes[i].spike_timestamps[j], 1)))
-                plt.ylabel("#spikes")
-                plt.tight_layout()
-                pdf.savefig()
-                plt.close()
-                age_amp_l.append(network_spikes[i].meta["age"])
-                amp = max(network_spikes[i].spike_cutouts[j])
-                amp_l.append(amp)
 
 plt.plot(age_rate_l, rate_l, ".")
 plt.xlabel("age / DIV")
