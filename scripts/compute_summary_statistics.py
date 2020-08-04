@@ -43,7 +43,7 @@ for file in data_files:
     if spikes.any():
         firing_rate = elephant.statistics.mean_firing_rate(spikes)
     else:
-        firing_rate = None
+        firing_rate = 0
     fr_l[mea].append(firing_rate)
 
     # firing rate per channel
