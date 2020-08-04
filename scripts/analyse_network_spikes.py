@@ -80,24 +80,23 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as
                                              labels,
                                              meta=meta)
                 ns.detect_spikes(THRESH)
-                if ns.spike_cutouts:
-                    age_rate_l.append(ns.meta["age"])
-                    N = len(ns.spike_timestamps)
-                    rate = N / ns.t_stop.rescale(qt.min)
-                    rate_l.append(rate)
-                    for j in range(len(ns.spike_cutouts)):
-                        plt.plot(ns.spike_cutouts[j])
-                        plt.title(ns.meta["replicate"] +
-                                  " D" + str(ns.meta["age"]))
-                        plt.xlabel("bin\ntimestamp=" +
-                                   str(round(ns.spike_timestamps[j], 1)))
-                        plt.ylabel("#spikes")
-                        plt.tight_layout()
-                        pdf_cut.savefig()
-                        plt.close()
-                        age_amp_l.append(ns.meta["age"])
-                        amp = max(ns.spike_cutouts[j])
-                        amp_l.append(amp)
+                age_rate_l.append(ns.meta["age"])
+                N = len(ns.spike_timestamps)
+                rate = N / ns.t_stop.rescale(qt.min)
+                rate_l.append(rate)
+                for j in range(len(ns.spike_cutouts)):
+                    plt.plot(ns.spike_cutouts[j])
+                    plt.title(ns.meta["replicate"] +
+                              " D" + str(ns.meta["age"]))
+                    plt.xlabel("bin\ntimestamp=" +
+                               str(round(ns.spike_timestamps[j], 1)))
+                    plt.ylabel("#spikes")
+                    plt.tight_layout()
+                    pdf_cut.savefig()
+                    plt.close()
+                    age_amp_l.append(ns.meta["age"])
+                    amp = max(ns.spike_cutouts[j])
+                    amp_l.append(amp)
 
                 # plot
                 figure, axes = plt.subplots()
