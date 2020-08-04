@@ -9,6 +9,7 @@ import h5fd.plot
 from h5fd.plot import RECORDING_ATTEMPTS
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import quantities as qt
 
 # adjust matplotlib parameters
@@ -89,12 +90,17 @@ for file in data_files:
         raise BaseException("Something is wrong.")
 
 # plot data
-# by replicate
 figure, axes = plt.subplots()
 axes.scatter(age_l["2539"], fr_l["2539"], c=colours["2539"], marker="s")
 axes.scatter(age_l["2540"], fr_l["2540"], c=colours["2540"], marker="o")
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("firing rate / $s^{-1}$")
+handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
+           Line2D([0], [0], marker="o", color="grey", lw=0, label="2540"),
+           Line2D([0], [0], color="r", lw=5, label="R1"),
+           Line2D([0], [0], color="b", lw=5, label="R2"),
+           Line2D([0], [0], color="k", lw=5, label="R3")]
+axes.legend(handles=handles)
 plt.savefig(FIGURE_FILE + "fr.png")
 plt.close()
 
@@ -107,8 +113,10 @@ plt.savefig(FIGURE_FILE + "n.png")
 plt.close()
 
 figure, axes = plt.subplots()
-axes.scatter(age_l["2539"], active_channels_l["2539"], c=colours["2539"], marker="s")
-axes.scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"], marker="o")
+axes.scatter(age_l["2539"], active_channels_l["2539"], c=colours["2539"],
+             marker="s")
+axes.scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"],
+             marker="o")
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("active channels")
 plt.savefig(FIGURE_FILE + "channels.png")
@@ -123,10 +131,14 @@ plt.savefig(FIGURE_FILE + "recording_time.png")
 plt.close()
 
 figure, axes = plt.subplots()
-axes.scatter(age_l["2539"], fr_perchan_l["2539"], c=colours["2539"], marker="s")
-axes.scatter(age_l["2540"], fr_perchan_l["2540"], c=colours["2540"], marker="o")
-axes.errorbar(age_l["2539"], fr_perchan_l["2539"], fmt="none", yerr=fr_errors["2539"], ecolor="k")
-axes.errorbar(age_l["2540"], fr_perchan_l["2540"], fmt="none", yerr=fr_errors["2540"], ecolor="k")
+axes.scatter(age_l["2539"], fr_perchan_l["2539"], c=colours["2539"],
+             marker="s")
+axes.scatter(age_l["2540"], fr_perchan_l["2540"], c=colours["2540"],
+             marker="o")
+axes.errorbar(age_l["2539"], fr_perchan_l["2539"], fmt="none",
+              yerr=fr_errors["2539"], ecolor="k")
+axes.errorbar(age_l["2540"], fr_perchan_l["2540"], fmt="none",
+              yerr=fr_errors["2540"], ecolor="k")
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("firing rate\nper channel / $s^{-1}$")
 plt.savefig(FIGURE_FILE + "fr_perchan.png")

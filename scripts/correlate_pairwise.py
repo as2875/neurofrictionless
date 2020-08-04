@@ -6,6 +6,7 @@ import numpy
 import os
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import quantities as qt
 from h5fd.plot import RECORDING_ATTEMPTS
 from tqdm import tqdm
@@ -96,13 +97,21 @@ figure, axes = plt.subplots()
 
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("STTC")
-axes.scatter(age_l["2539"], corr_l["2539"], c=colours["2539"], marker="s")
-axes.scatter(age_l["2540"], corr_l["2540"], c=colours["2540"], marker="o")
+axes.scatter(age_l["2539"], corr_l["2539"], c=colours["2539"], marker="s",
+             label="2539")
+axes.scatter(age_l["2540"], corr_l["2540"], c=colours["2540"], marker="o",
+             label="2540")
 axes.errorbar(age_l["2539"], corr_l["2539"], fmt="none", yerr=err_l["2539"],
               ecolor="k")
 axes.errorbar(age_l["2540"], corr_l["2540"], fmt="none", yerr=err_l["2540"],
               ecolor="k")
-plt.tight_layout()
+handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
+           Line2D([0], [0], marker="o", color="grey", lw=0, label="2540"),
+           Line2D([0], [0], color="r", lw=5, label="R1"),
+           Line2D([0], [0], color="b", lw=5, label="R2"),
+           Line2D([0], [0], color="k", lw=5, label="R3")]
+axes.legend(handles=handles)
+figure.tight_layout()
 plt.savefig(FIGURE_PATH)
 plt.close()
 
@@ -115,6 +124,6 @@ axes.errorbar(age_l["2539"], surr_corr_l["2539"], fmt="none",
               yerr=surr_err_l["2539"], ecolor="k")
 axes.errorbar(age_l["2540"], surr_corr_l["2540"], fmt="none",
               yerr=surr_err_l["2540"], ecolor="k")
-plt.tight_layout()
+figure.tight_layout()
 plt.savefig(CONTROL_FIGURE_PATH)
 plt.close()
