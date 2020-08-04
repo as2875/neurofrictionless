@@ -10,17 +10,16 @@ from h5fd.plot import RECORDING_ATTEMPTS
 import matplotlib
 import matplotlib.pyplot as plt
 import quantities as qt
-from matplotlib.backends.backend_pdf import PdfPages
 
 # adjust matplotlib parameters
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
-matplotlib.rcParams["figure.figsize"] = [10, 6]
+matplotlib.rcParams["figure.figsize"] = [5, 5]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["font.size"] = 12.0
 
 DATA_DIR = "../data/2020-02-21_fd/"
-FIGURE_FILE = "../plots/development_plots.png"
+FIGURE_FILE = "../plots/development_plots_"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 age_l, fr_l, N_l, active_channels_l, ts_l, fr_perchan_l, colours =\
@@ -91,36 +90,44 @@ for file in data_files:
 
 # plot data
 # by replicate
-figure, axes = plt.subplots(2, 3, sharex=True)
+figure, axes = plt.subplots()
+axes.scatter(age_l["2539"], fr_l["2539"], c=colours["2539"], marker="s")
+axes.scatter(age_l["2540"], fr_l["2540"], c=colours["2540"], marker="o")
+axes.set_xlabel("age / DIV")
+axes.set_ylabel("firing rate / $s^{-1}$")
+plt.savefig(FIGURE_FILE + "fr.png")
+plt.close()
 
-axes[0, 0].scatter(age_l["2539"], fr_l["2539"], c=colours["2539"], marker="s")
-axes[0, 0].scatter(age_l["2540"], fr_l["2540"], c=colours["2540"], marker="o")
-axes[0, 0].set_xlabel("age / DIV")
-axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
+figure, axes = plt.subplots()
+axes.scatter(age_l["2539"], N_l["2539"], c=colours["2539"], marker="s")
+axes.scatter(age_l["2540"], N_l["2540"], c=colours["2540"], marker="o")
+axes.set_xlabel("age / DIV")
+axes.set_ylabel("number of spikes")
+plt.savefig(FIGURE_FILE + "n.png")
+plt.close()
 
-axes[0, 1].scatter(age_l["2539"], N_l["2539"], c=colours["2539"], marker="s")
-axes[0, 1].scatter(age_l["2540"], N_l["2540"], c=colours["2540"], marker="o")
-axes[0, 1].set_xlabel("age / DIV")
-axes[0, 1].set_ylabel("number of spikes")
+figure, axes = plt.subplots()
+axes.scatter(age_l["2539"], active_channels_l["2539"], c=colours["2539"], marker="s")
+axes.scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"], marker="o")
+axes.set_xlabel("age / DIV")
+axes.set_ylabel("active channels")
+plt.savefig(FIGURE_FILE + "channels.png")
+plt.close()
 
-axes[0, 2].scatter(age_l["2539"], active_channels_l["2539"], c=colours["2539"], marker="s")
-axes[0, 2].scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"], marker="o")
-axes[0, 2].set_xlabel("age / DIV")
-axes[0, 2].set_ylabel("active channels")
+figure, axes = plt.subplots()
+axes.scatter(age_l["2539"], ts_l["2539"], c=colours["2539"], marker="s")
+axes.scatter(age_l["2540"], ts_l["2540"], c=colours["2540"], marker="o")
+axes.set_xlabel("age / DIV")
+axes.set_ylabel("recording time / $s$")
+plt.savefig(FIGURE_FILE + "recording_time.png")
+plt.close()
 
-axes[1, 0].scatter(age_l["2539"], ts_l["2539"], c=colours["2539"], marker="s")
-axes[1, 0].scatter(age_l["2540"], ts_l["2540"], c=colours["2540"], marker="o")
-axes[1, 0].set_xlabel("age / DIV")
-axes[1, 0].set_ylabel("recording time / $s$")
-
-axes[1, 1].scatter(age_l["2539"], fr_perchan_l["2539"], c=colours["2539"], marker="s")
-axes[1, 1].scatter(age_l["2540"], fr_perchan_l["2540"], c=colours["2540"], marker="o")
-axes[1, 1].errorbar(age_l["2539"], fr_perchan_l["2539"], fmt="none", yerr=fr_errors["2539"], ecolor="k")
-axes[1, 1].errorbar(age_l["2540"], fr_perchan_l["2540"], fmt="none", yerr=fr_errors["2540"], ecolor="k")
-axes[1, 1].set_xlabel("age / DIV")
-axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
-
-axes[1, 2].set_axis_off()
-
-# save figure
-plt.savefig(FIGURE_FILE)
+figure, axes = plt.subplots()
+axes.scatter(age_l["2539"], fr_perchan_l["2539"], c=colours["2539"], marker="s")
+axes.scatter(age_l["2540"], fr_perchan_l["2540"], c=colours["2540"], marker="o")
+axes.errorbar(age_l["2539"], fr_perchan_l["2539"], fmt="none", yerr=fr_errors["2539"], ecolor="k")
+axes.errorbar(age_l["2540"], fr_perchan_l["2540"], fmt="none", yerr=fr_errors["2540"], ecolor="k")
+axes.set_xlabel("age / DIV")
+axes.set_ylabel("firing rate\nper channel / $s^{-1}$")
+plt.savefig(FIGURE_FILE + "fr_perchan.png")
+plt.close()
