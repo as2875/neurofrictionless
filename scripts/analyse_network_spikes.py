@@ -1,4 +1,5 @@
 import datapackage
+import dataflows
 import datetime
 import elephant
 import h5fd.plot
@@ -6,7 +7,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os
 import quantities as qt
-import random
 from h5fd.plot import RECORDING_ATTEMPTS
 from matplotlib.backends.backend_pdf import PdfPages
 
@@ -17,6 +17,7 @@ CUTOUTS_FIGURE_PATH = "../plots/network_spikes_cutouts.pdf"
 SCATTER_FIGURE_PATH = "../plots/network_spikes_age.png"
 AMPLITUDE_FIGURE_PATH = "../plots/network_spikes_amplitude.png"
 EXAMPLE_FIGURE_PATH = "../plots/supplementary_figures/network_activity_example.png"
+PACKAGE_PATH = "../plots/points/network_analysis.zip"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
@@ -130,3 +131,17 @@ plt.ylabel("number of spikes")
 plt.tight_layout()
 plt.savefig(AMPLITUDE_FIGURE_PATH)
 plt.close()
+
+# export to datapackage
+rate_table = [dict(age=age, rate=float(rate))
+              for age, rate in zip(age_rate_l, rate_l)]
+amp_table = [dict(age=age, amplitude=amp)
+             for age, amp in zip(age_amp_l, amp_l)]
+f = dataflows.Flow(
+    rate_table,
+    dataflows.update_resource("res_1", name="rate"),
+    amp_table,
+    dataflows.update_resource("res_2", name="amplitude"),
+    dataflows.dump_to_zip(PACKAGE_PATH)
+    )
+f.process()
