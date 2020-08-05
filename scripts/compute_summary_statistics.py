@@ -18,13 +18,14 @@ matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [5, 5]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["font.size"] = 12.0
+matplotlib.rcParams["lines.markersize"] = 3.0
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_FILE = "../plots/development_plots_"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
-age_l, fr_l, N_l, active_channels_l, ts_l, fr_perchan_l, colours =\
-    ({"2539": [], "2540": []} for i in range(7))
+age_l, age_perchan_l, fr_l, N_l, active_channels_l, ts_l, fr_perchan_l, \
+    colours, colours_perchan = ({"2539": [], "2540": []} for i in range(9))
 fr_errors = {"2539": [[], []], "2540": [[], []]}
 for file in data_files:
     # load package
@@ -38,6 +39,20 @@ for file in data_files:
 
     age = package.descriptor["meta"]["age"]
     age_l[mea].append(age)
+    
+    datestamp = package.descriptor["meta"]["date"]
+    recording_date = datetime.date(int("20" + datestamp[:2]),
+                                   int(datestamp[2:4]),
+                                   int(datestamp[4:]))
+    if RECORDING_ATTEMPTS[0][0] <= recording_date <= RECORDING_ATTEMPTS[0][1]:
+        colour = "r"
+    elif RECORDING_ATTEMPTS[1][0] <= recording_date <= RECORDING_ATTEMPTS[1][1]:
+        colour = "b"
+    elif RECORDING_ATTEMPTS[2][0] <= recording_date <= RECORDING_ATTEMPTS[2][1]:
+        colour = "k"
+    else:
+        raise BaseException("Something is wrong.")
+    colours[mea].append(colour)
 
     # compute mean firing rate
     if spikes.any():
@@ -48,23 +63,17 @@ for file in data_files:
 
     # firing rate per channel
     if channels:
-        channel_fr = [float(
-            elephant.statistics.mean_firing_rate(train))
-                      for train in channels.values()]
-        mean_fr = statistics.mean(channel_fr)
-        fr_perchan_l[mea].append(mean_fr)
-        # upper errors
-        fr_errors[mea][1].append(
-            max(channel_fr) - mean_fr
-            )
-        # lower errors
-        fr_errors[mea][0].append(
-            mean_fr - min(channel_fr)
-            )
+        for train in channels.values():
+            fr_perchan = elephant.statistics.mean_firing_rate(train)
+            age_perchan_l[mea].append(age)
+            fr_perchan_l[mea].append(fr_perchan)
+            colours_perchan[mea].append(colour)
     else:
+        age_perchan_l[mea].append(age)
         fr_perchan_l[mea].append(0)
         fr_errors[mea][0].append(0)
         fr_errors[mea][1].append(0)
+        colours_perchan[mea].append(colour)
 
     # number of spikes
     N_l[mea].append(len(spikes))
@@ -75,19 +84,6 @@ for file in data_files:
 
     # computed recording time
     ts_l[mea].append(t_stop)
-
-    datestamp = package.descriptor["meta"]["date"]
-    recording_date = datetime.date(int("20" + datestamp[:2]),
-                                   int(datestamp[2:4]),
-                                   int(datestamp[4:]))
-    if RECORDING_ATTEMPTS[0][0] <= recording_date <= RECORDING_ATTEMPTS[0][1]:
-        colours[mea].append("r")
-    elif RECORDING_ATTEMPTS[1][0] <= recording_date <= RECORDING_ATTEMPTS[1][1]:
-        colours[mea].append("b")
-    elif RECORDING_ATTEMPTS[2][0] <= recording_date <= RECORDING_ATTEMPTS[2][1]:
-        colours[mea].append("k")
-    else:
-        raise BaseException("Something is wrong.")
 
 # plot data
 figure, axes = plt.subplots()
@@ -131,14 +127,10 @@ plt.savefig(FIGURE_FILE + "recording_time.png")
 plt.close()
 
 figure, axes = plt.subplots()
-axes.scatter(age_l["2539"], fr_perchan_l["2539"], c=colours["2539"],
-             marker="s")
-axes.scatter(age_l["2540"], fr_perchan_l["2540"], c=colours["2540"],
-             marker="o")
-axes.errorbar(age_l["2539"], fr_perchan_l["2539"], fmt="none",
-              yerr=fr_errors["2539"], ecolor="k")
-axes.errorbar(age_l["2540"], fr_perchan_l["2540"], fmt="none",
-              yerr=fr_errors["2540"], ecolor="k")
+axes.scatter(age_perchan_l["2539"], fr_perchan_l["2539"],
+             c=colours_perchan["2539"], marker="s")
+axes.scatter(age_perchan_l["2540"], fr_perchan_l["2540"],
+             c=colours_perchan["2540"], marker="o")
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("firing rate\nper channel / $s^{-1}$")
 plt.savefig(FIGURE_FILE + "fr_perchan.png")
