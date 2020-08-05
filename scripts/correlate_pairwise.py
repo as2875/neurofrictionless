@@ -1,4 +1,5 @@
 import datapackage
+import dataflows
 import datetime
 import elephant
 import h5fd.plot
@@ -17,6 +18,7 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 # plotting parameters
 FIGURE_PATH = "../plots/correlation_plots.png"
 CONTROL_FIGURE_PATH = "../plots/correlation_plots_randomised.png"
+PACKAGE_PATH = "../plots/points/correlation_plots.zip"
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [5, 5]
@@ -93,6 +95,7 @@ for file in tqdm(data_files):
     else:
         colours[mea].append("k")
 
+# plot
 figure, axes = plt.subplots()
 
 axes.set_xlabel("age / DIV")
@@ -127,3 +130,26 @@ axes.errorbar(age_l["2540"], surr_corr_l["2540"], fmt="none",
 figure.tight_layout()
 plt.savefig(CONTROL_FIGURE_PATH)
 plt.close()
+
+# export as data package
+corr_table = [dict(age=age, replicate="2539", sttc=corr, sd=err)
+              for age, corr, err in zip(age_l["2539"],
+                                        corr_l["2539"], err_l["2539"])] + \
+    [dict(age=age, replicate="2540", sttc=corr, sd=err)
+     for age, corr, err in zip(age_l["2540"], corr_l["2540"], err_l["2540"])]
+surr_corr_table = [dict(age=age, replicate="2539", sttc=corr, sd=err)
+                   for age, corr, err in zip(age_l["2539"],
+                                             surr_corr_l["2539"],
+                                             surr_err_l["2539"])] + \
+        [dict(age=age, replicate="2540", sttc=corr, sd=err)
+         for age, corr, err in zip(age_l["2540"],
+                                   surr_corr_l["2540"],
+                                   surr_err_l["2540"])]
+f = dataflows.Flow(
+    corr_table,
+    dataflows.update_resource("res_1", name="sttc"),
+    surr_corr_table,
+    dataflows.update_resource("res_2", name="surrogate-sttc"),
+    dataflows.dump_to_zip(PACKAGE_PATH)
+    )
+f.process()
