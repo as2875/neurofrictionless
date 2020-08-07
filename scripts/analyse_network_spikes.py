@@ -134,7 +134,7 @@ plt.savefig(SCATTER_FIGURE_PATH)
 plt.close()
 
 # amplitude
-plt.plot(age_amp_l, amp_l, ".", alpha=0.1)
+plt.plot(age_amp_l, amp_l, ".", alpha=0.2, markeredgewidth=0)
 plt.xlabel("age / DIV")
 plt.ylabel("number of spikes")
 plt.tight_layout()
