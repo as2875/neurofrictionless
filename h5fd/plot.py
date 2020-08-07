@@ -82,7 +82,7 @@ def rasterplot(channels, axes, title, unit):
 
     events, nspikes = [], 0
     for label in labels:
-        events.append(channels[label])
+        events.append(channels[label].base)
         nspikes += len(channels[label])
 
     y_offsets = list(range(len(labels)))
