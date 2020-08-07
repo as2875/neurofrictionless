@@ -7,8 +7,14 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os
 import quantities as qt
+import warnings
 from h5fd.plot import RECORDING_ATTEMPTS
 from matplotlib.backends.backend_pdf import PdfPages
+from tqdm import tqdm
+
+# suppress elephant warnings
+warnings.filterwarnings("ignore", category=UserWarning,
+                                  module="elephant")
 
 # paths
 DATA_DIR = "../data/2020-02-21_fd/"
@@ -31,8 +37,10 @@ recordings = ({"2539": {}, "2540": {}},
               {"2539": {}, "2540": {}},
               {"2539": {}, "2540": {}})
 
+print("Reading data...")
+
 # construct time series
-for file in data_files:
+for file in tqdm(data_files):
     package = datapackage.Package(file)
     _, channels, _ = h5fd.plot.extract_spike_trains(package,
                                                     qt.ms,
@@ -62,9 +70,10 @@ for file in data_files:
 
 # analysis
 # bin spikes
+print("Analysing...")
 age_rate_l, age_amp_l, rate_l, amp_l = [], [], [], []
 with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as pdf_cut:
-    for i in range(len(recordings)):
+    for i in tqdm(range(len(recordings))):
         for replicate in sorted(recordings[i].keys()):
             for age in sorted(recordings[i][replicate].keys()):
                 # bin

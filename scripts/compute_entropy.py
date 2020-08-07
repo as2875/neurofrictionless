@@ -7,12 +7,18 @@ import h5fd.plot
 import quantities as qt
 import scipy.stats
 import matplotlib.pyplot as plt
+import warnings
+from tqdm import tqdm
+
+# suppress elephant warnings
+warnings.filterwarnings("ignore", category=UserWarning,
+                                  module="elephant")
 
 DATA_DIR = "../data/2020-02-21_fd/"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 age_l, entropy_l = [], []
-for file in data_files:
+for file in tqdm(data_files):
     package = datapackage.Package(file)
     age = package.descriptor["meta"]["age"]
     _, channels, _ = h5fd.plot.extract_spike_trains(package,

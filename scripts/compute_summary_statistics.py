@@ -11,6 +11,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import quantities as qt
+from tqdm import tqdm
 
 # adjust matplotlib parameters
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
@@ -27,7 +28,7 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 age_l, age_perchan_l, fr_l, N_l, active_channels_l, ts_l, fr_perchan_l, \
     colours, colours_perchan = ({"2539": [], "2540": []} for i in range(9))
 fr_errors = {"2539": [[], []], "2540": [[], []]}
-for file in data_files:
+for file in tqdm(data_files):
     # load package
     package = datapackage.Package(file)
     mea = package.descriptor["meta"]["MEA"]

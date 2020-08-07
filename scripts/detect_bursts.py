@@ -10,6 +10,7 @@ import os
 import quantities as qt
 from rpy2.robjects.packages import importr
 from rpy2.robjects.vectors import ListVector, FloatVector
+from tqdm import tqdm
 
 # import meaRtools
 meaRtools = importr("meaRtools")
@@ -45,7 +46,7 @@ mi_par = ListVector({"beg_isi": 0.17,
 # generate multipage PDF
 count = 1
 with PdfPages(FIGURE_PATH) as pdf:
-    for file in data_files:
+    for file in tqdm(data_files):
         package = datapackage.Package(file)
         _, channels, t_stop = h5fd.plot.extract_spike_trains(package,
                                                              qt.ms,

@@ -9,10 +9,10 @@ from h5fd.plot import RECORDING_ATTEMPTS
 import os
 import quantities as qt
 import matplotlib
-# import matplotlib.pyplot as plt
 import numpy
 from rpy2.robjects.packages import importr
 from rpy2.robjects.vectors import ListVector, FloatVector
+from tqdm import tqdm
 
 # import meaRtools
 meaRtools = importr("meaRtools")
@@ -50,7 +50,7 @@ count = 0
 # colour of boxes
 colours = {"by-replicate": [], "by-recording": []}
 
-for file in data_files:
+for file in tqdm(data_files):
     # extract data
     package = datapackage.Package(file)
     _, channels, t_stop = h5fd.plot.extract_spike_trains(package,
