@@ -4,17 +4,26 @@
 
 This is the repository for a project aiming to (i) evaluate the tools developed by Frictionless Data in a research context and (ii) analyse some new data provided by Kaiser Karim.
 
-`h5fd` is a package containing code used by the scripts in `scripts`. `h5fd.converter.Hdf5FdConverter` is a class for converting between the HDF5 format specified in 
+The bulk of the data analysis is done by Python scripts located in the `scripts` directory. They rely on a Python package, `h5fd`, which includes code for converting between formats (`h5fd.converter`) and miscellaneous data analysis functions (somewhat misleadlingly called `h5fd.plot`).
+
+`tests` contains benchmarks and sanity checks.
+
+Descriptions of what scripts do and what plots represent can be found in the relevant subdirectories.
+
+## Data conversion
+
+The raw data were provided in a format written by MC_DataTool. `scripts/convert_mc_to_h5.py` converts the raw data to an HDF5 format specified in
 
 > Eglen *et al.* (2014) 'A data repository and analysis framework for spontaneous neural activity recordings in developing retina', *Gigascience*, 3, 1. Available at: <https://doi.org/10.1186/2047-217X-3-3>.
 
-and a Frictionless Data Package described in `h5fd/datapackage.json`. `h5fd.converter.McHdf5Converter` converts from raw data in a format written by MC Datatool to HDF5.
+`scripts/convert_h5_to_fd.py` converts this HDF5 data into a Frictionless Data format.
 
-`h5fd.plot` contains functions for extracting, plotting, and analysing the data in `data`.
+## Setup
 
-`scripts` contains scripts for processing the data in `data`.
-
-Further documentation can be found in the subdirectories.
+1. Install R and meaRtools.
+2. Clone the repository.
+3. Add the repository to `PYTHONPATH`. On Linux, run `export PYTHONPATH=/path/to/repository`.
+4. Run `pip install -r requirements.txt`.
 
 ## Evaluation
 
