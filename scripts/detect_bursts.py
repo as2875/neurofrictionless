@@ -78,6 +78,6 @@ with PdfPages(FIGURE_PATH) as pdf:
 
         pdf.savefig()
         if file in REPRESENTATIVE_PLOTS:
-            figure.savefig(REPRESENTATIVE_PLOT_BASE_PATH + str(count) + ".png")
+            figure.savefig(REPRESENTATIVE_PLOT_BASE_PATH + str(count) + ".pdf")
             count += 1
         plt.close()

@@ -16,8 +16,8 @@ DATA_DIR = "../data/2020-02-21_fd/"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 # plotting parameters
-FIGURE_PATH = "../plots/correlation_plots.png"
-CONTROL_FIGURE_PATH = "../plots/correlation_plots_randomised.png"
+FIGURE_PATH = "../plots/correlation_plots.pdf"
+CONTROL_FIGURE_PATH = "../plots/correlation_plots_randomised.pdf"
 PACKAGE_PATH = "../plots/points/correlation_plots.zip"
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300

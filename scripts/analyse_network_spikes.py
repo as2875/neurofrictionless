@@ -20,9 +20,9 @@ warnings.filterwarnings("ignore", category=UserWarning,
 DATA_DIR = "../data/2020-02-21_fd/"
 ACTIVITY_FIGURE_PATH = "../plots/network_analysis.pdf"
 CUTOUTS_FIGURE_PATH = "../plots/network_spikes_cutouts.pdf"
-SCATTER_FIGURE_PATH = "../plots/network_spikes_age.png"
-AMPLITUDE_FIGURE_PATH = "../plots/network_spikes_amplitude.png"
-EXAMPLE_FIGURE_PATH = "../plots/supplementary_figures/network_activity_example.png"
+SCATTER_FIGURE_PATH = "../plots/network_spikes_age.pdf"
+AMPLITUDE_FIGURE_PATH = "../plots/network_spikes_amplitude.pdf"
+EXAMPLE_FIGURE_PATH = "../plots/supplementary_figures/network_activity_example.pdf"
 PACKAGE_PATH = "../plots/points/network_analysis.zip"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 

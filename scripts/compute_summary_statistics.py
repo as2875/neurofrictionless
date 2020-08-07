@@ -98,7 +98,7 @@ handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
            Line2D([0], [0], color="b", lw=5, label="R2"),
            Line2D([0], [0], color="k", lw=5, label="R3")]
 axes.legend(handles=handles)
-plt.savefig(FIGURE_FILE + "fr.png")
+plt.savefig(FIGURE_FILE + "fr.pdf")
 plt.close()
 
 figure, axes = plt.subplots()
@@ -106,7 +106,7 @@ axes.scatter(age_l["2539"], N_l["2539"], c=colours["2539"], marker="s")
 axes.scatter(age_l["2540"], N_l["2540"], c=colours["2540"], marker="o")
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("number of spikes")
-plt.savefig(FIGURE_FILE + "n.png")
+plt.savefig(FIGURE_FILE + "n.pdf")
 plt.close()
 
 figure, axes = plt.subplots()
@@ -116,7 +116,7 @@ axes.scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"],
              marker="o")
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("active channels")
-plt.savefig(FIGURE_FILE + "channels.png")
+plt.savefig(FIGURE_FILE + "channels.pdf")
 plt.close()
 
 figure, axes = plt.subplots()
@@ -124,7 +124,7 @@ axes.scatter(age_l["2539"], ts_l["2539"], c=colours["2539"], marker="s")
 axes.scatter(age_l["2540"], ts_l["2540"], c=colours["2540"], marker="o")
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("recording time / $s$")
-plt.savefig(FIGURE_FILE + "recording_time.png")
+plt.savefig(FIGURE_FILE + "recording_time.pdf")
 plt.close()
 
 figure, axes = plt.subplots()
@@ -134,5 +134,5 @@ axes.scatter(age_perchan_l["2540"], fr_perchan_l["2540"],
              c=colours_perchan["2540"], marker="o")
 axes.set_xlabel("age / DIV")
 axes.set_ylabel("firing rate\nper channel / $s^{-1}$")
-plt.savefig(FIGURE_FILE + "fr_perchan.png")
+plt.savefig(FIGURE_FILE + "fr_perchan.pdf")
 plt.close()

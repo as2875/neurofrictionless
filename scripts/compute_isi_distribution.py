@@ -21,7 +21,7 @@ matplotlib.rcParams["figure.constrained_layout.use"] = True
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_PATH = "../plots/logisi_plots.pdf"
-REPRESENTATIVE_PLOT_PATH = "../plots/supplementary_figures/logisi_plot_example.png"
+REPRESENTATIVE_PLOT_PATH = "../plots/supplementary_figures/logisi_plot_example.pdf"
 REPRESENTATIVE_PLOT = "../data/2020-02-21_fd/171013_D36_2540.zip"
 data_files = sorted([os.path.join(DATA_DIR, file)
                      for file in os.listdir(DATA_DIR)])

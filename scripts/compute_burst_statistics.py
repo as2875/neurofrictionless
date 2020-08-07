@@ -24,7 +24,6 @@ matplotlib.rcParams["font.size"] = 10.0
 
 # get filenames
 DATA_DIR = "../data/2020-02-21_fd/"
-FIGURE_PATH = "../plots/burst_boxplots.png"
 PACKAGE_PATH = "../plots/points/burst_boxplots.zip"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
