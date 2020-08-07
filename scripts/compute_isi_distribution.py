@@ -39,6 +39,12 @@ with PdfPages(FIGURE_PATH) as pdf:
         title = date + " " + "D" + age + " " + "R" + mea
 
         dim = math.ceil(math.sqrt(len(channels)))
+        if dim == 0:
+            figure, axes = plt.subplots()
+            figure.suptitle(title)
+            axes.set_axis_off()
+            pdf.savefig()
+            continue
 
         figure, axes = plt.subplots(dim, dim, squeeze=False)
         axes = list(itertools.chain(*axes))
