@@ -31,11 +31,13 @@ class NetworkSpikes:
         self.spike_cutouts = []
 
         if self.active_channels < 8:
+            self.threshold = None
             return
 
         iterator = iter(range(len(self.network_activity)))
+        self.threshold = threshold * self.active_channels
         for i in iterator:
-            if self.network_activity[i] > threshold * self.active_channels:
+            if self.network_activity[i] > self.threshold:
                 self.spike_timestamps.append(self.bin_centres[i])
                 num_bins = ((150 * qt.ms) / self.binw).rescale(qt.dimensionless)
                 num_bins = int(num_bins)

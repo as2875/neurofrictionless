@@ -114,6 +114,8 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as
                           ns.network_activity,
                           "k",
                           lw=0.1)
+                if ns.threshold:
+                    axes.axhline(ns.threshold, lw=0.2, color="r")
                 for ts in ns.spike_timestamps:
                     axes.plot((ts), (0), "rx")
                 plt.title("D" + str(age) + " R" + replicate)
