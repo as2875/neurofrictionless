@@ -1,4 +1,4 @@
-1\documentclass[11pt]{article}
+\documentclass[11pt]{article}
 
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
 \usepackage{amsmath,mathpazo,graphicx,doi}
@@ -10,6 +10,11 @@
 \usepackage{xspace,dcolumn}
 \usepackage{setspace,upgreek}
 \usepackage{siunitx,subcaption}
+
+\usepackage{lineno}
+
+\linenumbers
+%%\modulolinenumbers[2]
 
 \begin{document}
 
@@ -61,6 +66,7 @@ University of Cambridge, Wilberforce Road, Cambridge, UK.
   John O'Neill?  Shall we use same affiliations as on your earlier
   paper? \cite{Tourigny2019-lk}}
 
+
 \vspace*{2mm}
 
 
@@ -89,6 +95,17 @@ MEA & multielectrode arrays\\
 We report the emergence of robust spontaneous activity in cultures of
 neurons derived from IPSCs.
 
+
+
+\subsection*{Notes}
+
+\textbf{Plan is to submit as a Short report to Neural Development:
+  \url{https://neuraldevelopment.biomedcentral.com/submission-guidelines/preparing-your-manuscript/short-report}.
+  An example of a recent short report can be found at 
+\url{https://neuraldevelopment.biomedcentral.com/articles/10.1186/s13064-020-00140-y}}
+
+How shall we refer to developmental age -- DIV (days in vitro), DAP
+(days after plating) or other?
 
 
 
@@ -165,11 +182,25 @@ Data files and code will be available from
 
 We show the emergence of bursting activity (Figure~\ref{fig:rasters}).
 
-\subsection{Simple measures of activity}
+\subsection*{Simple measures of activity}
 
 We can count the number of active electrodes, and total number of
 spikes, population firing rate (and so on)
 (Figure~\ref{fig:development}).
+
+
+\subsection*{Correlated activity}
+
+We see that spike trains are correlated across the array; no
+strong developmental trend was observed.
+(Figure~\ref{fig:correlation}).
+
+\subsection*{Network spikes}
+
+Network-level activity ramps up over time, although there are some
+cultures that do not generate network spikes as late as DIV 40.
+(Figure~\ref{fig:networkfreq}).
+
 
 
 
@@ -208,7 +239,10 @@ project.
 
 \begin{figure}
   \centering
-  \includegraphics[width=10cm]{../plots/supplementary_figures/burst_plot_3.pdf}
+  \includegraphics[width=8cm]{../plots/supplementary_figures/burst_plot_1.pdf}
+  \includegraphics[width=8cm]{../plots/supplementary_figures/burst_plot_2.pdf}
+  \includegraphics[width=8cm]{../plots/supplementary_figures/burst_plot_3.pdf}
+  \includegraphics[width=8cm]{../plots/supplementary_figures/burst_plot_4.pdf}
   \caption{Emergence of spontaneous activity.  Show a few example rasters.
     at different developmental stages.  Perhaps show four at different
   ages in a 2x2 layout.  Or three in a 3x1 layout?}
@@ -254,6 +288,28 @@ project.
 	\caption{Plots of mean STTC, calculated pairwise with a synchronicity window of 50 ms, against age. There is no discernible trend in correlation over time.}
 	\label{fig:correlation}
 \end{figure}
+
+
+\begin{figure}
+\centering
+\begin{subfigure}[b]{0.7\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{../plots/network_spikes_age.pdf}
+	\caption{The rate of network spike occurrence plotted against age.}
+	\label{fig:networkfreq}
+\end{subfigure}
+
+\begin{subfigure}[b]{0.7\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{../plots/network_spikes_amplitude.pdf}
+	\caption{The amplitude of network spikes plotted against age.}
+	\label{fig:networkamp}
+\end{subfigure}
+\caption{Characteristics of network spikes.}
+\end{figure}
+
+
+
 
 \end{document}
 
