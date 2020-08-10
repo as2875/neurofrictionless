@@ -4,6 +4,7 @@ This module contains functions to convert MEA recordings of spikes from HDF5
 to a Frictionless Data Package.
 """
 
+import codecs
 import datapackage
 import dataflows
 import h5py
@@ -128,7 +129,7 @@ class McHdf5Converter(BaseConverter):
         self.basename = os.path.splitext(os.path.split(filename)[1])[0]
         if ext != ".txt":
             raise TypeError("Unsupported format")
-        with open(filename) as f:
+        with open(filename, encoding="iso-8859-1") as f:
             self.formats[ext] = f.read()
             self.formats[ext] = self.formats[ext][30:]  # chew off header
 
