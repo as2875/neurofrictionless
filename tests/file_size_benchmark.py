@@ -11,7 +11,7 @@ import os
 import matplotlib.pyplot as plt
 
 DATA_DIR = "../data/2020-02-21_fd/"
-FIGURE_PATH = "../plots/file_size_plot.png"
+FIGURE_PATH= "file_size_plot.png"
 data_files = [os.path.join(DATA_DIR, f) for f in os.listdir(DATA_DIR)]
 
 N_l, size_l = [], []
