@@ -4,8 +4,8 @@ import h5fd.converter
 import os
 from tqdm import tqdm
 
-SOURCE_DIR = "../data/g2chvcdata/"
-TARGET_DIR = "../data/g2chvcdata_fd/"
+SOURCE_DIR = "../data/2020-02-21_hdf5/"
+TARGET_DIR = "../data/2020-02-21_fd/"
 
 data_files = [file for file in os.listdir(SOURCE_DIR) if file.endswith(".h5")]
 m = h5fd.converter.Hdf5FdConverter()
