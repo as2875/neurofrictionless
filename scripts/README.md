@@ -11,4 +11,3 @@
 | `convert_h5_to_fd.py` | Simple script to convert a directory of HDF5 files to a Frictionless format using `h5fd.converter`. |
 | `convert_mc_to_h5.py` | Simple script to convert a directory of MC Datatool files to HDF5 using `h5fd.converter`. |
 | `correlate_pairwise.py` | Plot mean correlation against age. |
-| `process_mcdatatool.py` | Produces summary plots from the raw data. Useful for validating the data conversion process. |
