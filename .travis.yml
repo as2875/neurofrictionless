@@ -1,11 +1,11 @@
 language: python
 python:
-  - "3.8"
+  - "3.6"
 before_install:
   - sudo apt-get update
   - sudo apt-get -y install r-base
   - sudo apt install libcurl4-openssl-dev libssl-dev libxml2-dev
-  - echo "install.packages('devtools'); devtools::install_github(repo='igm-team/meaRtools/meaRtools')" > install.R
+  - echo "install.packages('devtools', repos='https://cran.ma.imperial.ac.uk/'); devtools::install_github(repo='igm-team/meaRtools/meaRtools')" > install.R
   - sudo Rscript install.R
 # command to install dependencies
 install:
