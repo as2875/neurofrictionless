@@ -25,17 +25,25 @@ matplotlib.rcParams["figure.figsize"] = [5, 5]
 
 BINW = 0.5 * qt.s
 
+print("Analysing data...")
 age_l, corr_l, surr_corr_l, colours, err_l, surr_err_l =\
     ({"2539": [], "2540": []} for i in range(6))
+correlation_matrices, resource_names, dates, ages, \
+replicates = \
+[], [], [], [], []
 for file in tqdm(data_files):
     # extract data
     package = datapackage.Package(file)
     mea = package.descriptor["meta"]["MEA"]
+    age = package.descriptor["meta"]["age"]
+    datestamp = package.descriptor["meta"]["date"]
+    
     _, channels, _ = h5fd.plot.extract_spike_trains(package,
                                                     qt.ms,
                                                     qt.s,
                                                     threshold=0.5*(1/qt.min))
-    trains = list(channels.values())
+    labels = list(channels.keys())
+    trains = [channels[l] for l in labels]
     if len(trains) < 2:
         continue
     surr_trains = [elephant.spike_train_surrogates.randomise_spikes(t)[0]
@@ -59,8 +67,17 @@ for file in tqdm(data_files):
                                               surr_trains[j],
                                               dt=0.05*qt.s)
             surr_corr[i, j] = surr_coeff
+
+    corr_list = corr.tolist()
+    for i in range(len(corr)):
+        corr_list[i] = dict(zip(labels, corr[i]))
+    correlation_matrices.append(corr_list)
+    resource_names.append(datestamp + "_D" + str(age) + "_R" + mea)
+    dates.append(datestamp)
+    ages.append(age)
+    replicates.append(mea)
     diag = numpy.diagonal(corr)
-    assert (diag == numpy.ones(len(trains))).any()
+    assert (diag == numpy.ones(len(trains))).all()
 
     # matrix is symmetric, take upper triangle
     corr_triu = numpy.triu(corr, k=1)
@@ -80,11 +97,10 @@ for file in tqdm(data_files):
     surr_nonz = surr_corr_triu.ravel()[numpy.flatnonzero(surr_corr_triu)]
     surr_err = numpy.std(surr_nonz)
     surr_err_l[mea].append(surr_err)
-    # extract age
-    age = int(package.descriptor["meta"]["age"])
+
+    age = int(age)
     age_l[mea].append(age)
 
-    datestamp = package.descriptor["meta"]["date"]
     recording_date = datetime.date(int("20" + datestamp[:2]),
                                    int(datestamp[2:4]),
                                    int(datestamp[4:]))
@@ -96,6 +112,7 @@ for file in tqdm(data_files):
         colours[mea].append("k")
 
 # plot
+print("Plotting...")
 figure, axes = plt.subplots()
 
 axes.set_xlabel("age / DIV")
@@ -132,24 +149,21 @@ plt.savefig(CONTROL_FIGURE_PATH)
 plt.close()
 
 # export as data package
-corr_table = [dict(age=age, replicate="2539", sttc=corr, sd=err)
-              for age, corr, err in zip(age_l["2539"],
-                                        corr_l["2539"], err_l["2539"])] + \
-    [dict(age=age, replicate="2540", sttc=corr, sd=err)
-     for age, corr, err in zip(age_l["2540"], corr_l["2540"], err_l["2540"])]
-surr_corr_table = [dict(age=age, replicate="2539", sttc=corr, sd=err)
-                   for age, corr, err in zip(age_l["2539"],
-                                             surr_corr_l["2539"],
-                                             surr_err_l["2539"])] + \
-        [dict(age=age, replicate="2540", sttc=corr, sd=err)
-         for age, corr, err in zip(age_l["2540"],
-                                   surr_corr_l["2540"],
-                                   surr_err_l["2540"])]
+print("Exporting results...")
+calls = [dataflows.update_resource("res_" + str(i),
+                                   name=name,
+                                   date=date,
+                                   age=age,
+                                   replicate=replicate)
+         for i, name, date, age, replicate in
+         zip(range(1, len(resource_names) + 1),
+             resource_names,
+             dates,
+             ages,
+             replicates)]
 f = dataflows.Flow(
-    corr_table,
-    dataflows.update_resource("res_1", name="sttc"),
-    surr_corr_table,
-    dataflows.update_resource("res_2", name="surrogate-sttc"),
+    *correlation_matrices,
+    *calls,
     dataflows.dump_to_zip(PACKAGE_PATH)
-    )
+)
 f.process()
