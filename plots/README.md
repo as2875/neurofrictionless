@@ -1,6 +1,6 @@
 # Plots
 
-All plots are generated from data in a Frictionless format, other than `raster_plots.pdf`, which uses the raw data.
+All plots are generated from data in a Frictionless format.
 
 `points` contains the output of select scripts in Frictionless format. `supplementary_figures` contains examples from some of the multipage plots.
 
@@ -10,7 +10,7 @@ All plots are generated from data in a Frictionless format, other than `raster_p
 | `burst_plots` | A raster plot with bursts marked on it. | `detect_bursts.py` |
 | `correlation_plots` | A plot of mean STTC against age. | `correlate_pairwise.py` |
 | `correlation_plots_randomised` | A plot of mean STTC of spike trains after randomly repositioning spikes against age. | `correlate_pairwise.py` |
-| `development_plots*` | A plot of various summary statistics (firing rate, number of spikes) against age | `compute_summary_statistics.py` |
+| `development_plots` | A plot of various summary statistics (firing rate, number of spikes) against age | `compute_summary_statistics.py` |
 | `file_size_plot` | A plot of file size against number of spikes. | `file_size_benchmark.py` |
 | `logisi_plots` | Contains a histogram, for every channel in every recording, of the (natural) log of the interspike interval. | `compute_isi_distribution.py` |
 | `network_analysis` | Contains plots of the number of spikes in each bin. | `analyse_network_spikes.py` |
