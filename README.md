@@ -1,5 +1,7 @@
 # Frictionless Data Project
 
+[![Build Status](https://travis-ci.com/as2875/neurofrictionless.svg?token=ErkgFJZ5ht5B2sjWsfq9&branch=master)](https://travis-ci.com/as2875/neurofrictionless)
+
 ## Overview
 
 This is the repository for a project aiming to (i) evaluate the tools developed by Frictionless Data in a research context and (ii) analyse some new data provided by Kaiser Karim.
