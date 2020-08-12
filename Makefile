@@ -8,9 +8,7 @@ all: plots/burst_boxplots.png plots/points/burst_boxplots.zip \
 plots/burst_plots.pdf plots/supplementary_figures/raster_plots.pdf \
 plots/correlation_plots.pdf plots/correlation_plots_randomised.pdf \
 plots/points/correlation_plots.zip \
-plots/development_plots_channels.pdf plots/development_plots_fr.pdf \
-plots/development_plots_fr_perchan.pdf plots/development_plots_n.pdf \
-plots/development_plots_recording_time.pdf \
+plots/development_plots.pdf \
 plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf \
 plots/network_analysis.pdf plots/network_spikes_age.pdf \
 plots/network_spikes_amplitude.pdf plots/network_spikes_cutouts.pdf \
@@ -26,9 +24,7 @@ plots/correlation_plots.pdf plots/correlation_plots_randomised.pdf \
 plots/points/correlation_plots.zip&: $(FD_DATA)
 	cd scripts/ && python3 correlate_pairwise.py
 
-plots/development_plots_channels.pdf plots/development_plots_fr.pdf \
-plots/development_plots_fr_perchan.pdf plots/development_plots_n.pdf \
-plots/development_plots_recording_time.pdf&: $(FD_DATA)
+plots/development_plots.pdf: $(FD_DATA)
 	cd scripts/ && python3 compute_summary_statistics.py
 
 plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf&: $(FD_DATA)
