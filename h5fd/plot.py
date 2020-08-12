@@ -3,9 +3,11 @@
 
 import datetime
 import elephant.statistics
+import matplotlib
 import neo
 import numpy
 import quantities as qt
+import string
 
 RECORDING_ATTEMPTS = [(datetime.date(2017, 9, 15), datetime.date(2017, 10, 13)),
                       (datetime.date(2018, 1, 22), datetime.date(2018, 2, 19)),
@@ -158,3 +160,22 @@ def extract_spike_trains(package,
             channels_filtered[k] = channels_filtered[k].rescale(output_unit)
 
     return spikes, channels_filtered, t_stop
+
+
+def _label_panel(ax, letter, *,
+                offset_left=0.2, offset_up=0.2, prefix='', postfix='.', **font_kwds):
+    """Thanks to Dan Goodman for providing this code."""
+    kwds = dict(fontsize=12)
+    kwds.update(font_kwds)
+    # this mad looking bit of code says that we should put the code offset a certain distance in
+    # inches (using the fig.dpi_scale_trans transformation) from the top left of the frame
+    # (which is (0, 1) in ax.transAxes transformation space)
+    fig = ax.figure
+    trans = ax.transAxes + matplotlib.transforms.ScaledTranslation(-offset_left, offset_up, fig.dpi_scale_trans)
+    ax.text(0, 1, prefix+letter+postfix, transform=trans, **kwds)
+
+
+def label_panels(axes):
+    """Label the 1-D array of axes with uppercase letters from the Latin alphabet."""
+    for ax, letter in zip(axes, string.ascii_uppercase):
+        _label_panel(ax, letter)

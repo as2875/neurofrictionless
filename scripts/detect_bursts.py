@@ -16,17 +16,6 @@ from tqdm import tqdm
 # import meaRtools
 meaRtools = importr("meaRtools")
 
-def label_panel(ax, letter, *,
-                offset_left=0.8, offset_up=0.2, prefix='', postfix='.', **font_kwds):
-    kwds = dict(fontsize=12)
-    kwds.update(font_kwds)
-    # this mad looking bit of code says that we should put the code offset a certain distance in
-    # inches (using the fig.dpi_scale_trans transformation) from the top left of the frame
-    # (which is (0, 1) in ax.transAxes transformation space)
-    fig = ax.figure
-    trans = ax.transAxes + matplotlib.transforms.ScaledTranslation(-offset_left, offset_up, fig.dpi_scale_trans)
-    ax.text(0, 1, prefix+letter+postfix, transform=trans, **kwds)
-
 # plot parameters
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
@@ -98,7 +87,6 @@ with PdfPages(FIGURE_PATH) as pdf:
             count += 1
         plt.close()
 
-for ax, letter in zip(axes, string.ascii_uppercase):
-    label_panel(ax, letter)
+h5fd.plot.label_panels(axes)
 figure.tight_layout()
 figure.savefig(REPRESENTATIVE_PLOT_PATH)
