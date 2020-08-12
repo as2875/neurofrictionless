@@ -5,9 +5,7 @@ FD_DATA := $(pathsubst %.txt, %.zip, $(RAW_DATA))
 .PHONY: all clean convert
 
 all: plots/burst_boxplots.png plots/points/burst_boxplots.zip \
-plots/burst_plots.pdf plots/supplementary_figures/burst_plot_1.pdf \
-plots/supplementary_figures/burst_plot_2.pdf plots/supplementary_figures/burst_plot_3.pdf \
-plots/supplementary_figures/burst_plot_4.pdf \
+plots/burst_plots.pdf plots/supplementary_figures/raster_plots.pdf \
 plots/correlation_plots.pdf plots/correlation_plots_randomised.pdf \
 plots/points/correlation_plots.zip \
 plots/development_plots_channels.pdf plots/development_plots_fr.pdf \
@@ -21,9 +19,7 @@ plots/supplementary_figures/network_activity_example.pdf plots/points/network_an
 plots/burst_boxplots.png plots/points/burst_boxplots.zip&: $(FD_DATA)
 	cd scripts && python3 compute_burst_statistics.py
 
-plots/burst_plots.pdf plots/supplementary_figures/burst_plot_1.pdf \
-plots/supplementary_figures/burst_plot_2.pdf plots/supplementary_figures/burst_plot_3.pdf \
-plots/supplementary_figures/burst_plot_4.pdf&: $(FD_DATA)
+plots/burst_plots.pdf plots/supplementary_figures/raster_plots.pdf&: $(FD_DATA)
 	cd scripts/ && python3 detect_bursts.py
 
 plots/correlation_plots.pdf plots/correlation_plots_randomised.pdf \

@@ -51,7 +51,7 @@ class NetworkSpikes:
                     break
 
 
-def rasterplot(channels, axes, title, unit):
+def rasterplot(channels, axes, title, unit, channel_labels=True):
     """
     Produce a raster plot of a spike train on a set of axes.
 
@@ -93,8 +93,11 @@ def rasterplot(channels, axes, title, unit):
                    lineoffsets=y_offsets,
                    color="black",
                    lw=0.2)
-    axes.set_yticks(y_offsets)
-    axes.set_yticklabels(labels)
+    if channel_labels:
+        axes.set_yticks(y_offsets)
+        axes.set_yticklabels(labels)
+    else:
+        axes.set_yticks([])
     axes.set_xlabel("time / " + unit + "\n" + "#spikes = " + str(nspikes))
     axes.set_ylabel("channel")
     axes.set_title(title)
