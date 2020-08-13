@@ -12,7 +12,8 @@ plots/development_plots.pdf \
 plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf \
 plots/network_analysis.pdf plots/network_spikes_age.pdf \
 plots/network_spikes_amplitude.pdf plots/network_spikes_cutouts.pdf \
-plots/supplementary_figures/network_activity_example.pdf plots/points/network_analysis.zip
+plots/supplementary_figures/network_activity_example.pdf plots/points/network_analysis.zip \
+plots/correlation_graphs.pdf
 
 plots/burst_boxplots.png plots/points/burst_boxplots.zip&: $(FD_DATA)
 	cd scripts && python3 compute_burst_statistics.py
@@ -34,6 +35,9 @@ plots/network_analysis.pdf plots/network_spikes_age.pdf \
 plots/network_spikes_amplitude.pdf plots/network_spikes_cutouts.pdf \
 plots/supplementary_figures/network_activity_example.pdf plots/points/network_analysis.zip&: $(FD_DATA)
 	cd scripts/ && python3 analyse_network_spikes.py
+
+plots/correlation_graphs.pdf: plots/points/correlation_plots.zip
+	cd scripts/ && python3 draw_graphs.py
 
 convert:
 	cd scripts/ && python3 convert_mc_to_h5.py && python3 convert_h5_to_fd.py
