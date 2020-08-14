@@ -21,22 +21,34 @@ CONTROL_FIGURE_PATH = "../plots/correlation_plots_randomised.pdf"
 PACKAGE_PATH = "../plots/points/correlation_plots.zip"
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
-matplotlib.rcParams["figure.figsize"] = [5, 5]
+matplotlib.rcParams["figure.figsize"] = [6.69, 7.5]
 
 BINW = 0.5 * qt.s
 
 print("Analysing data...")
+
 age_l, corr_l, surr_corr_l, colours, err_l, surr_err_l =\
-    ({"2539": [], "2540": []} for i in range(6))
+    ({"2539": ([], [], []), "2540": ([], [], [])} for i in range(6))
+
 correlation_matrices, resource_names, dates, ages, \
-replicates = \
-[], [], [], [], []
+replicates = [], [], [], [], []
+
 for file in tqdm(data_files):
     # extract data
     package = datapackage.Package(file)
     mea = package.descriptor["meta"]["MEA"]
     age = package.descriptor["meta"]["age"]
     datestamp = package.descriptor["meta"]["date"]
+
+    recording_date = datetime.date(int("20" + datestamp[:2]),
+                                   int(datestamp[2:4]),
+                                   int(datestamp[4:]))
+    if RECORDING_ATTEMPTS[0][0] <= recording_date <= RECORDING_ATTEMPTS[0][1]:
+        series = 0
+    elif RECORDING_ATTEMPTS[1][0] <= recording_date <= RECORDING_ATTEMPTS[1][1]:
+        series = 1
+    else:
+        series = 2
     
     _, channels, _ = h5fd.plot.extract_spike_trains(package,
                                                     qt.ms,
@@ -81,72 +93,71 @@ for file in tqdm(data_files):
 
     # matrix is symmetric, take upper triangle
     corr_triu = numpy.triu(corr, k=1)
-    n = (corr.shape[0] * (corr.shape[1] - 1)) / 2
-    mean_corr = numpy.sum(corr_triu) / n
-    corr_l[mea].append(mean_corr)
-    # standard deviation
     nonz = corr_triu.ravel()[numpy.flatnonzero(corr_triu)]
-    err = numpy.std(nonz)
-    err_l[mea].append(err)
+    flat = nonz.flatten()
+    corr_l[mea][series].append(flat.tolist())
+
     # randomised trains
     surr_corr_triu = numpy.triu(surr_corr, k=1)
     surr_n = (surr_corr.shape[0] * (surr_corr.shape[1] - 1)) / 2
     mean_surr_corr = numpy.sum(surr_corr_triu) / surr_n
-    surr_corr_l[mea].append(mean_surr_corr)
+    surr_corr_l[mea][series].append(mean_surr_corr)
     # standard deviation
     surr_nonz = surr_corr_triu.ravel()[numpy.flatnonzero(surr_corr_triu)]
     surr_err = numpy.std(surr_nonz)
-    surr_err_l[mea].append(surr_err)
+    surr_err_l[mea][series].append(surr_err)
 
     age = int(age)
-    age_l[mea].append(age)
-
-    recording_date = datetime.date(int("20" + datestamp[:2]),
-                                   int(datestamp[2:4]),
-                                   int(datestamp[4:]))
-    if RECORDING_ATTEMPTS[0][0] <= recording_date <= RECORDING_ATTEMPTS[0][1]:
-        colours[mea].append("r")
-    elif RECORDING_ATTEMPTS[1][0] <= recording_date <= RECORDING_ATTEMPTS[1][1]:
-        colours[mea].append("b")
-    else:
-        colours[mea].append("k")
+    age_l[mea][series].append(age)
 
 # plot
 print("Plotting...")
-figure, axes = plt.subplots()
+figure, axes = plt.subplots(3, 2,
+                            sharex=True,
+                            sharey=True)
+axes = axes.flatten()
+col = {0: "r", 1: "b", 2: "k"}
 
-axes.set_xlabel("age / DIV")
-axes.set_ylabel("STTC")
-axes.scatter(age_l["2539"], corr_l["2539"], c=colours["2539"], marker="s",
-             label="2539")
-axes.scatter(age_l["2540"], corr_l["2540"], c=colours["2540"], marker="o",
-             label="2540")
-axes.errorbar(age_l["2539"], corr_l["2539"], fmt="none", yerr=err_l["2539"],
-              ecolor="k")
-axes.errorbar(age_l["2540"], corr_l["2540"], fmt="none", yerr=err_l["2540"],
-              ecolor="k")
-handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
-           Line2D([0], [0], marker="o", color="grey", lw=0, label="2540"),
-           Line2D([0], [0], color="r", lw=5, label="R1"),
-           Line2D([0], [0], color="b", lw=5, label="R2"),
-           Line2D([0], [0], color="k", lw=5, label="R3")]
-axes.legend(handles=handles)
+count = 0
+for i in range(3):
+    for mea in ("2539", "2540"):
+        if i == 2:
+            xlabel = mea
+        else:
+            xlabel = ""
+        if mea == "2539":
+            if i == 1:
+                ylabel = "STTC\nR" + str(i + 1)
+            else:
+                ylabel = "R" + str(i + 1)
+        else:
+            ylabel = ""
+        axes[count].set_xlabel(xlabel)
+        axes[count].set_ylabel(ylabel)
+        parts = axes[count].violinplot(corr_l[mea][i],
+                                       age_l[mea][i],
+                                       widths=1)
+        for p in parts["bodies"]:
+            p.set_facecolor(col[i])
+        count += 1
+
+figure.text(0.5, 0.02, "age / DIV", ha="center", va="center")
 figure.tight_layout()
 plt.savefig(FIGURE_PATH)
 plt.close()
 
-figure, axes = plt.subplots()
-axes.set_xlabel("age / DIV")
-axes.set_ylabel("STTC")
-axes.scatter(age_l["2539"], surr_corr_l["2539"], c=colours["2539"], marker="s")
-axes.scatter(age_l["2540"], surr_corr_l["2540"], c=colours["2540"], marker="o")
-axes.errorbar(age_l["2539"], surr_corr_l["2539"], fmt="none",
-              yerr=surr_err_l["2539"], ecolor="k")
-axes.errorbar(age_l["2540"], surr_corr_l["2540"], fmt="none",
-              yerr=surr_err_l["2540"], ecolor="k")
-figure.tight_layout()
-plt.savefig(CONTROL_FIGURE_PATH)
-plt.close()
+# figure, axes = plt.subplots()
+# axes.set_xlabel("age / DIV")
+# axes.set_ylabel("STTC")
+# axes.scatter(age_l["2539"], surr_corr_l["2539"], c=colours["2539"], marker="s")
+# axes.scatter(age_l["2540"], surr_corr_l["2540"], c=colours["2540"], marker="o")
+# axes.errorbar(age_l["2539"], surr_corr_l["2539"], fmt="none",
+#               yerr=surr_err_l["2539"], ecolor="k")
+# axes.errorbar(age_l["2540"], surr_corr_l["2540"], fmt="none",
+#               yerr=surr_err_l["2540"], ecolor="k")
+# figure.tight_layout()
+# plt.savefig(CONTROL_FIGURE_PATH)
+# plt.close()
 
 # export as data package
 print("Exporting results...")
