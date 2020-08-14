@@ -1,28 +1,21 @@
-\documentclass[11pt]{article}
+\documentclass{bmcart}
 
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
-\usepackage{amsmath,mathpazo,graphicx,doi}
-
-\usepackage[a4paper,margin=2.5cm]{geometry}
-
+\usepackage{amsmath,mathpazo}
 \usepackage{comment,booktabs}
 \usepackage{natbib}
 \usepackage{xspace,dcolumn}
 \usepackage{setspace,upgreek}
 \usepackage{siunitx,subcaption}
-
 \usepackage{lineno}
-
 \linenumbers
-%%\modulolinenumbers[2]
-
-\begin{document}
-
 \doublespacing
 
+\def\includegraphic{}
+\def\includegraphics{}
 
-
-\renewcommand{\um}{\,\ensuremath{\upmu \text{m}}\xspace}
+\startlocaldefs
+\newcommand{\um}{\,\ensuremath{\upmu \text{m}}\xspace}
 \providecommand{\mm}{}
 \renewcommand{\mm}{\,mm\xspace}
 \newcommand{\moire}{Moir\'{e}\xspace}
@@ -40,65 +33,65 @@
 \newcommand{\ig}[1]{\centering\fbox{\includegraphics{#1}}}
 \renewcommand{\ig}[1]{}
 \providecommand*{\ped}[1]{\ensuremath{_\mathrm{#1}}}
-%%\newcommand{\ournote}[1]{\marginpar{\textbf{#1}}}
 \newcommand{\thetitle}{Emergence of correlated spontaneous activity in
   networks of stem-cell derived neurons}
+\endlocaldefs
+
+\begin{document}
+
+\begin{frontmatter}
+
+\begin{fmbox}
+
+\dochead{Research}
 \title{\thetitle}
 
+\author[
+   addressref={aff1},
+   noteref={n1}
+]{\inits{KK}\fnm{Karim} \snm{Kaiser}}
 
+\author[
+   addressref={aff2},
+   noteref={n1}
+]{\inits{AS}\fnm{Alexander} \snm{Shtyrov}}
 
-\author{Karim Kaiser$^{1,\ast}$, Alexander Shtyrov$^{2,\ast}$,
-  \ldots,
-  Stephen J. Eglen$^{2,\dagger}$}
-\date{\today}
-\maketitle
+\author[
+   addressref={aff2},
+   noteref={n2},
+   email={sje30@cam.ac.uk}
+]{\inits{SJE}\fnm{Stephen J} \snm{Eglen}}
 
+\address[id=aff1]{
+    \orgname{Department of Clinical Neurosciences and Wellcome Trust-MRC Cambridge Stem Cell Institute, University of Cambridge},
+    \street{Cambridge Biomedical Campus},
+    \city{Cambridge},
+    \cny{UK}
+}
 
-\noindent $^{1}$Department of Clinical Neurosciences and Wellcome
-Trust- MRC Cambridge Stem Cell Institute, University of Cambridge,
-Cambridge Biomedical Campus, Cambridge, UK.
-
-\noindent $^{2}$Department of Applied Mathematics and Theoretical Physics,
-University of Cambridge, Wilberforce Road, Cambridge, UK.
-
+\address[id=aff2]{
+    \orgname{Department of Applied Mathematics and Theoretical Physics,
+University of Cambridge},
+    \street{Wilberforce Road},
+    \city{Cambridge},
+    \cny{UK}
+}
 
 \textbf{Kaiser: who else to include -- David Tourigny, Mark Kotter,
   John O'Neill?  Shall we use same affiliations as on your earlier
   paper? \cite{Tourigny2019-lk}}
 
+\begin{artnotes}
 
-\vspace*{2mm}
+\note[id=n1]{Contributed equally.}
+\note[id=n2]{Corresponding author. \textbf{SJE is happy not to be corresponding if someone else wishes to oversee the paper.}}
 
-
-\noindent $^\ast$ Contributed equally.
-
-\noindent $\dagger$
-Corresponding author.\\
-\noindent Email: sje30@cam.ac.uk  {\textbf{SJE is happy not to be
-    corresponding if someone else wishes to oversee the paper.}
-
-\vspace*{2cm}
 \subsection*{Abbreviations}
 \begin{tabular}{ll}
 MEA & multielectrode arrays\\
 \end{tabular}
 
-\clearpage
-
-\subsection*{Full title}
-
-\thetitle
-
-
-\subsection*{Abstract}
-
-We report the emergence of robust spontaneous activity in cultures of
-neurons derived from IPSCs.
-
-
-
 \subsection*{Notes}
-
 \textbf{Plan is to submit as a Short report to Neural Development:
   \url{https://neuraldevelopment.biomedcentral.com/submission-guidelines/preparing-your-manuscript/short-report}.
   An example of a recent short report can be found at 
@@ -107,24 +100,39 @@ neurons derived from IPSCs.
 How shall we refer to developmental age -- DIV (days in vitro), DAP
 (days after plating) or other?
 
+\end{artnotes}
 
+\end{fmbox}
 
-\subsection*{Key words} spontaneous activity, correlated activity,
-multielectrode arrays.
+\begin{abstractbox}
 
+\begin{abstract}
 
-\clearpage
+We report the emergence of robust spontaneous activity in cultures of
+neurons derived from IPSCs.
+
+\end{abstract}
+
+\begin{keyword}
+
+\kwd{spontaneous activity}
+\kwd{correlated activity}
+\kwd{multielectrode arrays}
+
+\end{keyword}
+
+\end{abstractbox}
+
+\end{frontmatter}
+
 \section*{Introduction}
-
-
 State here the rationale for doing the recordings, and what we have
 learnt.  (I like the J Neurosci ``3 paragraph model'': para 1 -
 general idea, para 2 - what was done before, para 3 - what we did.)
+
 \section*{Materials and Methods}
 
-
 \subsection*{Data sets}
-
 For recordings, MEAs incubated at \SI{37}{celcius}, 5\%
 CO\textsubscript{2} were transferred to the MEA recording device
 (MEA2100-2x60-System, Multichannel Systems). All recordings were
@@ -140,12 +148,6 @@ electrodes sampled at 25 kHz.
 sessions.  \textbf{TODO: discuss rationale for replicability.}
 
 \subsection*{Analysis}
-
-
-
-
-
-
 \par The data were provided in a format written by MC\_DataTool \cite{Systems2014-tw}. The data were first converted to a data package based on the Frictionless Data Tabular Data Package specification \cite{Walsh2017-nm}. Each spike was represented by a single timestamp, chosen to be time of the 25\textsuperscript{th} voltage measurement from the start of the spike. Conversion took place via an HDF5 format \cite{Eglen2014}.
 
 \par After conversion the data were analysed using a series of Python scripts to compute summary statistics and interspike intervals (ISIs), carry out burst analysis, and extract network spikes. The conversion and analysis scripts will be made available shortly. They make use of the \texttt{elephant} package \cite{elephant_toolkit}.
@@ -163,153 +165,78 @@ sessions.  \textbf{TODO: discuss rationale for replicability.}
 \par Raster plots, plots of active channels, and plots of instantaneous firing rate against time were also produced from the raw data for comparison with the analysis of the data converted into the Frictionless format.
 
 
-\paragraph{Computational environment}
-
-All simulations and data analysis were performed in the python programming
+\paragraph{Computational environment} All simulations and data analysis were performed in the python programming
 language, version ...
 
 Data files and code will be available from
 \url{http://github.com/as2875/neurofrictionless.git}.
 
-
-
-\clearpage
 \section*{Results}
 
-
 \subsection*{Emergence of spontaneous activity in recordings}
-
-
 We show the emergence of bursting activity (Figure~\ref{fig:rasters}).
 
 \subsection*{Simple measures of activity}
-
 We can count the number of active electrodes, and total number of
 spikes, population firing rate (and so on)
 (Figure~\ref{fig:development}).
 
-
 \subsection*{Correlated activity}
-
 We see that spike trains are correlated across the array; no
 strong developmental trend was observed.
 (Figure~\ref{fig:correlation}).
 
 \subsection*{Network spikes}
-
 Network-level activity ramps up over time, although there are some
 cultures that do not generate network spikes as late as DIV 40.
 (Figure~\ref{fig:networkfreq}).
 
-
-
-
-
-\clearpage
 \section*{Discussion}
-
-
 \textbf{Discuss in context of Frega study}  \cite{Frega2019}
 \vspace*{1cm}
 
+\begin{backmatter}
+
 \subsection*{Acknowledgments}
-
 \textbf{Kaiser: what funding do you need to acknowledge?}
-
 
 This work was supported by a Frictionless Data grant to SJE\@.  Thanks
 to Dr Lilly Winfree from Frictionless Data for her feedback on the
 project.
 
-\clearpage
 
-
-\bibliographystyle{jphysiol}
+\bibliographystyle{vancouver}
 \bibliography{ipsc20}
 
-\label{LastPage}
-\clearpage
-\pagestyle{empty}
-
-
-\subsection*{Tables}
-
-
-\clearpage
-
-\begin{figure}
-  \centering
-  \includegraphics[width=8cm]{../plots/supplementary_figures/burst_plot_1.pdf}
-  \includegraphics[width=8cm]{../plots/supplementary_figures/burst_plot_2.pdf}
-  \includegraphics[width=8cm]{../plots/supplementary_figures/burst_plot_3.pdf}
-  \includegraphics[width=8cm]{../plots/supplementary_figures/burst_plot_4.pdf}
+\section*{Figures}
+\begin{figure}[h!]
   \caption{Emergence of spontaneous activity.  Show a few example rasters.
     at different developmental stages.  Perhaps show four at different
   ages in a 2x2 layout.  Or three in a 3x1 layout?}
   \label{fig:rasters}
 \end{figure}
 
-
-\begin{figure}
-	\centering
-\begin{subfigure}[b]{0.45\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{../plots/development_plots_fr.pdf}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.45\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{../plots/development_plots_n.pdf}
-\end{subfigure}
-
-\begin{subfigure}[b]{0.45\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{../plots/development_plots_channels.pdf}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.45\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{../plots/development_plots_fr_perchan.pdf}
-\end{subfigure}
-
-\begin{subfigure}[b]{0.45\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{../plots/development_plots_recording_time.pdf}
-\end{subfigure}
-
+\begin{figure}[h!]
 	\caption{Plots of network firing rate, number of spikes, number of active channels, recording time, and mean firing rate per channel against age. The main factor in the increase in firing rate is an increase in the number of active channels.}
 	\label{fig:development}
 \end{figure}
 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=\textwidth]{../plots/correlation_plots.pdf}
+\begin{figure}[h!]
 	\caption{Plots of mean STTC, calculated pairwise with a synchronicity window of 50 ms, against age. There is no discernible trend in correlation over time.}
 	\label{fig:correlation}
 \end{figure}
 
-
-\begin{figure}
-\centering
-\begin{subfigure}[b]{0.7\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{../plots/network_spikes_age.pdf}
+\begin{figure}[h!]
 	\caption{The rate of network spike occurrence plotted against age.}
 	\label{fig:networkfreq}
-\end{subfigure}
-
-\begin{subfigure}[b]{0.7\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{../plots/network_spikes_amplitude.pdf}
-	\caption{The amplitude of network spikes plotted against age.}
-	\label{fig:networkamp}
-\end{subfigure}
-\caption{Characteristics of network spikes.}
 \end{figure}
 
+\begin{figure}[h!]
+	\caption{The amplitude of network spikes plotted against age.}
+	\label{fig:networkamp}
+\end{figure}
 
-
+\end{backmatter}
 
 \end{document}
 
