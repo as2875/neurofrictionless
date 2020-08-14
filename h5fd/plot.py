@@ -163,7 +163,7 @@ def extract_spike_trains(package,
 
 
 def _label_panel(ax, letter, *,
-                offset_left=0.2, offset_up=0.2, prefix='', postfix='.', **font_kwds):
+                offset_left=0.2, offset_up=0.2, prefix='', postfix='', **font_kwds):
     """Thanks to Dan Goodman for providing this code."""
     kwds = dict(fontsize=12)
     kwds.update(font_kwds)
