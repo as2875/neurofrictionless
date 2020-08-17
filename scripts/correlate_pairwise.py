@@ -94,8 +94,7 @@ for file in tqdm(data_files):
     # matrix is symmetric, take upper triangle
     corr_triu = numpy.triu(corr, k=1)
     nonz = corr_triu.ravel()[numpy.flatnonzero(corr_triu)]
-    flat = nonz.flatten()
-    corr_l[mea][series].append(flat.tolist())
+    corr_l[mea][series].append(nonz.tolist())
 
     # randomised trains
     surr_corr_triu = numpy.triu(surr_corr, k=1)
