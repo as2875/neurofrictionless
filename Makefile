@@ -37,7 +37,7 @@ plots/supplementary_figures/network_activity_example.pdf plots/points/network_an
 	cd scripts/ && python3 analyse_network_spikes.py
 
 plots/correlation_graphs.pdf: plots/points/correlation_plots.zip
-	cd scripts/ && python3 draw_graphs.py
+	cd scripts/ && python3 draw_correlation_graphs.py
 
 convert:
 	cd scripts/ && python3 convert_mc_to_h5.py && python3 convert_h5_to_fd.py
