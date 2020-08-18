@@ -13,7 +13,8 @@ plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf \
 plots/network_analysis.pdf plots/network_spikes_age.pdf \
 plots/network_spikes_amplitude.pdf plots/network_spikes_cutouts.pdf \
 plots/supplementary_figures/network_activity_example.pdf plots/points/network_analysis.zip \
-plots/correlation_graphs.pdf
+plots/correlation_graphs.pdf \
+plots/correlations_kde.pdf
 
 plots/burst_boxplots.png plots/points/burst_boxplots.zip&: $(FD_DATA)
 	cd scripts && python3 compute_burst_statistics.py
