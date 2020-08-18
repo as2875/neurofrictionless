@@ -746,7 +746,10 @@
 \def\makefigure@float{
   \setlength{\fboxsep}{\figure@sep}%
   \setlength{\fboxrule}{0.25\p@}%
-  \fcolorbox{bmcblue}{white}{\box\bmcfloat@box}}
+  %% Hack to remove the box around the figures; this was overlapping
+  %% the figure.
+  %%\fcolorbox{bmcblue}{white}{\box\bmcfloat@box}}
+  {\box\bmcfloat@box}}
 
 \@namedef{figure*}{\@figurestartrue\@ifnextchar[{\@figure}{\@figure[t]}}
 
