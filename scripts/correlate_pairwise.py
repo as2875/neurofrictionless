@@ -22,6 +22,8 @@ PACKAGE_PATH = "../plots/points/correlation_plots.zip"
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [6.69, 7.5]
+matplotlib.rcParams["axes.spines.top"] = False
+matplotlib.rcParams["axes.spines.right"] = False
 
 BINW = 0.5 * qt.s
 
@@ -49,7 +51,7 @@ for file in tqdm(data_files):
         series = 1
     else:
         series = 2
-    
+
     _, channels, _ = h5fd.plot.extract_spike_trains(package,
                                                     qt.ms,
                                                     qt.s,
@@ -138,6 +140,14 @@ for i in range(3):
                                        widths=1)
         for p in parts["bodies"]:
             p.set_facecolor(col[i])
+        for m, data in zip(parts["cbars"].get_segments(), corr_l[mea][i]):
+            coords = m[1]
+            axes[count].text(coords[0],
+                             coords[1] + 0.02,
+                             str(len(data)),
+                             fontsize=5.0,
+                             ha="center")
+
         count += 1
 
 figure.text(0.5, 0.02, "age / DIV", ha="center", va="center")
