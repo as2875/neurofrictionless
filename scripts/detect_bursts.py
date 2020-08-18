@@ -47,7 +47,7 @@ mi_par = ListVector({"beg_isi": 0.17,
 
 # generate multipage PDF
 count = 0
-figure, axes = plt.subplots(2, 2, squeeze=False)
+figure, axes = plt.subplots(2, 2, sharex=True)
 axes = axes.flatten()
 with PdfPages(FIGURE_PATH) as pdf:
     for file in tqdm(data_files):
@@ -65,6 +65,9 @@ with PdfPages(FIGURE_PATH) as pdf:
         y_offsets_map = h5fd.plot.rasterplot(channels, supp_axes, title, "s")
         if file in REPRESENTATIVE_PLOTS:
             h5fd.plot.rasterplot(channels, axes[count], "", "s", channel_labels=False)
+            if count == 0:
+                axes[count].plot((0, 20), (-1, -1), "k")
+                axes[count].text(25, -1, "20 s", va="center")
 
         if y_offsets_map is None:
             pdf.savefig()

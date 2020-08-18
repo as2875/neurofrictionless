@@ -98,10 +98,10 @@ def rasterplot(channels, axes, title, unit, channel_labels=True):
     if channel_labels:
         axes.set_yticks(y_offsets)
         axes.set_yticklabels(labels)
+        axes.set_xlabel("time / " + unit + "\n" + "#spikes = " + str(nspikes))
+        axes.set_ylabel("channel")
     else:
-        axes.set_yticks([])
-    axes.set_xlabel("time / " + unit + "\n" + "#spikes = " + str(nspikes))
-    axes.set_ylabel("channel")
+        axes.set_axis_off()
     axes.set_title(title)
 
     y_offsets_map = dict(zip(labels, y_offsets))
