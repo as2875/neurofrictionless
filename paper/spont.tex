@@ -3,7 +3,7 @@
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
 \usepackage{amsmath,mathpazo}
 \usepackage{comment,booktabs}
-\usepackage{natbib}
+\usepackage{natbib,graphicx}
 \usepackage{xspace,dcolumn}
 \usepackage{setspace,upgreek}
 \usepackage{siunitx,subcaption}
@@ -11,12 +11,13 @@
 \linenumbers
 \doublespacing
 
-\def\includegraphic{}
-\def\includegraphics{}
+
+%% SJE - commented these out for now.
+%%\def\includegraphic{}
+%%\def\includegraphics{}
 
 \startlocaldefs
 \newcommand{\um}{\,\ensuremath{\upmu \text{m}}\xspace}
-\renewcommand{\mm}{\,mm\xspace}
 \newcommand{\ournote}[1]{\marginpar{\textbf{#1}}}
 \renewcommand{\ournote}[1]{}
 
@@ -205,6 +206,7 @@ project.
 
 \section*{Figures}
 \begin{figure}[h!]
+  \includegraphics{../plots/supplementary_figures/raster_plots.pdf}
   \caption{Emergence of spontaneous activity.  Show a few example rasters.
     at different developmental stages.  Perhaps show four at different
   ages in a 2x2 layout.  Or three in a 3x1 layout?}
