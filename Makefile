@@ -10,8 +10,8 @@ plots/correlation_plots.pdf plots/correlation_plots_randomised.pdf \
 plots/points/correlation_plots.zip \
 plots/development_plots.pdf \
 plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf \
-plots/network_analysis.pdf plots/network_spikes_age.pdf \
-plots/network_spikes_amplitude.pdf plots/network_spikes_cutouts.pdf \
+plots/network_analysis.pdf plots/network_spikes_scatter.pdf \
+plots/network_spikes_cutouts.pdf \
 plots/supplementary_figures/network_activity_example.pdf plots/points/network_analysis.zip \
 plots/correlation_graphs.pdf \
 plots/correlations_kde.pdf
@@ -32,8 +32,8 @@ plots/development_plots.pdf: $(FD_DATA)
 plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf&: $(FD_DATA)
 	cd scripts/ && python3 compute_isi_distribution.py
 
-plots/network_analysis.pdf plots/network_spikes_age.pdf \
-plots/network_spikes_amplitude.pdf plots/network_spikes_cutouts.pdf \
+plots/network_analysis.pdf plots/network_spikes_scatter.pdf \
+plots/network_spikes_cutouts.pdf \
 plots/supplementary_figures/network_activity_example.pdf plots/points/network_analysis.zip&: $(FD_DATA)
 	cd scripts/ && python3 analyse_network_spikes.py
 

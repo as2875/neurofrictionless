@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import os
 import quantities as qt
 import warnings
+from matplotlib.lines import Line2D
 from h5fd.plot import RECORDING_ATTEMPTS
 from matplotlib.backends.backend_pdf import PdfPages
 from tqdm import tqdm
@@ -20,14 +21,16 @@ warnings.filterwarnings("ignore", category=UserWarning,
 DATA_DIR = "../data/2020-02-21_fd/"
 ACTIVITY_FIGURE_PATH = "../plots/network_analysis.pdf"
 CUTOUTS_FIGURE_PATH = "../plots/network_spikes_cutouts.pdf"
-SCATTER_FIGURE_PATH = "../plots/network_spikes_age.pdf"
-AMPLITUDE_FIGURE_PATH = "../plots/network_spikes_amplitude.pdf"
+SCATTER_FIGURE_PATH = "../plots/network_spikes_scatter.pdf"
 EXAMPLE_FIGURE_PATH = "../plots/supplementary_figures/network_activity_example.pdf"
 PACKAGE_PATH = "../plots/points/network_analysis.zip"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
+matplotlib.rcParams["figure.figsize"] = [6.69, 2.5]
+matplotlib.rcParams["figure.constrained_layout.use"] = True
+matplotlib.rcParams["font.size"] = 6.0
 
 # parameters for analysis
 THRESH = 0.25  # network spike threshold
@@ -71,7 +74,9 @@ for file in tqdm(data_files):
 # analysis
 # bin spikes
 print("Analysing...")
-age_rate_l, age_amp_l, rate_l, amp_l = [], [], [], []
+age_rate_l, rate_l, colours = \
+({"2539": [], "2540": []} for i in range(3))
+age_amp_l, amp_l = [], []
 with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as pdf_cut:
     for i in tqdm(range(len(recordings))):
         for replicate in sorted(recordings[i].keys()):
@@ -90,10 +95,16 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as
                                              labels,
                                              meta=meta)
                 ns.detect_spikes(THRESH)
-                age_rate_l.append(ns.meta["age"])
+                age_rate_l[replicate].append(ns.meta["age"])
                 N = len(ns.spike_timestamps)
                 rate = N / ns.t_stop.rescale(qt.min)
-                rate_l.append(rate)
+                rate_l[replicate].append(rate)
+                if i == 0:
+                    colours[replicate].append("r")
+                elif i == 1:
+                    colours[replicate].append("b")
+                else:
+                    colours[replicate].append("k")
                 for j in range(len(ns.spike_cutouts)):
                     plt.plot(ns.spike_cutouts[j])
                     plt.title(ns.meta["replicate"] +
@@ -101,7 +112,6 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as
                     plt.xlabel("bin\ntimestamp=" +
                                str(round(ns.spike_timestamps[j], 1)))
                     plt.ylabel("#spikes")
-                    plt.tight_layout()
                     pdf_cut.savefig()
                     plt.close()
                     age_amp_l.append(ns.meta["age"])
@@ -121,31 +131,47 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as
                 plt.title("D" + str(age) + " R" + replicate)
                 plt.xlabel("time / s\n#channels=" + str(len(spike_trains)))
                 plt.ylabel("#spikes in bin")
-                plt.tight_layout()
                 if i == 0 and replicate == "2540" and age == 34:
                     plt.savefig(EXAMPLE_FIGURE_PATH)
                 pdf_act.savefig()
                 plt.close()
 
+figure, axes = plt.subplots(1, 2, sharex=True)
 # rate
-plt.plot(age_rate_l, rate_l, ".")
-plt.xlabel("age / DIV")
-plt.ylabel("network spikes per min")
-plt.tight_layout()
-plt.savefig(SCATTER_FIGURE_PATH)
-plt.close()
+handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
+           Line2D([0], [0], marker="o", color="grey", lw=0, label="2540"),
+           Line2D([0], [0], color="r", lw=5, label="R1"),
+           Line2D([0], [0], color="b", lw=5, label="R2"),
+           Line2D([0], [0], color="k", lw=5, label="R3")]
+axes[0].legend(handles=handles, loc="upper left")
+axes[0].scatter(age_rate_l["2539"], rate_l["2539"], c=colours["2539"], marker="s", s=9.0)
+axes[0].scatter(age_rate_l["2540"], rate_l["2540"], c=colours["2540"], marker="o", s=9.0)
+axes[0].set_xlabel("age / DIV")
+axes[0].set_ylabel("frequency / min$^{-1}$")
 
 # amplitude
-plt.plot(age_amp_l, amp_l, ".", alpha=0.2, markeredgewidth=0)
-plt.xlabel("age / DIV")
-plt.ylabel("number of spikes")
-plt.tight_layout()
-plt.savefig(AMPLITUDE_FIGURE_PATH)
-plt.close()
+ALPHA = 0.2
+handles = [Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
+           label="1", alpha=ALPHA),
+           Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
+           label="2", alpha=ALPHA*2),
+           Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
+           label="3", alpha=ALPHA*3),
+           Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
+           label="4", alpha=ALPHA*4),
+           Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
+           label="5", alpha=ALPHA*5)]
+axes[1].legend(handles=handles, loc="upper left")
+axes[1].plot(age_amp_l, amp_l, "g.", alpha=ALPHA, markeredgewidth=0)
+axes[1].set_xlabel("age / DIV")
+axes[1].set_ylabel("amplitude")
+figure.savefig(SCATTER_FIGURE_PATH)
 
 # export to datapackage
 rate_table = [dict(age=age, rate=float(rate))
-              for age, rate in zip(age_rate_l, rate_l)]
+              for age, rate in zip(age_rate_l["2539"], rate_l["2539"])] + \
+             [dict(age=age, rate=float(rate))
+              for age, rate in zip(age_rate_l["2540"], rate_l["2540"])]
 amp_table = [dict(age=age, amplitude=amp)
              for age, amp in zip(age_amp_l, amp_l)]
 f = dataflows.Flow(
