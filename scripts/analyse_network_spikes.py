@@ -30,7 +30,6 @@ matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [6.69, 2.5]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
-matplotlib.rcParams["font.size"] = 6.0
 
 # parameters for analysis
 THRESH = 0.25  # network spike threshold
@@ -143,7 +142,7 @@ handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
            Line2D([0], [0], color="r", lw=5, label="R1"),
            Line2D([0], [0], color="b", lw=5, label="R2"),
            Line2D([0], [0], color="k", lw=5, label="R3")]
-axes[0].legend(handles=handles, loc="upper left")
+axes[0].legend(handles=handles, loc="upper left", fontsize=6.0)
 axes[0].scatter(age_rate_l["2539"], rate_l["2539"], c=colours["2539"], marker="s", s=9.0)
 axes[0].scatter(age_rate_l["2540"], rate_l["2540"], c=colours["2540"], marker="o", s=9.0)
 axes[0].set_xlabel("age / DIV")
@@ -161,10 +160,11 @@ handles = [Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
            label="4", alpha=ALPHA*4),
            Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
            label="5", alpha=ALPHA*5)]
-axes[1].legend(handles=handles, loc="upper left")
+axes[1].legend(handles=handles, loc="upper left", fontsize=6.0)
 axes[1].plot(age_amp_l, amp_l, "g.", alpha=ALPHA, markeredgewidth=0)
 axes[1].set_xlabel("age / DIV")
 axes[1].set_ylabel("amplitude")
+h5fd.plot.label_panels(axes)
 figure.savefig(SCATTER_FIGURE_PATH)
 
 # export to datapackage

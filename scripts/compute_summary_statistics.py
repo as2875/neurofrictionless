@@ -19,7 +19,6 @@ matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [6.69, 6.69]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["lines.markersize"] = 3.0
-matplotlib.rcParams["font.size"] = 6.0
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_FILE = "../plots/development_plots.pdf"
@@ -94,7 +93,7 @@ handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
            Line2D([0], [0], color="r", lw=5, label="R1"),
            Line2D([0], [0], color="b", lw=5, label="R2"),
            Line2D([0], [0], color="k", lw=5, label="R3")]
-axes[0, 0].legend(handles=handles, loc="upper left")
+axes[0, 0].legend(handles=handles, loc="upper left", fontsize=6.0)
 
 axes[0, 1].scatter(age_l["2539"], N_l["2539"], c=colours["2539"], marker="s")
 axes[0, 1].scatter(age_l["2540"], N_l["2540"], c=colours["2540"], marker="o")
