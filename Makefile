@@ -6,7 +6,7 @@ FD_DATA := $(pathsubst %.txt, %.zip, $(RAW_DATA))
 
 all: plots/burst_boxplots.png plots/points/burst_boxplots.zip \
 plots/burst_plots.pdf plots/supplementary_figures/raster_plots.pdf \
-plots/correlation_plots.pdf plots/correlation_plots_randomised.pdf \
+plots/correlation_plots.pdf \
 plots/points/correlation_plots.zip \
 plots/development_plots.pdf \
 plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf \
@@ -22,7 +22,7 @@ plots/burst_boxplots.png plots/points/burst_boxplots.zip&: $(FD_DATA)
 plots/burst_plots.pdf plots/supplementary_figures/raster_plots.pdf&: $(FD_DATA)
 	cd scripts/ && python3 detect_bursts.py
 
-plots/correlation_plots.pdf plots/correlation_plots_randomised.pdf \
+plots/correlation_plots.pdf \
 plots/points/correlation_plots.zip&: $(FD_DATA)
 	cd scripts/ && python3 correlate_pairwise.py
 
