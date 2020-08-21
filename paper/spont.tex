@@ -150,7 +150,9 @@ electrodes sampled at 25 kHz.
 sessions.  \textbf{TODO: discuss rationale for replicability.  How do we refer to the two types of reproducility -- there are the technical replicates (R1, R2, R3) and the biological replicates (2539, 2540).  Recordings started at about 7 days after plating, and then continued up until 40 days; for the last replicate we were able to extend the recording to 50 days.  (Perhaps say better why we went up to 50 days for the last replicate).}
 
 \subsection*{Analysis}
-\par The data were provided in a format written by MC\_DataTool \cite{Systems2014-tw}. The data were first converted to a data package based on the Frictionless Data Tabular Data Package specification \cite{Walsh2017-nm}. Each spike was represented by the time that the spike was detected. Conversion took place via our previous HDF5 format \cite{Eglen2014}.
+
+\par \textbf{Spikes were detected online using default parameters; no
+  spike sorting was attempted.}  The data were exported in a format written by MC\_DataTool \cite{Systems2014-tw}. The data were first converted to a data package based on the Frictionless Data Tabular Data Package specification \cite{Walsh2017-nm}. Each spike was represented by the time that the spike was detected. Conversion took place via our previous HDF5 format \cite{Eglen2014}.
 
 \par After conversion the data were analysed using a series of Python
 scripts to compute summary statistics and interspike intervals (ISIs),
@@ -278,7 +280,7 @@ project.
 
 \begin{figure}[h!]
     \includegraphics{../plots/network_spikes_scatter.pdf}
-	\caption{Quantification of network spikes across development. No channels were discarded when detecting network spikes. (A) Frequency of occurrence of network spikes over time. (B) Amplitude of network spikes, defined as the number of spikes in the bin representing the peak of the network spike. All recordings in the dataset are shown on this plot. The opacity of each point is proportional to the number of network spikes lying at that point on the graph.  \textbf{AS: the y axis in A should not go below 0.0, as it is a frequency; in B, we should probably draw the y axis starting from 0.}}
+	\caption{Quantification of network spikes across development. No channels were discarded when detecting network spikes. (A) Frequency of occurrence of network spikes over time. (B) Amplitude of network spikes, defined as the number of spikes in the bin representing the peak of the network spike. All recordings in the dataset are shown on this plot. The opacity of each point is proportional to the number of network spikes lying at that point on the graph.  \textbf{AS: y axis in A should not go below 0.0, as it is a frequency; in B, we should draw the y axis starting from 0.}}
 	\label{fig:networkfreq}
 \end{figure}
 
