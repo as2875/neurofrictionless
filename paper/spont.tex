@@ -198,7 +198,7 @@ cultures that do not generate network spikes as late as DIV 40.
 
 \begin{backmatter}
 
-\subsection*{Acknowledgments}
+\subsection*{Acknowledgements}
 \textbf{Kaiser: what funding do you need to acknowledge?}
 
 This work was supported by a Frictionless Data grant to SJE\@.  Thanks
@@ -212,27 +212,25 @@ project.
 \section*{Figures}
 \begin{figure}[h!]
   \includegraphics{../plots/supplementary_figures/raster_plots.pdf}
-  \caption{Emergence of spontaneous activity.  Show a few example rasters.
-    at different developmental stages.  Perhaps show four at different
-  ages in a 2x2 layout.  Or three in a 3x1 layout?}
+  \caption{Emergence of spontaneous activity in a population of neurons. Four representative recordings from the first series on replicate 2540 are shown. All spikes captured during the recording interval are displayed for each age.}
   \label{fig:rasters}
 \end{figure}
 
 \begin{figure}[h!]
     \includegraphics{../plots/development_plots.pdf}
-	\caption{Plots of network firing rate, number of spikes, number of active channels, recording time, and mean firing rate per channel against age. The main factor in the increase in firing rate is an increase in the number of active channels.}
+	\caption{Firing of neurons over time after plating. The metrics shown are (A) population firing rate, (B) firing rate of individual channels and (C) number of active channels, defined as the number of channels with at least one recorded spike.}
 	\label{fig:development}
 \end{figure}
 
 \begin{figure}[h!]
     \includegraphics{../plots/correlation_plots.pdf}
-	\caption{Plots of mean STTC, calculated pairwise with a synchronicity window of 50 ms, against age. There is no discernible trend in correlation over time.}
+	\caption{Violin plots of channel correlations over time. The STTC was used as the measure of spike train correlation. STTCs were calculated pairwise on the set of channels with activities above a threshold. A low threshold of 0.5 \(\text{min}^{-1}\) was used in this analysis, and recordings with no channels above the threshold are represented by an asterisk. The small number above each distribution is the number of STTCs in the distribution. The bars represent the absolute range of values.}
 	\label{fig:correlation}
 \end{figure}
 
 \begin{figure}[h!]
     \includegraphics{../plots/network_spikes_scatter.pdf}
-	\caption{The rate of network spike occurrence and amplitude of network spikes plotted against age.}
+	\caption{Quantification of network spikes across development. No channels were discarded when detecting network spikes. (A) Frequency of occurrence of network spikes over time. (B) Amplitude of network spikes, defined as the number of spikes in the bin representing the peak of the network spike. All recordings in the dataset are shown on this plot. The opacity of each point is proportional to the number of network spikes lying at that point on the graph.}
 	\label{fig:networkfreq}
 \end{figure}
 
