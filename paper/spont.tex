@@ -150,9 +150,13 @@ electrodes sampled at 25 kHz.
 sessions.  \textbf{TODO: discuss rationale for replicability.  How do we refer to the two types of reproducility -- there are the technical replicates (R1, R2, R3) and the biological replicates (2539, 2540).  Recordings started at about 7 days after plating, and then continued up until 40 days; for the last replicate we were able to extend the recording to 50 days.  (Perhaps say better why we went up to 50 days for the last replicate).}
 
 \subsection*{Analysis}
-\par The data were provided in a format written by MC\_DataTool \cite{Systems2014-tw}. The data were first converted to a data package based on the Frictionless Data Tabular Data Package specification \cite{Walsh2017-nm}. Each spike was represented by a single timestamp, chosen to be time of the 25\textsuperscript{th} voltage measurement from the start of the spike. Conversion took place via our previous HDF5 format \cite{Eglen2014}.
+\par The data were provided in a format written by MC\_DataTool \cite{Systems2014-tw}. The data were first converted to a data package based on the Frictionless Data Tabular Data Package specification \cite{Walsh2017-nm}. Each spike was represented by the time that the spike was detected. Conversion took place via our previous HDF5 format \cite{Eglen2014}.
 
-\par After conversion the data were analysed using a series of Python scripts to compute summary statistics and interspike intervals (ISIs), carry out burst analysis, and extract network spikes. The conversion and analysis scripts will be made available shortly. They make use of the \texttt{elephant} package \cite{elephant_toolkit}.
+\par After conversion the data were analysed using a series of Python
+scripts to compute summary statistics and interspike intervals (ISIs),
+carry out burst analysis, and extract network spikes. These scripts
+make use of the Python \texttt{elephant} package
+\cite{elephant_toolkit}.
 
 \paragraph{Summary statistics} The summary statistics calculated were: population firing rate, number of spikes recorded, number of active channels, recording time, and firing rate per channel.
 
@@ -169,8 +173,14 @@ sessions.  \textbf{TODO: discuss rationale for replicability.  How do we refer t
 
 
 \paragraph{Computational environment} All data analysis were performed
-in the Python programming language, version \textbf{...} on the linux operating system.  Data files and code will be available from
-\url{http://github.com/as2875/neurofrictionless.git}. \textbf{or similar repository}
+in the Python programming language, version \textbf{...} on the linux operating system.
+
+\paragraph{Availability of data and materials}
+
+
+All data files and analysis code will be freely available from
+\url{http://github.com/as2875/neurofrictionless.git}. \textbf{or
+  similar repository}
 
 \section*{Results}
 
@@ -219,6 +229,9 @@ cultures that do not generate network spikes as late as DIV 40.
 \textbf{Discuss in context of Frega study}  \cite{Frega2019}
 
 \textbf{This may need only be a couple of paragraphs}
+
+Overall the reproducibility of the recordings was high, with only one recording (R2 of 2540) possibly showing less correlated activity than the other recordings.
+
 \vspace*{1cm}
 
 \begin{backmatter}
