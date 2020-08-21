@@ -29,8 +29,8 @@ BINW = 0.5 * qt.s
 
 print("Analysing data...")
 
-age_l, corr_l, surr_corr_l, colours, err_l, surr_err_l =\
-    ({"2539": ([], [], []), "2540": ([], [], [])} for i in range(6))
+age_l, corr_l, colours, err_l, empty = \
+    ({"2539": ([], [], []), "2540": ([], [], [])} for i in range(5))
 
 correlation_matrices, resource_names, dates, ages, \
 replicates = [], [], [], [], []
@@ -40,6 +40,7 @@ for file in tqdm(data_files):
     package = datapackage.Package(file)
     mea = package.descriptor["meta"]["MEA"]
     age = package.descriptor["meta"]["age"]
+    age = int(age)
     datestamp = package.descriptor["meta"]["date"]
 
     recording_date = datetime.date(int("20" + datestamp[:2]),
@@ -59,6 +60,7 @@ for file in tqdm(data_files):
     labels = list(channels.keys())
     trains = [channels[l] for l in labels]
     if len(trains) < 2:
+        empty[mea][series].append(age)
         continue
     surr_trains = [elephant.spike_train_surrogates.randomise_spikes(t)[0]
                    for t in trains]
@@ -99,16 +101,15 @@ for file in tqdm(data_files):
     corr_l[mea][series].append(nonz.tolist())
 
     # randomised trains
-    surr_corr_triu = numpy.triu(surr_corr, k=1)
-    surr_n = (surr_corr.shape[0] * (surr_corr.shape[1] - 1)) / 2
-    mean_surr_corr = numpy.sum(surr_corr_triu) / surr_n
-    surr_corr_l[mea][series].append(mean_surr_corr)
+    # surr_corr_triu = numpy.triu(surr_corr, k=1)
+    # surr_n = (surr_corr.shape[0] * (surr_corr.shape[1] - 1)) / 2
+    # mean_surr_corr = numpy.sum(surr_corr_triu) / surr_n
+    # surr_corr_l[mea][series].append(mean_surr_corr)
     # standard deviation
-    surr_nonz = surr_corr_triu.ravel()[numpy.flatnonzero(surr_corr_triu)]
-    surr_err = numpy.std(surr_nonz)
-    surr_err_l[mea][series].append(surr_err)
+    # surr_nonz = surr_corr_triu.ravel()[numpy.flatnonzero(surr_corr_triu)]
+    # surr_err = numpy.std(surr_nonz)
+    # surr_err_l[mea][series].append(surr_err)
 
-    age = int(age)
     age_l[mea][series].append(age)
 
 # plot
@@ -145,9 +146,12 @@ for i in range(3):
             axes[count].text(coords[0],
                              coords[1] + 0.02,
                              str(len(data)),
-                             fontsize=5.0,
+                             fontsize=4.5,
                              ha="center")
-
+        axes[count].plot(empty[mea][i],
+                         numpy.zeros(len(empty[mea][i])),
+                         "k*", markeredgewidth=0.2)
+        axes[count].set_ylim([-0.1, 1])
         count += 1
 
 figure.text(0.5, 0.02, "age / DIV", ha="center", va="center")
