@@ -49,6 +49,7 @@ mi_par = ListVector({"beg_isi": 0.17,
 count = 0
 figure, axes = plt.subplots(2, 2, sharex=True)
 axes = axes.flatten()
+age_labels = []
 with PdfPages(FIGURE_PATH) as pdf:
     for file in tqdm(data_files):
         package = datapackage.Package(file)
@@ -65,6 +66,7 @@ with PdfPages(FIGURE_PATH) as pdf:
         y_offsets_map = h5fd.plot.rasterplot(channels, supp_axes, title, "s")
         if file in REPRESENTATIVE_PLOTS:
             h5fd.plot.rasterplot(channels, axes[count], "", "s", channel_labels=False)
+            age_labels.append("DIV " + str(age))
             if count == 0:
                 axes[count].plot((0, 20), (-1, -1), "k")
                 axes[count].text(25, -1, "20 s", va="center")
@@ -90,6 +92,6 @@ with PdfPages(FIGURE_PATH) as pdf:
             count += 1
         plt.close()
 
-h5fd.plot.label_panels(axes)
+h5fd.plot.label_panels(axes, labels=age_labels)
 figure.tight_layout()
 figure.savefig(REPRESENTATIVE_PLOT_PATH)

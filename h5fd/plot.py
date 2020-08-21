@@ -175,7 +175,11 @@ def _label_panel(ax, letter, *,
     ax.text(0, 1, prefix+letter+postfix, transform=trans, **kwds)
 
 
-def label_panels(axes):
+def label_panels(axes, labels=None):
     """Label the 1-D array of axes with uppercase letters from the Latin alphabet."""
-    for ax, letter in zip(axes, string.ascii_uppercase):
+    if labels:
+        seq = labels
+    else:
+        seq = string.ascii_uppercase
+    for ax, letter in zip(axes, seq):
         _label_panel(ax, letter)
