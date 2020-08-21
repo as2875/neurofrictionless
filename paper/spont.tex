@@ -42,7 +42,7 @@
 \author[
    addressref={aff1},
    noteref={n1}
-]{\inits{MKAK}\fnm{Muhammad Kaiser Abdul} \snm{Kaiser}}
+]{\inits{MKAK}\fnm{Muhammad Kaiser Abdul} \snm{Karim}}
 \author[
    addressref={aff2},
    noteref={n1}
@@ -124,13 +124,13 @@ neurons derived from IPSCs.  We tested the reproducibility of the recordings by 
 
 
 
-How shall we refer to developmental age -- DIV (days in vitro), DAP
-(days after plating) or other?
+\textbf{Kaiser: How shall we refer to developmental age -- DIV (days in
+  vitro), DAP (days after plating) or other?}
 
 \section*{Introduction}
 State here the rationale for doing the recordings, and what we have
 learnt.  (I like the J Neurosci ``3 paragraph model'': para 1 -
-general idea, para 2 - what was done before, para 3 - what we did.)
+general idea, para 2 - what was done before, para 3 - what we did.  \textbf{Kaiser: would you be able to write the first two paragraphs?  I could say directly what we did for para 3 as a summary of the paper.})
 
 \section*{Materials and Methods}
 
@@ -162,17 +162,14 @@ sessions.  \textbf{TODO: discuss rationale for replicability.  How do we refer t
 
 \paragraph{Burst analysis} Burst analysis was carried out using an implementation of the MaxInterval method from NeuroExplorer, using the following parameters: a beginning ISI of 0.17 s, an end ISI 0.3 s, a minimum interburst interval (IBI) of 0.2 s, a minimum burst duration of 0.05 s, and a minimum of 3 spikes per burst. The parameters are those recommended in the NeuroExplorer manual \cite{neuroexplorer2020}. \textbf{Raster plots with bursts represented by coloured lines were produced. Box plots showing statistics of bursting behaviour over developmental time were also plotted. The statistics were: frequency of bursts, burst duration, firing rate in bursts, and \% spikes in bursts. Channels with an activity of fewer than 10 spikes per minute were excluded from bursting statistics.  This could be deleted/shortened, as we now don't show the bursting properties.}
 
-\textbf{AS: Describe how logISIs were computed}
 
 \paragraph{Network spikes} Finally, network spikes were detected using a method similar to the one described by Eytan and Marom \cite{Eytan2006}. Spikes were placed in bins, with spikes occurring after the final bin discarded. The number of spikes in each bin was plotted. A network spike occurred when the number of action potentials in a bin exceeded one quarter of the total number of active channels. The 300 ms around the bin were extracted and plotted. Changing the bin width altered the number of detected network spikes, but heuristically it was found that bin widths below 10 ms or above 20 ms abrogated the shape of the extracted spike. Fixing the bin width at 20 ms, the number of network spikes was plotted against age.
 
 \par Raster plots, plots of active channels, and plots of instantaneous firing rate against time were also produced from the raw data for comparison with the analysis of the data converted into the Frictionless format.
 
 
-\paragraph{Computational environment} All simulations and data analysis were performed in the python programming
-language, version ...
-
-Data files and code will be available from
+\paragraph{Computational environment} All data analysis were performed
+in the Python programming language, version \textbf{...} on the linux operating system.  Data files and code will be available from
 \url{http://github.com/as2875/neurofrictionless.git}. \textbf{or similar repository}
 
 \section*{Results}
@@ -220,14 +217,16 @@ cultures that do not generate network spikes as late as DIV 40.
 
 \section*{Discussion}
 \textbf{Discuss in context of Frega study}  \cite{Frega2019}
+
+\textbf{This may need only be a couple of paragraphs}
 \vspace*{1cm}
 
 \begin{backmatter}
 
 \subsection*{Acknowledgements}
-\textbf{Kaiser: what funding do you need to acknowledge?}
 
-This work was supported by a Frictionless Data grant to SJE\@.  Thanks
+
+\textbf{Kaiser: what funding do you need to acknowledge?}  This work was supported by a Frictionless Data grant to SJE\@.  Thanks
 to Dr Lilly Winfree from Frictionless Data for her feedback on the
 project.
 
@@ -254,7 +253,7 @@ project.
 %% pdftk logisi_plots.pdf cat 44 output logisi_plot44.pdf
 \begin{figure}[h!]
   \includegraphics{../plots/logisi_plot44.pdf}
-	\caption{Distribution of interspike intervals. Each plot shows the frequency distribution of the log interspike interval from each  channel (written above each histogram) of one recording (R2539, D18).  The x axis is the log (base 10?) of the interspike interval and the y axis is the count.  \textbf{The bin width of each histogram is selected by an adaptive algorithm (XYZ).  or put this info in legend.  Can you try to convert the x axis labels to sensible time values (0 to 1 second? -2 to 0.01 second; +2 to 100 seconds)}}
+	\caption{Distribution of interspike intervals. Each plot shows the frequency distribution of the log interspike interval from each  channel (written above each histogram) of one recording (R2539, D18).  The x axis is the log (base 10?) of the interspike interval and the y axis is the count.  \textbf{The bin width of each histogram is selected by an adaptive algorithm, described in Methods.  Can you try to convert the x axis labels to sensible time values (0 to 1 second? -2 to 0.01 second; +2 to 100 seconds)}}
 	\label{fig:logisi}
 \end{figure}
 
