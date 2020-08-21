@@ -30,6 +30,8 @@ matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [6.69, 2.5]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
+matplotlib.rcParams["axes.spines.top"] = False
+matplotlib.rcParams["axes.spines.right"] = False
 
 # parameters for analysis
 THRESH = 0.25  # network spike threshold
@@ -164,7 +166,13 @@ axes[1].legend(handles=handles, loc="upper left", fontsize=6.0)
 axes[1].plot(age_amp_l, amp_l, "g.", alpha=ALPHA, markeredgewidth=0)
 axes[1].set_xlabel("age / DIV")
 axes[1].set_ylabel("amplitude")
+
+# add separation between x and y axes
+for ax in axes:
+    ax.spines["bottom"].set_position(["axes", -0.05])
+
 h5fd.plot.label_panels(axes)
+
 figure.savefig(SCATTER_FIGURE_PATH)
 
 # export to datapackage

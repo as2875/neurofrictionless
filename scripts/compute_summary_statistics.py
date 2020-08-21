@@ -19,6 +19,8 @@ matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [3.35, 7.5]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["lines.markersize"] = 3.0
+matplotlib.rcParams["axes.spines.top"] = False
+matplotlib.rcParams["axes.spines.right"] = False
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_FILE = "../plots/development_plots.pdf"
@@ -105,6 +107,10 @@ axes[2].scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"],
                 marker="o")
 axes[2].set_xlabel("age / DIV")
 axes[2].set_ylabel("active channels")
+
+# add separation between x and y axes
+for ax in axes:
+    ax.spines["bottom"].set_position(["axes", -0.05])
 
 axes = axes.flatten()
 h5fd.plot.label_panels(axes)

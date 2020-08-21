@@ -151,6 +151,8 @@ for i in range(3):
         axes[count].plot(empty[mea][i],
                          numpy.zeros(len(empty[mea][i])),
                          "k*", markeredgewidth=0.2)
+        # add separation between x and y axes
+        axes[count].spines["bottom"].set_position(["axes", -0.05])
         axes[count].set_ylim([-0.1, 1])
         count += 1
 
