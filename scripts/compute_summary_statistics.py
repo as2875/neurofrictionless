@@ -16,7 +16,7 @@ from tqdm import tqdm
 # adjust matplotlib parameters
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
-matplotlib.rcParams["figure.figsize"] = [6.69, 6.69]
+matplotlib.rcParams["figure.figsize"] = [3.35, 7.5]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["lines.markersize"] = 3.0
 
@@ -24,8 +24,8 @@ DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_FILE = "../plots/development_plots.pdf"
 data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
-age_l, age_perchan_l, fr_l, N_l, active_channels_l, fr_perchan_l, \
-    colours, colours_perchan = ({"2539": [], "2540": []} for i in range(8))
+age_l, age_perchan_l, fr_l, active_channels_l, fr_perchan_l, \
+    colours, colours_perchan = ({"2539": [], "2540": []} for i in range(7))
 fr_errors = {"2539": [[], []], "2540": [[], []]}
 for file in tqdm(data_files):
     # load package
@@ -75,44 +75,36 @@ for file in tqdm(data_files):
         fr_errors[mea][1].append(0)
         colours_perchan[mea].append(colour)
 
-    # number of spikes
-    N_l[mea].append(len(spikes))
-
     # number of active channels
     spike_trains = package.get_resource("spike-trains").read()
     active_channels_l[mea].append(len(spike_trains))
 
 # plot data
-figure, axes = plt.subplots(2, 2)
-axes[0, 0].scatter(age_l["2539"], fr_l["2539"], c=colours["2539"], marker="s")
-axes[0, 0].scatter(age_l["2540"], fr_l["2540"], c=colours["2540"], marker="o")
-axes[0, 0].set_xlabel("age / DIV")
-axes[0, 0].set_ylabel("firing rate / $s^{-1}$")
+figure, axes = plt.subplots(3, 1, sharex=True)
+axes[0].scatter(age_l["2539"], fr_l["2539"], c=colours["2539"], marker="s")
+axes[0].scatter(age_l["2540"], fr_l["2540"], c=colours["2540"], marker="o")
+axes[0].set_xlabel("age / DIV")
+axes[0].set_ylabel("population firing rate / $s^{-1}$")
 handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
            Line2D([0], [0], marker="o", color="grey", lw=0, label="2540"),
            Line2D([0], [0], color="r", lw=5, label="R1"),
            Line2D([0], [0], color="b", lw=5, label="R2"),
            Line2D([0], [0], color="k", lw=5, label="R3")]
-axes[0, 0].legend(handles=handles, loc="upper left", fontsize=6.0)
+axes[0].legend(handles=handles, loc="upper left", fontsize=6.0)
 
-axes[0, 1].scatter(age_l["2539"], N_l["2539"], c=colours["2539"], marker="s")
-axes[0, 1].scatter(age_l["2540"], N_l["2540"], c=colours["2540"], marker="o")
-axes[0, 1].set_xlabel("age / DIV")
-axes[0, 1].set_ylabel("number of spikes")
+axes[1].scatter(age_perchan_l["2539"], fr_perchan_l["2539"],
+                c=colours_perchan["2539"], marker="s")
+axes[1].scatter(age_perchan_l["2540"], fr_perchan_l["2540"],
+                c=colours_perchan["2540"], marker="o")
+axes[1].set_xlabel("age / DIV")
+axes[1].set_ylabel("channel firing rate / $s^{-1}$")
 
-axes[1, 0].scatter(age_l["2539"], active_channels_l["2539"], c=colours["2539"],
-             marker="s")
-axes[1, 0].scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"],
-             marker="o")
-axes[1, 0].set_xlabel("age / DIV")
-axes[1, 0].set_ylabel("active channels")
-
-axes[1, 1].scatter(age_perchan_l["2539"], fr_perchan_l["2539"],
-             c=colours_perchan["2539"], marker="s")
-axes[1, 1].scatter(age_perchan_l["2540"], fr_perchan_l["2540"],
-             c=colours_perchan["2540"], marker="o")
-axes[1, 1].set_xlabel("age / DIV")
-axes[1, 1].set_ylabel("firing rate\nper channel / $s^{-1}$")
+axes[2].scatter(age_l["2539"], active_channels_l["2539"], c=colours["2539"],
+                marker="s")
+axes[2].scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"],
+                marker="o")
+axes[2].set_xlabel("age / DIV")
+axes[2].set_ylabel("active channels")
 
 axes = axes.flatten()
 h5fd.plot.label_panels(axes)
