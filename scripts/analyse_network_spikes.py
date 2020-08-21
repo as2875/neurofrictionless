@@ -139,11 +139,11 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as
 
 figure, axes = plt.subplots(2, 1, sharex=True)
 # rate
-handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
-           Line2D([0], [0], marker="o", color="grey", lw=0, label="2540"),
-           Line2D([0], [0], color="r", lw=5, label="R1"),
-           Line2D([0], [0], color="b", lw=5, label="R2"),
-           Line2D([0], [0], color="k", lw=5, label="R3")]
+handles = [Line2D([], [], marker="s", color="grey", lw=0, label="2539"),
+           Line2D([], [], marker="o", color="grey", lw=0, label="2540"),
+           Line2D([], [], color="r", lw=5, label="R1"),
+           Line2D([], [], color="b", lw=5, label="R2"),
+           Line2D([], [], color="k", lw=5, label="R3")]
 axes[0].legend(handles=handles, loc="upper left", fontsize=6.0)
 axes[0].scatter(age_rate_l["2539"], rate_l["2539"], c=colours["2539"], marker="s", s=9.0)
 axes[0].scatter(age_rate_l["2540"], rate_l["2540"], c=colours["2540"], marker="o", s=9.0)
@@ -151,21 +151,15 @@ axes[0].set_xlabel("age / DIV")
 axes[0].set_ylabel("frequency / min$^{-1}$")
 
 # amplitude
-ALPHA = 0.2
-handles = [Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
-           label="1", alpha=ALPHA),
-           Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
-           label="2", alpha=ALPHA*2),
-           Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
-           label="3", alpha=ALPHA*3),
-           Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
-           label="4", alpha=ALPHA*4),
-           Line2D([0], [0], marker=".", color="g", lw=0, markeredgewidth=0,
-           label="5", alpha=ALPHA*5)]
-axes[1].legend(handles=handles, loc="upper left", fontsize=6.0)
-axes[1].plot(age_amp_l, amp_l, "g.", alpha=ALPHA, markeredgewidth=0)
+dot, = axes[1].plot(age_amp_l, amp_l, "g.", alpha=0.1, markeredgewidth=0)
+handles = [tuple(dot for i in range(1)),
+           tuple(dot for i in range(2)),
+           tuple(dot for i in range(5)),
+           tuple(dot for i in range(10))]
 axes[1].set_xlabel("age / DIV")
 axes[1].set_ylabel("amplitude")
+axes[1].legend(handles=handles, labels=["1", "2", "5", "10"],
+               loc="upper left", fontsize=6.0)
 
 # add separation between x and y axes
 for ax in axes:
