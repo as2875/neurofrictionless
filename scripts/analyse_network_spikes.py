@@ -28,7 +28,7 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
 matplotlib.rcParams["figure.dpi"] = 300
-matplotlib.rcParams["figure.figsize"] = [6.69, 2.5]
+matplotlib.rcParams["figure.figsize"] = [3.35, 5.0]
 matplotlib.rcParams["figure.constrained_layout.use"] = True
 matplotlib.rcParams["axes.spines.top"] = False
 matplotlib.rcParams["axes.spines.right"] = False
@@ -137,7 +137,7 @@ with PdfPages(ACTIVITY_FIGURE_PATH) as pdf_act, PdfPages(CUTOUTS_FIGURE_PATH) as
                 pdf_act.savefig()
                 plt.close()
 
-figure, axes = plt.subplots(1, 2, sharex=True)
+figure, axes = plt.subplots(2, 1, sharex=True)
 # rate
 handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
            Line2D([0], [0], marker="o", color="grey", lw=0, label="2540"),
