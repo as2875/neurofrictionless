@@ -157,7 +157,7 @@ sessions.  \textbf{TODO: discuss rationale for replicability.  How do we refer t
 \par After conversion the data were analysed using a series of Python
 scripts to compute summary statistics and interspike intervals (ISIs),
 carry out burst analysis, and extract network spikes. These scripts
-make use of the Python \texttt{elephant} package
+make use of the Python \texttt{elephant} package.
 \cite{elephant_toolkit}.
 
 \paragraph{Summary statistics} The summary statistics calculated were: population firing rate, number of spikes recorded, number of active channels, recording time, and firing rate per channel.
@@ -166,23 +166,17 @@ make use of the Python \texttt{elephant} package
 
 \paragraph{Correlation} The spike time tiling coefficient (STTC) \cite{Cutts2014} was calculated for each pair of channels in each recording. A synchronicity window of 50 ms was used. The mean coefficient was plotted against age. Channels with an activity of less than 0.5 spikes per minute were excluded from STTC calculations as we found that these channels would otherwise produce unreliably high estimates of correlation.
 
-\paragraph{Burst analysis} Burst analysis was carried out using an implementation of the MaxInterval method from NeuroExplorer, using the following parameters: a beginning ISI of 0.17 s, an end ISI 0.3 s, a minimum interburst interval (IBI) of 0.2 s, a minimum burst duration of 0.05 s, and a minimum of 3 spikes per burst. The parameters are those recommended in the NeuroExplorer manual \cite{neuroexplorer2020}. \textbf{Raster plots with bursts represented by coloured lines were produced. Box plots showing statistics of bursting behaviour over developmental time were also plotted. The statistics were: frequency of bursts, burst duration, firing rate in bursts, and \% spikes in bursts. Channels with an activity of fewer than 10 spikes per minute were excluded from bursting statistics.  This could be deleted/shortened, as we now don't show the bursting properties.}
-
+\paragraph{Burst analysis} Burst analysis was carried out using an implementation of the MaxInterval method from NeuroExplorer, using the following parameters: a beginning ISI of 0.17 s, an end ISI 0.3 s, a minimum interburst interval (IBI) of 0.2 s, a minimum burst duration of 0.05 s, and a minimum of 3 spikes per burst. The parameters are those recommended in the NeuroExplorer manual \cite{neuroexplorer2020}.
 
 \paragraph{Network spikes} Finally, network spikes were detected using a method similar to the one described by Eytan and Marom \cite{Eytan2006}. Spikes were placed in bins, with spikes occurring after the final bin discarded. The number of spikes in each bin was plotted. A network spike occurred when the number of action potentials in a bin exceeded one quarter of the total number of active channels. The 300 ms around the bin were extracted and plotted. Changing the bin width altered the number of detected network spikes, but heuristically it was found that bin widths below 10 ms or above 20 ms abrogated the shape of the extracted spike. Fixing the bin width at 20 ms, the number of network spikes was plotted against age.
 
-\par Raster plots, plots of active channels, and plots of instantaneous firing rate against time were also produced from the raw data for comparison with the analysis of the data converted into the Frictionless format.
-
-
 \paragraph{Computational environment} All data analysis were performed
-in the Python programming language, version \textbf{...} on the linux operating system.
+in the Python programming language, version 3.8, on the Linux operating system.
 
 \paragraph{Availability of data and materials}
 
-
 All data files and analysis code will be freely available from
-\url{http://github.com/as2875/neurofrictionless.git}. \textbf{or
-  similar repository}
+\url{https://github.com/as2875/neurofrictionless}.
 
 \section*{Results}
 
@@ -196,7 +190,7 @@ spikes, population firing rate (and so on)
 
 We did attempt to analyse the bursting structure of these spike
 trains, although in line with our earlier work \cite{Cotterill2016-qi}
-we found that finding burst detection parameters that worked across
+we discovered that finding burst detection parameters that worked across
 all ages was difficult.  This became evident when we looked at the
 distribution of interspike intervals on a log scale
 (Figure~\ref{fig:bursts}).  Informally, for burst detection to work
@@ -210,17 +204,17 @@ recordings.
 \subsection*{Correlated activity}
 
 Correlated activity is often seen in developing cultures of neurons
-(refs).  To assess the correlations in the network, we have used the spike time tiling coefficient (STTC) \cite{Cutts2014}, which reports the correlation between pairs of spike trains: values of zero indicate that the trains are uncorrelated, whereas a value of +1 would indicate perfect correlation and negative values indicate anticorrelation.  This tends to occur days/weeks after individual neurons have
+[\textbf{refs}].  To assess the correlations in the network, we have used the spike time tiling coefficient (STTC) \cite{Cutts2014}, which reports the correlation between pairs of spike trains: values of zero indicate that the trains are uncorrelated, whereas a value of +1 would indicate perfect correlation and negative values indicate anticorrelation.  This tends to occur days/weeks after individual neurons have
 begun firing, and may reflect the development of connectivity between
 neurons.  In all our cultures, although there was spontaneous activity
 from about day 10, correlated activity was often not observed until
 day 18-20 partly due to the low firing rates of individual channels
 (asterisks in Figure~\ref{fig:correlation}.  After about day 18-20,
 however, we see that spike trains are correlated across the array; no
-strong developmental trend was observed.  We could see however that
+strong developmental trend was observed.  We could see that
 when correlations were found in a recording, there was often a bimodal
-structure, with groups of highly correlated neurons and uncorrelated
-(as shown in the violin plots of Figure~\ref{fig:correlation}.  We did not observe any significant anticorrelations in our recordings.
+structure, with groups of highly correlated and uncorrelated neurons
+(as shown in the violin plots of Figure~\ref{fig:correlation}).  We did not observe any significant anticorrelations in our recordings.
 
 \subsection*{Network spikes}
 Network-level activity ramps up over time, although there are some
@@ -253,7 +247,7 @@ project.
 \section*{Figures}
 \begin{figure}[h!]
   \includegraphics{../plots/supplementary_figures/raster_plots.pdf}
-  \caption{Emergence of spontaneous activity in a population of neurons. Representative recordings from the first series (R1) on replicate 2540 are shown at four ages. All spikes captured during the recording interval are displayed for each age.  Scale bar in top-left denotes 20 seconds and applies to all rasters.}
+  \caption{Emergence of spontaneous activity in a population of neurons. Representative recordings from the first series (R1) on replicate 2540 are shown at four ages. All spikes captured during the recording interval are displayed for each age.  The scale bar in the top left panel denotes 20 seconds and applies to all rasters.}
   \label{fig:rasters}
 \end{figure}
 
