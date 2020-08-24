@@ -18,6 +18,8 @@ matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [6.69, 7.5]
 matplotlib.rcParams["font.size"] = 8.0
 matplotlib.rcParams["figure.constrained_layout.use"] = True
+matplotlib.rcParams["axes.spines.top"] = False
+matplotlib.rcParams["axes.spines.right"] = False
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_PATH = "../plots/logisi_plots.pdf"
@@ -62,12 +64,15 @@ with PdfPages(FIGURE_PATH) as pdf, \
             isi = [math.log10(float(interval)) for interval in isi]
             axes[count].hist(isi, bins="auto", color="g")
             axes[count].set_title(channel)
+            lim = [round(l) for l in axes[count].get_xlim()]
+            axes[count].set_xlim(lim)
             count += 1
         figure.canvas.draw()
+        # replace log labels with linear labels
         for ax in axes:
             xlabels = [t.get_text().replace("−", "-") for t in ax.get_xticklabels()]
             xlabels = [10**float(x) for x in xlabels]
-            xlabels = [round(x, 1) for x in xlabels]
+            xlabels = [round(x) for x in xlabels]
             ax.set_xticklabels(xlabels)
         for i in range(count, len(axes)):
             axes[i].set_axis_off()
@@ -82,7 +87,7 @@ with PdfPages(FIGURE_PATH) as pdf, \
         bax.set_xticklabels([])
         bax.set_yticklabels([])
         bax.patch.set_alpha(0)
-        bax.set_xlabel("$\log$ ISI / s", labelpad=20)
+        bax.set_xlabel("ISI / s", labelpad=20)
         bax.set_ylabel("frequency density", labelpad=25)
         figure.tight_layout()
 
