@@ -24,14 +24,19 @@ The raw data were provided in a format written by MC_DataTool. `scripts/convert_
 
 1. Install R and meaRtools.
 2. Clone the repository.
-3. Add the repository to `PYTHONPATH`. On Linux, run `export PYTHONPATH=/path/to/repository`.
-4. Run `pip install -r requirements.txt`.
+3. You may find it convenient to set up a virtual environment.
+    - Install the `virtualenv` package (`sudo apt install python3-virtualenv` on Ubuntu).
+    - `virtualenv venv`
+    - `source venv/bin/activate`
+4. Add the repository to `PYTHONPATH`. On Linux, run `export PYTHONPATH=/path/to/repository`.
+5. Run `pip install -r requirements.txt`.
 
 ## Running the analysis
 
 1. `cd` into the repository.
-2. Run `make convert` to convert the data into HDF5 and Frictionless formats.
-3. Run `make all` to generate all figures and data packages with results of select analyses.
+2. `make clean` for a fresh start.
+2. `make convert` to convert the raw data into HDF5 and Frictionless formats.
+3. `make all` to generate all figures and data packages with results of select analyses.
 
 ## Evaluation
 
