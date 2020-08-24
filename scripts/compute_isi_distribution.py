@@ -60,10 +60,15 @@ with PdfPages(FIGURE_PATH) as pdf, \
         for channel, spikes in sorted(channels.items()):
             isi = elephant.statistics.isi(spikes)
             isi = [math.log10(float(interval)) for interval in isi]
-            axes[count].hist(isi,
-                             bins="auto")
+            axes[count].hist(isi, bins="auto", color="g")
             axes[count].set_title(channel)
             count += 1
+        figure.canvas.draw()
+        for ax in axes:
+            xlabels = [t.get_text().replace("−", "-") for t in ax.get_xticklabels()]
+            xlabels = [10**float(x) for x in xlabels]
+            xlabels = [round(x, 1) for x in xlabels]
+            ax.set_xticklabels(xlabels)
         for i in range(count, len(axes)):
             axes[i].set_axis_off()
 
@@ -77,7 +82,7 @@ with PdfPages(FIGURE_PATH) as pdf, \
         bax.set_xticklabels([])
         bax.set_yticklabels([])
         bax.patch.set_alpha(0)
-        bax.set_xlabel("$\log$ ISI", labelpad=20)
+        bax.set_xlabel("$\log$ ISI / s", labelpad=20)
         bax.set_ylabel("frequency density", labelpad=25)
         figure.tight_layout()
 
