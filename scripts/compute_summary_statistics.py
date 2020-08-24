@@ -83,8 +83,10 @@ for file in tqdm(data_files):
 
 # plot data
 figure, axes = plt.subplots(3, 1, sharex=True)
-axes[0].scatter(age_l["2539"], fr_l["2539"], c=colours["2539"], marker="s")
-axes[0].scatter(age_l["2540"], fr_l["2540"], c=colours["2540"], marker="o")
+axes[0].scatter(age_l["2539"], fr_l["2539"], c=colours["2539"],
+                marker="s", clip_on=False)
+axes[0].scatter(age_l["2540"], fr_l["2540"], c=colours["2540"],
+                marker="o", clip_on=False)
 axes[0].set_xlabel("age / DIV")
 axes[0].set_ylabel("population firing rate / $s^{-1}$")
 handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
@@ -95,22 +97,23 @@ handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
 axes[0].legend(handles=handles, loc="upper left", fontsize=6.0)
 
 axes[1].scatter(age_perchan_l["2539"], fr_perchan_l["2539"],
-                c=colours_perchan["2539"], marker="s")
+                c=colours_perchan["2539"], marker="s",clip_on=False)
 axes[1].scatter(age_perchan_l["2540"], fr_perchan_l["2540"],
-                c=colours_perchan["2540"], marker="o")
+                c=colours_perchan["2540"], marker="o",clip_on=False)
 axes[1].set_xlabel("age / DIV")
 axes[1].set_ylabel("channel firing rate / $s^{-1}$")
 
 axes[2].scatter(age_l["2539"], active_channels_l["2539"], c=colours["2539"],
-                marker="s")
+                marker="s", clip_on=False)
 axes[2].scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"],
-                marker="o")
+                marker="o", clip_on=False)
 axes[2].set_xlabel("age / DIV")
 axes[2].set_ylabel("active channels")
 
 # add separation between x and y axes
 for ax in axes:
     ax.spines["bottom"].set_position(["axes", -0.05])
+    ax.set_ylim(bottom=0)
 
 axes = axes.flatten()
 h5fd.plot.label_panels(axes)

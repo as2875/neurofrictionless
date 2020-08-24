@@ -145,13 +145,16 @@ handles = [Line2D([], [], marker="s", color="grey", lw=0, label="2539"),
            Line2D([], [], color="b", lw=5, label="R2"),
            Line2D([], [], color="k", lw=5, label="R3")]
 axes[0].legend(handles=handles, loc="upper left", fontsize=6.0)
-axes[0].scatter(age_rate_l["2539"], rate_l["2539"], c=colours["2539"], marker="s", s=9.0)
-axes[0].scatter(age_rate_l["2540"], rate_l["2540"], c=colours["2540"], marker="o", s=9.0)
+axes[0].scatter(age_rate_l["2539"], rate_l["2539"], c=colours["2539"],
+                marker="s", s=9.0, clip_on=False)
+axes[0].scatter(age_rate_l["2540"], rate_l["2540"], c=colours["2540"],
+                marker="o", s=9.0, clip_on=False)
 axes[0].set_xlabel("age / DIV")
 axes[0].set_ylabel("frequency / min$^{-1}$")
 
 # amplitude
-dot, = axes[1].plot(age_amp_l, amp_l, "g.", alpha=0.1, markeredgewidth=0)
+dot, = axes[1].plot(age_amp_l, amp_l, "g.", alpha=0.1, markeredgewidth=0,
+                    clip_on=False)
 handles = [tuple(dot for i in range(1)),
            tuple(dot for i in range(2)),
            tuple(dot for i in range(5)),
@@ -164,6 +167,7 @@ axes[1].legend(handles=handles, labels=["1", "2", "5", "10"],
 # add separation between x and y axes
 for ax in axes:
     ax.spines["bottom"].set_position(["axes", -0.05])
+    ax.set_ylim(bottom=0)
 
 h5fd.plot.label_panels(axes)
 
