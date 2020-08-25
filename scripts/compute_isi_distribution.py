@@ -91,8 +91,8 @@ with PdfPages(FIGURE_PATH) as pdf, \
         bax.set_xticklabels([])
         bax.set_yticklabels([])
         bax.patch.set_alpha(0)
-        bax.set_xlabel("ISI / s", labelpad=20)
-        bax.set_ylabel("frequency density", labelpad=25)
+        bax.set_xlabel("interspike interval / s", labelpad=20)
+        bax.set_ylabel("frequency", labelpad=25)
         figure.tight_layout()
 
         if file in REPRESENTATIVE_PLOTS:
