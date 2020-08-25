@@ -70,6 +70,7 @@ with PdfPages(FIGURE_PATH) as pdf, \
             lim = [round(l) for l in axes[count].get_xlim()]
             axes[count].set_xlim(lim)
             count -= 1
+        axes[count + 1].tick_params(axis="y", reset=True, right=False)
         figure.canvas.draw()
         # replace log labels with linear labels
         for ax in axes:
