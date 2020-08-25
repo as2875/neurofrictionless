@@ -66,7 +66,7 @@ with PdfPages(FIGURE_PATH) as pdf:
         y_offsets_map = h5fd.plot.rasterplot(channels, supp_axes, title, "s")
         if file in REPRESENTATIVE_PLOTS:
             h5fd.plot.rasterplot(channels, axes[count], "", "s", channel_labels=False)
-            age_labels.append("DIV " + str(age))
+            age_labels.append("DPI " + str(age))
             if count == 0:
                 axes[count].plot((0, 20), (-1, -1), "k")
                 axes[count].text(25, -1, "20 s", va="center")

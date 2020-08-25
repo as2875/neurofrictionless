@@ -156,7 +156,7 @@ for i in range(3):
         axes[count].set_ylim([-0.1, 1])
         count += 1
 
-figure.text(0.5, 0.02, "age / DIV", ha="center", va="center")
+figure.text(0.5, 0.02, "age / DPI", ha="center", va="center")
 figure.tight_layout()
 plt.savefig(FIGURE_PATH)
 plt.close()

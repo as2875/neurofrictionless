@@ -149,7 +149,7 @@ axes[0].scatter(age_rate_l["2539"], rate_l["2539"], c=colours["2539"],
                 marker="s", s=9.0, clip_on=False)
 axes[0].scatter(age_rate_l["2540"], rate_l["2540"], c=colours["2540"],
                 marker="o", s=9.0, clip_on=False)
-axes[0].set_xlabel("age / DIV")
+axes[0].set_xlabel("age / DPI")
 axes[0].set_ylabel("frequency / min$^{-1}$")
 
 # amplitude
@@ -159,7 +159,7 @@ handles = [tuple(dot for i in range(1)),
            tuple(dot for i in range(2)),
            tuple(dot for i in range(5)),
            tuple(dot for i in range(10))]
-axes[1].set_xlabel("age / DIV")
+axes[1].set_xlabel("age / DPI")
 axes[1].set_ylabel("amplitude")
 axes[1].legend(handles=handles, labels=["1", "2", "5", "10"],
                loc="upper left", fontsize=6.0)

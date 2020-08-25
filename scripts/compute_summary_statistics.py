@@ -87,7 +87,7 @@ axes[0].scatter(age_l["2539"], fr_l["2539"], c=colours["2539"],
                 marker="s", clip_on=False)
 axes[0].scatter(age_l["2540"], fr_l["2540"], c=colours["2540"],
                 marker="o", clip_on=False)
-axes[0].set_xlabel("age / DIV")
+axes[0].set_xlabel("age / DPI")
 axes[0].set_ylabel("population firing rate / $s^{-1}$")
 handles = [Line2D([0], [0], marker="s", color="grey", lw=0, label="2539"),
            Line2D([0], [0], marker="o", color="grey", lw=0, label="2540"),
@@ -100,14 +100,14 @@ axes[1].scatter(age_perchan_l["2539"], fr_perchan_l["2539"],
                 c=colours_perchan["2539"], marker="s",clip_on=False)
 axes[1].scatter(age_perchan_l["2540"], fr_perchan_l["2540"],
                 c=colours_perchan["2540"], marker="o",clip_on=False)
-axes[1].set_xlabel("age / DIV")
+axes[1].set_xlabel("age / DPI")
 axes[1].set_ylabel("channel firing rate / $s^{-1}$")
 
 axes[2].scatter(age_l["2539"], active_channels_l["2539"], c=colours["2539"],
                 marker="s", clip_on=False)
 axes[2].scatter(age_l["2540"], active_channels_l["2540"], c=colours["2540"],
                 marker="o", clip_on=False)
-axes[2].set_xlabel("age / DIV")
+axes[2].set_xlabel("age / DPI")
 axes[2].set_ylabel("active channels")
 
 # add separation between x and y axes
