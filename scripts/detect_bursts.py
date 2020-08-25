@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
-import cycler
 import datapackage
 import h5fd.plot
+import itertools
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import os
+import pickle
 import quantities as qt
 from rpy2.robjects.packages import importr
 from rpy2.robjects.vectors import ListVector, FloatVector
+import random
 import string
 from tqdm import tqdm
 
@@ -22,12 +24,9 @@ matplotlib.rcParams["figure.dpi"] = 300
 matplotlib.rcParams["figure.figsize"] = [6.69, 6.69]
 matplotlib.rcParams["font.size"] = 6.0
 
-# cycle through two colours only for bursts
-burst_cycler = cycler.cycler(color=["r", "b"])
-plt.rc("axes", prop_cycle=burst_cycler)
-
 FIGURE_PATH = "../plots/burst_plots.pdf"
 REPRESENTATIVE_PLOT_PATH = "../plots/supplementary_figures/raster_plots.pdf"
+REPRESENTATIVE_BURSTD_PATH = "../plots/pickle/bursts.pickle"
 
 # location of data
 DATA_DIR = "../data/2020-02-21_fd/"
@@ -37,6 +36,7 @@ REPRESENTATIVE_PLOTS = ["../data/2020-02-21_fd/170922_D15_2540.zip",
                         "../data/2020-02-21_fd/170927_D20_2540.zip",
                         "../data/2020-02-21_fd/171002_D25_2540.zip",
                         "../data/2020-02-21_fd/171013_D36_2540.zip"]
+REPRESENTATIVE_BURSTD = "../data/2020-02-21_fd/180214_D35_2539.zip"
 
 # parameters for burst detection
 mi_par = ListVector({"beg_isi": 0.17,
@@ -47,7 +47,8 @@ mi_par = ListVector({"beg_isi": 0.17,
 
 # generate multipage PDF
 count = 0
-figure, axes = plt.subplots(2, 2, sharex=True)
+figure = plt.figure(figsize=(6.69, 6.69))
+axes = figure.subplots(2, 2, sharex=True)
 axes = axes.flatten()
 age_labels = []
 with PdfPages(FIGURE_PATH) as pdf:
@@ -80,16 +81,20 @@ with PdfPages(FIGURE_PATH) as pdf:
             # buRst deteRction
             spikes_vec = FloatVector(spikes)
             allb = meaRtools.mi_find_bursts(spikes_vec, mi_par)
-            for i in range(1, allb.nrow + 1):
+            for i, off in zip(range(1, allb.nrow + 1), itertools.cycle([-0.1, 0.1])):
                 burst = allb.rx(i, True)  # extract ith row
                 start_b = int(burst[0]) - 1
                 end_b = int(burst[1]) - 1
                 supp_axes.plot((spikes[start_b], spikes[end_b]),
-                               (y_offsets_map[channel], y_offsets_map[channel]))
+                               (y_offsets_map[channel] + off, y_offsets_map[channel] + off),
+                               color="g")
 
         pdf.savefig()
         if file in REPRESENTATIVE_PLOTS:
             count += 1
+        if file == REPRESENTATIVE_BURSTD:
+            with open(REPRESENTATIVE_BURSTD_PATH, "wb") as f:
+                pickle.dump(supp_figure, f)
         plt.close()
 
 h5fd.plot.label_panels(axes, labels=age_labels)
