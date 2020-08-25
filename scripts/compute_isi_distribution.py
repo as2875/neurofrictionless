@@ -63,7 +63,9 @@ with PdfPages(FIGURE_PATH) as pdf, \
             isi = elephant.statistics.isi(spikes)
             isi = [math.log10(float(interval)) for interval in isi]
             axes[count].hist(isi, bins="auto", color="g")
-            axes[count].set_title(channel)
+            axes[count].text(0.75, 0.9,
+                             "ch. " + channel,
+                             transform=axes[count].transAxes)
             lim = [round(l) for l in axes[count].get_xlim()]
             axes[count].set_xlim(lim)
             count += 1
