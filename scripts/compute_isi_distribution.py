@@ -9,6 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy
 import os
+import pickle
 import quantities as qt
 from matplotlib.backends.backend_pdf import PdfPages
 from tqdm import tqdm
@@ -24,14 +25,13 @@ matplotlib.rcParams["axes.spines.right"] = False
 
 DATA_DIR = "../data/2020-02-21_fd/"
 FIGURE_PATH = "../plots/logisi_plots.pdf"
-REPRESENTATIVE_PLOT_PATH = "../plots/supplementary_figures/logisi_plot_example.pdf"
-REPRESENTATIVE_PLOTS = ["../data/2020-02-21_fd/180214_D35_2539.zip"]
+REPRESENTATIVE_PLOT_PATH = "../plots/pickle/logisi_example.pickle"
+REPRESENTATIVE_PLOT = "../data/2020-02-21_fd/180214_D35_2539.zip"
 # data_files = sorted([os.path.join(DATA_DIR, file)
 #                      for file in os.listdir(DATA_DIR)])
-data_files = REPRESENTATIVE_PLOTS
+data_files = [REPRESENTATIVE_PLOT]
 
-with PdfPages(FIGURE_PATH) as pdf, \
-     PdfPages(REPRESENTATIVE_PLOT_PATH) as rpdf:
+with PdfPages(FIGURE_PATH) as pdf:
     for file in tqdm(data_files):
         # load package
         package = datapackage.Package(file)
@@ -96,8 +96,9 @@ with PdfPages(FIGURE_PATH) as pdf, \
         bax.set_ylabel("frequency", labelpad=25)
         figure.tight_layout()
 
-        if file in REPRESENTATIVE_PLOTS:
+        if file == REPRESENTATIVE_PLOT:
             figure.suptitle("")
-            rpdf.savefig()
+            with open(REPRESENTATIVE_PLOT_PATH, "wb") as f:
+                pickle.dump(figure, f)
         pdf.savefig()
         plt.close()
