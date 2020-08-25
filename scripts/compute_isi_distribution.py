@@ -7,6 +7,7 @@ import itertools
 import math
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy
 import os
 import quantities as qt
 from matplotlib.backends.backend_pdf import PdfPages
@@ -58,7 +59,7 @@ with PdfPages(FIGURE_PATH) as pdf, \
         axes = axes.flatten()
         bax = figure.add_subplot(111)
 
-        count = 0
+        count = len(axes) - 1
         for channel, spikes in sorted(channels.items()):
             isi = elephant.statistics.isi(spikes)
             isi = [math.log10(float(interval)) for interval in isi]
@@ -68,7 +69,7 @@ with PdfPages(FIGURE_PATH) as pdf, \
                              transform=axes[count].transAxes)
             lim = [round(l) for l in axes[count].get_xlim()]
             axes[count].set_xlim(lim)
-            count += 1
+            count -= 1
         figure.canvas.draw()
         # replace log labels with linear labels
         for ax in axes:
@@ -76,8 +77,9 @@ with PdfPages(FIGURE_PATH) as pdf, \
             xlabels = [10**float(x) for x in xlabels]
             xlabels = [round(x) for x in xlabels]
             ax.set_xticklabels(xlabels)
-        for i in range(count, len(axes)):
-            axes[i].set_axis_off()
+        while count >= 0:
+            axes[count].set_axis_off()
+            count -= 1
 
         figure.suptitle(title)
         bax.spines['top'].set_color('none')
