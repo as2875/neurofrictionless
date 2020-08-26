@@ -53,7 +53,8 @@ class NetworkSpikes:
                     break
 
 
-def rasterplot(channels, axes, title, unit, channel_labels=True):
+def rasterplot(channels, axes, title, unit, channel_labels=True,
+               spike_count=True):
     """
     Produce a raster plot of a spike train on a set of axes.
 
@@ -68,6 +69,11 @@ def rasterplot(channels, axes, title, unit, channel_labels=True):
         Figure title.
     unit : str
         Units of time to include on x-axis.
+    channel_labels : bool
+        Whether or not to include y-axis labels.
+    spike_count : bool
+        Whether or not to include the number of spikes in the x-axis
+        label.
 
     Returns
     -------
@@ -98,7 +104,11 @@ def rasterplot(channels, axes, title, unit, channel_labels=True):
     if channel_labels:
         axes.set_yticks(y_offsets)
         axes.set_yticklabels(labels)
-        axes.set_xlabel("time / " + unit + "\n" + "#spikes = " + str(nspikes))
+        if spike_count:
+            xlabel = "time / " + unit + "\n" + "#spikes = " + str(nspikes)
+        else:
+            xlabel = "time / " + unit
+        axes.set_xlabel(xlabel)
         axes.set_ylabel("channel")
     else:
         axes.set_axis_off()
@@ -175,11 +185,11 @@ def _label_panel(ax, letter, *,
     ax.text(0, 1, prefix+letter+postfix, transform=trans, **kwds)
 
 
-def label_panels(axes, labels=None):
+def label_panels(axes, labels=None, **kwargs):
     """Label the 1-D array of axes with uppercase letters from the Latin alphabet."""
     if labels:
         seq = labels
     else:
         seq = string.ascii_uppercase
     for ax, letter in zip(axes, seq):
-        _label_panel(ax, letter)
+        _label_panel(ax, letter, **kwargs)
