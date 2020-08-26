@@ -9,7 +9,7 @@ plots/burst_plots.pdf plots/supplementary_figures/raster_plots.pdf \
 plots/correlation_plots.pdf \
 plots/points/correlation_plots.zip \
 plots/development_plots.pdf \
-plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf \
+plots/logisi_plots.pdf plots/supplementary_figures/isi_and_burst_example.pdf \
 plots/network_analysis.pdf plots/network_spikes_scatter.pdf \
 plots/network_spikes_cutouts.pdf \
 plots/supplementary_figures/network_activity_example.pdf plots/points/network_analysis.zip \
@@ -19,8 +19,9 @@ plots/correlations_kde.pdf
 plots/burst_boxplots.png plots/points/burst_boxplots.zip&: $(FD_DATA)
 	cd scripts && python3 compute_burst_statistics.py
 
-plots/burst_plots.pdf plots/supplementary_figures/raster_plots.pdf&: $(FD_DATA)
-	cd scripts/ && python3 detect_bursts.py
+plots/burst_plots.pdf plots/supplementary_figures/raster_plots.pdf \
+plots/logisi_plots.pdf plots/supplementary_figures/isi_and_burst_example.pdf&: $(FD_DATA)
+	cd scripts/ && python3 analyse_bursting.py
 
 plots/correlation_plots.pdf \
 plots/points/correlation_plots.zip&: $(FD_DATA)
@@ -28,9 +29,6 @@ plots/points/correlation_plots.zip&: $(FD_DATA)
 
 plots/development_plots.pdf: $(FD_DATA)
 	cd scripts/ && python3 compute_summary_statistics.py
-
-plots/logisi_plots.pdf plots/supplementary_figures/logisi_plot_example.pdf&: $(FD_DATA)
-	cd scripts/ && python3 compute_isi_distribution.py
 
 plots/network_analysis.pdf plots/network_spikes_scatter.pdf \
 plots/network_spikes_cutouts.pdf \
