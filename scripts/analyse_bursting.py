@@ -24,8 +24,8 @@ meaRtools = importr("meaRtools")
 
 # location of data
 DATA_DIR = "../data/2020-02-21_fd/"
-#data_files = sorted([os.path.join(DATA_DIR, file)
-#                     for file in os.listdir(DATA_DIR)])
+data_files = sorted([os.path.join(DATA_DIR, file)
+                     for file in os.listdir(DATA_DIR)])
 
 # plot parameters
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
@@ -37,9 +37,9 @@ matplotlib.rcParams["axes.spines.right"] = False
 COMB_FIGURE_PATH = "../plots/supplementary_figures/isi_and_burst_example.pdf"
 
 # ISI distribution
+print("Analysing ISIs...")
 FIGURE_PATH = "../plots/logisi_plots.pdf"
 REPRESENTATIVE_BURSTD = "../data/2020-02-21_fd/180214_D35_2539.zip"
-data_files = [REPRESENTATIVE_BURSTD]
 
 with PdfPages(FIGURE_PATH) as pdf:
     for file in tqdm(data_files):
@@ -186,6 +186,7 @@ with PdfPages(FIGURE_PATH) as pdf:
             comb_bax.set_ylabel("frequency", labelpad=20)
 
 # burst detection
+print("Detecting bursts...")
 FIGURE_PATH = "../plots/burst_plots.pdf"
 REPRESENTATIVE_PLOT_PATH = "../plots/supplementary_figures/raster_plots.pdf"
 REPRESENTATIVE_PLOTS = ["../data/2020-02-21_fd/170922_D15_2540.zip",
