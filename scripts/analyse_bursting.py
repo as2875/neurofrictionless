@@ -29,7 +29,6 @@ data_files = sorted([os.path.join(DATA_DIR, file)
 
 # plot parameters
 matplotlib.rcParams.update(matplotlib.rcParamsDefault)
-matplotlib.rcParams["font.size"] = 6.0
 matplotlib.rcParams["axes.spines.top"] = False
 matplotlib.rcParams["axes.spines.right"] = False
 
@@ -111,7 +110,7 @@ with PdfPages(FIGURE_PATH) as pdf:
 
         if file == REPRESENTATIVE_BURSTD:
             # initialise figure 5
-            comb_figure = plt.figure(figsize=(3.35, 6),
+            comb_figure = plt.figure(figsize=(6.69, 7.5),
                                      constrained_layout=True)
             comb_spec = comb_figure.add_gridspec(
                                              nrows=x_dim*2,
@@ -144,9 +143,9 @@ with PdfPages(FIGURE_PATH) as pdf:
                 isi = elephant.statistics.isi(spikes)
                 isi = [math.log10(float(interval)) for interval in isi]
                 comb_axes[count].hist(isi, bins="auto", color="g")
-                comb_axes[count].text(0.65, 0.9,
+                comb_axes[count].text(0.75, 0.9,
                                       "ch. " + channel,
-                                      fontsize=5.0,
+                                      fontsize=8.0,
                                       transform=comb_axes[count].transAxes)
                 lim = [round(l) for l in comb_axes[count].get_xlim()]
                 comb_axes[count].set_xlim(lim)
@@ -183,7 +182,7 @@ with PdfPages(FIGURE_PATH) as pdf:
             comb_bax.set_yticklabels([])
             comb_bax.patch.set_alpha(0)
             comb_bax.set_xlabel("interspike interval / s", labelpad=20)
-            comb_bax.set_ylabel("frequency", labelpad=20)
+            comb_bax.set_ylabel("frequency", labelpad=25)
 
 # burst detection
 print("Detecting bursts...")
@@ -238,7 +237,7 @@ with PdfPages(FIGURE_PATH) as pdf:
             raster_axes.set_xlabel("")
             raster_axes.set_xlim(left=-0.1)
             raster_axes.plot((0, 20), (-1, -1), "k")
-            raster_axes.text(25, -1, "20 s", va="center", fontsize=4.5)
+            raster_axes.text(25, -1, "20 s", va="center")
 
         if y_offsets_map is None:
             pdf.savefig()
@@ -258,8 +257,8 @@ with PdfPages(FIGURE_PATH) as pdf:
                                color="g")
                 if file == REPRESENTATIVE_BURSTD:
                     raster_axes.plot((spikes[start_b], spikes[end_b]),
-                                     (y_offsets_map[channel] + off, y_offsets_map[channel] + off),
-                                     color="g")
+                                     (y_offsets_map[channel], y_offsets_map[channel]),
+                                     color="g", lw=4)
 
         if file in REPRESENTATIVE_PLOTS:
             count += 1
@@ -271,5 +270,5 @@ h5fd.plot.label_panels(axes, labels=age_labels)
 figure.tight_layout()
 figure.savefig(REPRESENTATIVE_PLOT_PATH)
 
-h5fd.plot.label_panels([comb_bax, raster_axes], offset_up=-0.1)
+h5fd.plot.label_panels([comb_bax, raster_axes])
 comb_figure.savefig(COMB_FIGURE_PATH)
