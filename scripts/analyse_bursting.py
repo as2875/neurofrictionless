@@ -144,7 +144,7 @@ with PdfPages(FIGURE_PATH) as pdf:
                 isi = elephant.statistics.isi(spikes)
                 isi = [math.log10(float(interval)) for interval in isi]
                 comb_axes[count].hist(isi, bins="auto", color="g")
-                comb_axes[count].text(0.75, 0.9,
+                comb_axes[count].text(0.65, 0.9,
                                       "ch. " + channel,
                                       fontsize=5.0,
                                       transform=comb_axes[count].transAxes)
@@ -231,9 +231,11 @@ with PdfPages(FIGURE_PATH) as pdf:
             h5fd.plot.rasterplot(channels, raster_axes, "", "s", spike_count=False)
             raster_axes.spines["bottom"].set_color("none")
             raster_axes.spines["left"].set_color("none")
+            raster_axes.tick_params(left=False)
             raster_axes.set_xticks([])
             raster_axes.set_xticklabels([])
             raster_axes.set_xlabel("")
+            raster_axes.set_xlim(left=-0.1)
             raster_axes.plot((0, 20), (-1, -1), "k")
             raster_axes.text(25, -1, "20 s", va="center", fontsize=4.5)
 
