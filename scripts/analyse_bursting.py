@@ -219,7 +219,7 @@ with PdfPages(FIGURE_PATH) as pdf:
         title = date + " " + "D" + age + " " + "R" + mea
 
         # raster plot
-        supp_figure, supp_axes = plt.subplots()
+        supp_figure, supp_axes = plt.subplots(constrained_layout=True)
         y_offsets_map = h5fd.plot.rasterplot(channels, supp_axes, title, "s")
         if file in REPRESENTATIVE_PLOTS:
             h5fd.plot.rasterplot(channels, axes[count], "", "s", channel_labels=False)
