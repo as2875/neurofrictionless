@@ -33,7 +33,7 @@ data_files = [os.path.join(DATA_DIR, file) for file in os.listdir(DATA_DIR)]
 mi_par = ListVector({"beg_isi": 0.17,
                      "end_isi": 0.3,
                      "min_ibi": 0.2,
-                     "min_durn": 0.05,
+                     "min_durn": 0.01,
                      "min_spikes": 3})
 
 # displacement of plots

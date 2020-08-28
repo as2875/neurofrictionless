@@ -197,7 +197,7 @@ REPRESENTATIVE_PLOTS = ["../data/2020-02-21_fd/170922_D15_2540.zip",
 mi_par = ListVector({"beg_isi": 0.17,
                      "end_isi": 0.3,
                      "min_ibi": 0.2,
-                     "min_durn": 0.05,
+                     "min_durn": 0.01,
                      "min_spikes": 3})
 
 # generate multipage PDF
