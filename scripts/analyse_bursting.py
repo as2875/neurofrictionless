@@ -118,13 +118,13 @@ with PdfPages(FIGURE_PATH) as pdf:
                                              figure=comb_figure
                                              )
             # axes for raster with bursts
-            raster_axes = comb_figure.add_subplot(comb_spec[x_dim:, :y_dim])
+            raster_axes = comb_figure.add_subplot(comb_spec[:x_dim, :y_dim])
             # dummy axes with axis labels
-            comb_bax = comb_figure.add_subplot(comb_spec[:x_dim, :y_dim])
+            comb_bax = comb_figure.add_subplot(comb_spec[x_dim:, :y_dim])
 
             # axes for histograms
             comb_axes = []
-            for row in range(x_dim):
+            for row in range(x_dim, 2*x_dim):
                 for col in range(y_dim):
                     if len(comb_axes) > 0:
                         ax = comb_figure.add_subplot(comb_spec[row, col],
@@ -132,7 +132,7 @@ with PdfPages(FIGURE_PATH) as pdf:
                                                      sharex=comb_axes[0])
                     else:
                         ax = comb_figure.add_subplot(comb_spec[row, col])
-                    if row != y_dim:
+                    if row != 2*x_dim - 1:
                        ax.tick_params(labelbottom=False)
                     if col != 0:
                         ax.tick_params(labelleft=False)
@@ -270,5 +270,5 @@ h5fd.plot.label_panels(axes, labels=age_labels)
 figure.tight_layout()
 figure.savefig(REPRESENTATIVE_PLOT_PATH)
 
-h5fd.plot.label_panels([comb_bax, raster_axes])
+h5fd.plot.label_panels([raster_axes, comb_bax])
 comb_figure.savefig(COMB_FIGURE_PATH)
